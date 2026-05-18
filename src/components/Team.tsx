@@ -240,9 +240,29 @@ export function Team() {
 
       {/* Branch Management Section */}
       <div className="space-y-4">
-        <div className="flex items-center gap-3 px-2">
-          <Store className="w-5 h-5 text-brand-500" />
-          <h3 className="text-sm font-black text-white uppercase tracking-tight">Daftar Cabang</h3>
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-3">
+            <Store className="w-5 h-5 text-brand-500" />
+            <h3 className="text-sm font-black text-white uppercase tracking-tight">Daftar Cabang</h3>
+          </div>
+          {isBos && (
+            <form onSubmit={handleAddBranch} className="flex items-center gap-2">
+               <input 
+                 type="text" 
+                 placeholder="NAMA CABANG BARU" 
+                 value={newBranchName}
+                 onChange={(e) => setNewBranchName(e.target.value.toUpperCase())}
+                 className="bg-asphalt-800 border border-asphalt-700/50 rounded-xl px-3 py-2 text-[10px] font-black text-white uppercase tracking-widest placeholder:text-asphalt-text-400 focus:outline-none focus:border-brand-500 transition-all shadow-inner w-40 md:w-48"
+               />
+               <button 
+                 type="submit" 
+                 disabled={!newBranchName.trim()}
+                 className="bg-brand-500 text-white p-2 rounded-xl hover:bg-brand-600 disabled:opacity-50 transition-all shadow-lg active:scale-95"
+               >
+                 <Plus className="w-4 h-4" />
+               </button>
+            </form>
+          )}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
