@@ -2,11 +2,18 @@
   "name": "AlfathPulsa",
   "short_name": "Alfath",
   "description": "Sistem Rekapitulasi AlfathPulsa",
+  "id": "/?source=pwa",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0B111D",
   "theme_color": "#0B111D",
   "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "id-ID",
+  "categories": [
+    "finance",
+    "business"
+  ],
   "icons": [
     {
       "src": "/icon.svg",
@@ -31,6 +38,46 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "540x960",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "960x540",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rekap Setoran",
+      "short_name": "Setoran",
+      "description": "Buka pencatatan setoran uang hari ini",
+      "url": "/?shortcut=deposits",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Catat Piutang & Bon",
+      "short_name": "Piutang",
+      "description": "Kelola rekapitulasi utang & bon karyawan",
+      "url": "/?shortcut=debts",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

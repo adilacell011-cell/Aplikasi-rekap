@@ -6,6 +6,9 @@
       "destination": "/api/:path*"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

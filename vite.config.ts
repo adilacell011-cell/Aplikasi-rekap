@@ -37,12 +37,20 @@ export default defineConfig(({mode}) => {
         },
         manifest: {
           name: 'AlfathPulsa',
-          short_name: 'AlfathPulsa',
-          description: 'Aplikasi pembukuan keuangan dan pencatatan bon untuk agen AlfathPulsa.',
+          short_name: 'Alfath',
+          description: 'Sistem Rekapitulasi AlfathPulsa',
+          id: '/?source=pwa',
           theme_color: '#0B111D',
           background_color: '#0B111D',
           display: 'standalone',
           start_url: '/',
+          orientation: 'portrait',
+          dir: 'ltr',
+          lang: 'id-ID',
+          categories: [
+            'finance',
+            'business'
+          ],
           icons: [
             {
               src: '/icon.svg',
@@ -67,6 +75,46 @@ export default defineConfig(({mode}) => {
               sizes: '512x512',
               type: 'image/png',
               purpose: 'maskable'
+            }
+          ],
+          screenshots: [
+            {
+              src: '/screenshot-mobile.png',
+              sizes: '540x960',
+              type: 'image/png',
+              form_factor: 'narrow'
+            },
+            {
+              src: '/screenshot-desktop.png',
+              sizes: '960x540',
+              type: 'image/png',
+              form_factor: 'wide'
+            }
+          ],
+          shortcuts: [
+            {
+              name: 'Rekap Setoran',
+              short_name: 'Setoran',
+              description: 'Buka pencatatan setoran uang hari ini',
+              url: '/?shortcut=deposits',
+              icons: [
+                {
+                  src: '/icon-192.png',
+                  sizes: '192x192'
+                }
+              ]
+            },
+            {
+              name: 'Catat Piutang & Bon',
+              short_name: 'Piutang',
+              description: 'Kelola rekapitulasi utang & bon karyawan',
+              url: '/?shortcut=debts',
+              icons: [
+                {
+                  src: '/icon-192.png',
+                  sizes: '192x192'
+                }
+              ]
             }
           ]
         }
