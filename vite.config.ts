@@ -12,6 +12,7 @@ export default defineConfig(({mode}) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
+        injectRegister: 'inline',
         workbox: {
           globPatterns: ['**/*.{js,css,html,png,svg}'],
           cleanupOutdatedCaches: true,
@@ -45,15 +46,27 @@ export default defineConfig(({mode}) => {
           icons: [
             {
               src: '/icon.svg',
-              sizes: '192x192',
+              sizes: 'any',
               type: 'image/svg+xml',
               purpose: 'any'
             },
             {
-              src: '/icon.svg',
+              src: '/icon-192.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'any'
+            },
+            {
+              src: '/icon-512.png',
               sizes: '512x512',
-              type: 'image/svg+xml',
-              purpose: 'any maskable'
+              type: 'image/png',
+              purpose: 'any'
+            },
+            {
+              src: '/icon-512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable'
             }
           ]
         }
