@@ -6,7 +6,7 @@
       "destination": "/api/:path*"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|assets/|favicon\\.ico|icon\\.svg|icon-192\\.png|icon-512\\.png|screenshot-desktop\\.png|screenshot-mobile\\.png|registerSW\\.js|sw\\.js|manifest\\.webmanifest).*)",
       "destination": "/index.html"
     }
   ],
