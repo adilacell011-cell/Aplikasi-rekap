@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../firebase';
 
@@ -17,16 +17,17 @@ interface LayoutProps {
 
 export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps) {
   const { isInstallable, installApp } = usePWAInstall();
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme, themeMode, setThemeMode } = useThemeStore();
   const [showThemePicker, setShowThemePicker] = useState(false);
   const { branchId, user } = useAuthStore();
   const { branches, error, setError, announcement } = useFinanceStore();
   const branchName = branchId ? branches.find(b => b.id === branchId)?.name : null;
 
-  // Apply theme to document element
+  // Apply theme and themeMode to document element
   React.useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    document.documentElement.setAttribute('data-mode', themeMode);
+  }, [theme, themeMode]);
 
   const themes: { id: ThemeColor; color: string; label: string }[] = [
     { id: 'blue', color: 'bg-blue-500', label: 'Biru' },
@@ -38,12 +39,12 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
   ];
 
   return (
-    <div className="min-h-[100dvh] bg-[#0B111D] flex justify-center selection:bg-brand-500/30" data-theme={theme}>
-      <div className="w-full md:max-w-3xl lg:max-w-5xl xl:max-w-7xl bg-[#0B111D] h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100 md:border-x md:border-asphalt-800/30">
+    <div className="min-h-[100dvh] bg-asphalt-900 flex justify-center selection:bg-brand-500/30" data-theme={theme} data-mode={themeMode}>
+      <div className="w-full md:max-w-3xl lg:max-w-5xl xl:max-w-7xl bg-asphalt-900 h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100 md:border-x md:border-asphalt-800/30">
         {/* Global Error Display */}
         {error && (
           <div
-            className="absolute top-24 left-4 right-4 z-50 bg-rose-600 text-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4"
+            className="absolute top-24 left-4 right-4 z-50 bg-rose-600 text-white p-4 rounded-xl shadow-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4"
           >
             <AlertCircle className="w-5 h-5 shrink-0" />
             <div className="flex-1 min-w-0">
@@ -57,13 +58,13 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         )}
 
         {/* Top Header */}
-        <header className="bg-[#0B111D] text-white sticky top-0 z-20 px-5 pt-[env(safe-area-inset-top,1.5rem)] pb-4 flex items-center justify-between">
+        <header className="bg-asphalt-900 text-white sticky top-0 z-20 px-5 pt-[env(safe-area-inset-top,1.5rem)] pb-4 flex items-center justify-between border-b border-asphalt-800/10">
           <div className="flex items-center gap-3.5">
             <div className="relative group">
               <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-brand-500/20 ring-2 ring-brand-500/10 active:scale-95 transition-transform">
                 <span className="text-sm font-black text-white tracking-widest uppercase">AP</span>
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#0B111D] rounded-full flex items-center justify-center border-2 border-[#0B111D]">
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-asphalt-900 rounded-full flex items-center justify-center border-2 border-asphalt-900">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
               </div>
             </div>
@@ -130,15 +131,47 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                     <Palette className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-black uppercase tracking-tight">Pilih Aksen Warna</h3>
-                    <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Personalisasi tampilan Anda</p>
+                    <h3 className="text-lg font-black uppercase tracking-tight">Kustomisasi Tampilan</h3>
+                    <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Personalisasi tema & kenyamanan mata</p>
                   </div>
                 </div>
                 <button onClick={() => setShowThemePicker(false)} className="p-3 bg-asphalt-900 rounded-2xl border border-asphalt-700 hover:bg-asphalt-700 transition-all">
                   <X className="w-5 h-5 text-asphalt-text-400" />
                 </button>
               </div>
+
+              {/* Theme Mode Toggle (Dark vs Light Premium) */}
+              <div className="mb-8">
+                <h4 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mb-4">Pilih Mode Tampilan</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setThemeMode('dark')}
+                    className={`flex items-center justify-center gap-3 p-4 rounded-[2rem] border-2 transition-all ${
+                      themeMode === 'dark' ? 'border-brand-500 bg-brand-500/10 shadow-lg shadow-brand-500/10 text-brand-500 font-black' : 'border-asphalt-700 bg-asphalt-900 text-asphalt-text-400 hover:border-asphalt-600'
+                    }`}
+                  >
+                    <Moon className="w-5 h-5" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Mode Gelap</span>
+                  </button>
+                  <button
+                    onClick={() => setThemeMode('light')}
+                    className={`flex items-center justify-center gap-3 p-4 rounded-[2rem] border-2 transition-all ${
+                      themeMode === 'light' ? 'border-brand-500 bg-brand-500/10 shadow-lg shadow-brand-500/10 text-brand-500 font-black' : 'border-asphalt-700 bg-asphalt-900 text-asphalt-text-400 hover:border-asphalt-600'
+                    }`}
+                  >
+                    <div className="relative">
+                      <Sun className="w-5 h-5 text-amber-500" />
+                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-500 rounded-full animate-ping"></span>
+                    </div>
+                    <div className="flex flex-col items-start leading-none text-left">
+                      <span className="text-[10px] font-black uppercase tracking-widest">Terang Premium</span>
+                      <span className="text-[7.5px] text-emerald-500 font-extrabold uppercase tracking-tight mt-0.5">Nyaman di Mata</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
               
+              <h4 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mb-4">Pilih Aksen Warna</h4>
               <div className="grid grid-cols-3 gap-4">
                 {themes.map((t) => (
                   <button
@@ -170,7 +203,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         </main>
 
         {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 md:relative max-w-md md:max-w-full w-full bg-[#0B111D]/80 backdrop-blur-2xl border-t border-asphalt-800/30 z-30 pb-safe shadow-[0_-15px_50px_rgba(0,0,0,0.6)]">
+        <nav className="fixed bottom-0 md:relative max-w-md md:max-w-full w-full bg-asphalt-900/80 backdrop-blur-2xl border-t border-asphalt-800/30 z-30 pb-safe shadow-[0_-15px_50px_rgba(0,0,0,0.4)]">
           <div className="flex justify-around items-center h-[4.5rem] px-3 relative">
             
             {/* Nav background indicator */}

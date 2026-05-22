@@ -47,6 +47,124 @@
   --text-asphalt-400: #94A3B8;
 }
 
+/* Light Mode Variables - Elegant warm alabaster off-white, safe for eyes, zero screen glare */
+[data-mode='light'] {
+  --bg-asphalt-900: #F6F5F0; /* Soft warm-grey glare-free background */
+  --bg-asphalt-800: #FAF9F5; /* Premium soft off-white card canvas */
+  --bg-asphalt-700: #E2E0D4; /* Smooth warm borders and split dividers */
+  --text-asphalt-100: #1C2434; /* Soft deep charcoal (not high contrast pure-black) */
+  --text-asphalt-400: #5E6A7D; /* Comfortable slate grey subtitle print */
+
+  --brand-50: #F0F6FF;
+}
+
+/* Light Mode Styling Override Injectors */
+[data-mode='light'] .text-white {
+  color: #1E293B !important;
+}
+[data-mode='light'] .text-white\/95 {
+  color: #1E293B !important;
+}
+[data-mode='light'] .text-white\/90 {
+  color: #1E293B !important;
+}
+[data-mode='light'] .text-white\/80 {
+  color: #273444 !important;
+}
+[data-mode='light'] .text-white\/60 {
+  color: #4B5563 !important;
+}
+[data-mode='light'] .text-white\/40 {
+  color: #6B7280 !important;
+}
+[data-mode='light'] .text-white\/30 {
+  color: #9CA3AF !important;
+}
+[data-mode='light'] .text-slate-300 {
+  color: #334155 !important;
+}
+[data-mode='light'] .text-slate-300\/90 {
+  color: #334155 !important;
+}
+[data-mode='light'] .text-asphalt-text-100 {
+  color: #1E293B !important;
+}
+[data-mode='light'] .text-asphalt-text-400 {
+  color: #5E6A7D !important;
+}
+
+/* Background Adapters */
+[data-mode='light'] .bg-asphalt-900 {
+  background-color: var(--bg-asphalt-900) !important;
+}
+[data-mode='light'] .bg-asphalt-800 {
+  background-color: var(--bg-asphalt-800) !important;
+}
+[data-mode='light'] .bg-asphalt-700 {
+  background-color: var(--bg-asphalt-700) !important;
+}
+
+/* Borders Adaptations */
+[data-mode='light'] .border-asphalt-700 {
+  border-color: var(--bg-asphalt-700) !important;
+}
+[data-mode='light'] .border-asphalt-850 {
+  border-color: var(--bg-asphalt-700) !important;
+}
+[data-mode='light'] .border-asphalt-700\/50 {
+  border-color: rgba(226, 224, 212, 0.6) !important;
+}
+[data-mode='light'] .border-asphalt-800\/30 {
+  border-color: rgba(226, 224, 212, 0.4) !important;
+}
+[data-mode='light'] .border-asphalt-700\/25 {
+  border-color: rgba(226, 224, 212, 0.3) !important;
+}
+
+/* Gradients Overrides */
+[data-mode='light'] .from-\[\#181E2B\] {
+  --tw-gradient-from: #FEFCF9 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #F3F1E7 !important;
+  background-image: linear-gradient(to bottom right, #FEFCF9, #F3F1E7) !important;
+  border-color: rgba(226, 224, 212, 0.8) !important;
+}
+[data-mode='light'] .via-\[\#101520\] {
+  --tw-gradient-via: #FAF8F2 !important;
+}
+[data-mode='light'] .to-\[\#0A0E17\] {
+  --tw-gradient-to: #F3F1E7 !important;
+}
+[data-mode='light'] .bg-\[\#181E2B\] {
+  background-color: var(--bg-asphalt-800) !important;
+}
+[data-mode='light'] .border-\[\#262E3D\]\/30 {
+  border-color: rgba(226, 224, 212, 0.5) !important;
+}
+
+/* Form Fields */
+[data-mode='light'] input,
+[data-mode='light'] textarea,
+[data-mode='light'] select {
+  background-color: #FEFCF9 !important;
+  border-color: #DDDBCF !important;
+  color: #1E293B !important;
+}
+[data-mode='light'] input::placeholder,
+[data-mode='light'] textarea::placeholder {
+  color: #9CA3AF !important;
+}
+
+/* Mid transparency boxes */
+[data-mode='light'] .bg-asphalt-900\/50,
+[data-mode='light'] .bg-asphalt-900\/40,
+[data-mode='light'] .bg-asphalt-900\/60 {
+  background-color: #ECE9DE !important;
+}
+
+[data-mode='light'] .divide-asphalt-700\/50 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--bg-asphalt-700) !important;
+}
+
 [data-theme='emerald'] {
   --brand-50: #ecfdf5;
   --brand-100: #d1fae5;
@@ -123,7 +241,7 @@
 
 body {
   -webkit-tap-highlight-color: transparent;
-  background-color: #0B111D;
+  background-color: var(--bg-asphalt-900);
 }
 
 /* Sembunyikan indikator loading sisa jika ada */
