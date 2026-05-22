@@ -16,23 +16,75 @@ interface ServiceIconProps {
 }
 
 function ServiceIcon({ icon, label, onClick, badge, index }: ServiceIconProps) {
+  const serviceStyles: Record<string, { bg: string; border: string; iconColor: string }> = {
+    "Hutang / Bon": { 
+      bg: "bg-indigo-500/15 hover:bg-indigo-500/25 active:bg-indigo-500/35 border-indigo-500/20", 
+      border: "border-indigo-500/25", 
+      iconColor: "text-indigo-400 group-hover:text-indigo-300" 
+    },
+    "Tabungan": { 
+      bg: "bg-amber-500/15 hover:bg-amber-500/25 active:bg-amber-500/35 border-amber-500/20", 
+      border: "border-amber-500/25", 
+      iconColor: "text-amber-400 group-hover:text-amber-300" 
+    },
+    "Setoran": { 
+      bg: "bg-emerald-500/15 hover:bg-emerald-500/25 active:bg-emerald-500/35 border-emerald-500/20", 
+      border: "border-emerald-500/25", 
+      iconColor: "text-emerald-400 group-hover:text-emerald-300" 
+    },
+    "Rekap Data": { 
+      bg: "bg-sky-500/15 hover:bg-sky-500/25 active:bg-sky-500/35 border-sky-500/20", 
+      border: "border-sky-500/25", 
+      iconColor: "text-sky-400 group-hover:text-sky-300" 
+    },
+    "Info SOP": { 
+      bg: "bg-orange-500/15 hover:bg-orange-500/25 active:bg-orange-500/35 border-orange-500/20", 
+      border: "border-orange-500/25", 
+      iconColor: "text-orange-400 group-hover:text-orange-300" 
+    },
+    "Log Aktivitas": { 
+      bg: "bg-purple-500/15 hover:bg-purple-500/25 active:bg-purple-500/35 border-purple-500/20", 
+      border: "border-purple-500/25", 
+      iconColor: "text-purple-400 group-hover:text-purple-300" 
+    },
+    "Kelola Tim": { 
+      bg: "bg-cyan-500/15 hover:bg-cyan-500/25 active:bg-cyan-500/35 border-cyan-500/20", 
+      border: "border-cyan-500/25", 
+      iconColor: "text-cyan-400 group-hover:text-cyan-300" 
+    },
+    "Slip Gaji": { 
+      bg: "bg-rose-500/15 hover:bg-rose-500/25 active:bg-rose-500/35 border-rose-500/20", 
+      border: "border-rose-500/25", 
+      iconColor: "text-rose-400 group-hover:text-rose-300" 
+    },
+  };
+
+  const style = serviceStyles[label] || { 
+    bg: "bg-brand-500/15 hover:bg-brand-500/25 active:bg-brand-500/35 border-brand-500/20", 
+    border: "border-brand-500/25", 
+    iconColor: "text-brand-400" 
+  };
+
   return (
     <button 
       onClick={onClick}
-      className="flex flex-col items-center gap-2.5 group relative active:scale-90"
+      className="flex flex-col items-center gap-2 group relative active:scale-90 transition-all duration-200"
     >
-      <div className="w-16 h-16 bg-asphalt-900/50 border border-asphalt-700/50 rounded-[1.5rem] flex items-center justify-center transition-all group-hover:bg-asphalt-700/50 shadow-lg relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div className="text-brand-500 group-hover:scale-110 transition-transform duration-300">
-          {icon}
+      <div className={`w-14 h-14 md:w-16 md:h-16 ${style.bg} border ${style.border} rounded-[1.6rem] flex items-center justify-center transition-all duration-300 shadow-md shadow-black/15 relative overflow-hidden group-hover:scale-105`}>
+        {/* Ambient highlight glow */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        {/* Bottom indicator bar matching Material You tap design */}
+        <div className="absolute inset-x-2.5 bottom-1 h-0.5 rounded-full bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
+        <div className={`${style.iconColor} group-hover:scale-110 transition-transform duration-300 stroke-[2px]`}>
+          {React.cloneElement(icon as React.ReactElement, { className: 'w-6 h-6 md:w-7 md:h-7' })}
         </div>
       </div>
-      <span className="text-[10px] font-extrabold text-asphalt-text-400 text-center leading-tight uppercase tracking-tight group-hover:text-asphalt-text-100 transition-colors">
+      <span className="text-[11px] md:text-xs font-semibold text-slate-300/90 text-center leading-tight tracking-normal group-hover:text-white transition-colors">
         {label}
       </span>
       {badge && (
-        <div className="absolute top-0 right-1 pointer-events-none z-10">
-          <div className="bg-rose-500 text-white text-[7px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-tighter leading-none shadow-lg shadow-rose-500/20 border-2 border-[#0B111D]">
+        <div className="absolute top-0 right-1.5 pointer-events-none z-10">
+          <div className="bg-rose-500 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full leading-none shadow-md shadow-rose-500/30 border border-[#0B111D]">
             {badge}
           </div>
         </div>
@@ -316,9 +368,9 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
         </div>
       )}
 
-      {/* Main Balance Card (GoPay Inspired Card) */}
+      {/* Main Balance Card (Android Widget Style) */}
       <div 
-        className="bg-asphalt-800 rounded-[2.5rem] p-6 md:p-10 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group"
+        className="bg-gradient-to-br from-[#181E2B] via-[#101520] to-[#0A0E17] rounded-[2.4rem] p-6 md:p-10 border border-[#262E3D]/30 shadow-2xl relative overflow-hidden group transition-all duration-300 hover:border-brand-500/20"
       >
         <div className="absolute top-0 right-0 w-48 md:w-96 h-48 md:h-96 bg-brand-500/10 rounded-full -mr-24 -mt-24 blur-[80px] group-hover:bg-brand-500/20 transition-all duration-700"></div>
         <div className="relative z-10 space-y-6 md:space-y-8">
@@ -418,20 +470,24 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
         </div>
       )}
 
-      {/* Grid Services - Asphalt Style Menu */}
-      <div className="bg-asphalt-800 rounded-[2.5rem] p-5 md:p-8 border border-asphalt-700/50 shadow-2xl">
-        <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-7 md:gap-y-10">
+      {/* Grid Services - Android Widget Style Menu (Material You) */}
+      <div className="bg-[#181E2B] rounded-[2.2rem] p-6 border border-asphalt-700/25 shadow-xl shadow-black/10">
+        <div className="flex items-center gap-2 mb-6 px-1.5">
+          <div className="w-1.5 h-4 bg-brand-500 rounded-full"></div>
+          <span className="text-[11px] font-black text-brand-500 tracking-wider uppercase">Menu Layanan Utama</span>
+        </div>
+        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-6">
           {role !== 'mandor' && (
             <>
               <ServiceIcon 
                 index={0}
-                icon={<Users className="w-6 h-6 text-brand-500" />} 
+                icon={<Users />} 
                 label="Hutang / Bon" 
                 onClick={() => onNavigate?.('debts')}
               />
               <ServiceIcon 
                 index={1}
-                icon={<PiggyBank className="w-6 h-6 text-brand-500" />} 
+                icon={<PiggyBank />} 
                 label="Tabungan" 
                 onClick={() => onNavigate?.('savings')}
               />
@@ -439,37 +495,37 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
           )}
           <ServiceIcon 
             index={2}
-            icon={<Store className="w-6 h-6 text-brand-500" />} 
+            icon={<Store />} 
             label="Setoran" 
             onClick={() => onNavigate?.('deposits')}
           />
           <ServiceIcon 
             index={3}
-            icon={<Ticket className="w-6 h-6 text-brand-500" />} 
+            icon={<Ticket />} 
             label="Rekap Data" 
             onClick={() => onNavigate?.('vouchers')}
           />
           <ServiceIcon 
             index={4}
-            icon={<BookOpen className="w-6 h-6 text-brand-500" />} 
+            icon={<BookOpen />} 
             label="Info SOP" 
             onClick={() => onNavigate?.('sop')}
           />
           <ServiceIcon 
             index={5}
-            icon={<HistoryIcon className="w-6 h-6 text-brand-500" />} 
+            icon={<HistoryIcon />} 
             label="Log Aktivitas" 
             onClick={() => {}} 
           />
           <ServiceIcon 
             index={6}
-            icon={<UserCog className="w-6 h-6 text-brand-500" />} 
+            icon={<UserCog />} 
             label="Kelola Tim" 
             onClick={() => onNavigate?.('team')}
           />
           <ServiceIcon 
             index={7}
-            icon={<FileText className="w-6 h-6 text-brand-500" />} 
+            icon={<FileText />} 
             label="Slip Gaji" 
             onClick={() => onNavigate?.('salary-slips')}
           />
