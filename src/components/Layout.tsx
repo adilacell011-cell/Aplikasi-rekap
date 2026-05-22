@@ -22,6 +22,19 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
   const { branchId, user } = useAuthStore();
   const { branches, error, setError, announcement } = useFinanceStore();
   const branchName = branchId ? branches.find(b => b.id === branchId)?.name : null;
+  const [time, setTime] = useState('');
+  const [dateStr, setDateStr] = useState('');
+
+  React.useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }));
+      setDateStr(now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Apply theme and themeMode to document element
   React.useEffect(() => {
@@ -80,6 +93,20 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
             </div>
           </div>
           <div className="flex items-center gap-2.5">
+            {/* Jam & Tanggal Digital Klasik */}
+            {time && (
+              <div className="flex flex-col items-end leading-none">
+                <div className="font-mono text-[10px] md:text-xs font-black tracking-wider text-brand-500 bg-brand-500/10 border border-brand-500/20 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-xl flex items-center gap-1.5 shadow-inner leading-none">
+                  <span className="w-1.5 h-1.5 bg-brand-500 rounded-full animate-pulse shrink-0"></span>
+                  <span className="tabular-nums">{time}</span>
+                </div>
+                {dateStr && (
+                  <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-wider mt-1 scale-90 origin-right whitespace-nowrap leading-none select-none">
+                    {dateStr}
+                  </span>
+                )}
+              </div>
+            )}
             <button
               onClick={() => setShowThemePicker(true)}
               className="w-10 h-10 flex items-center justify-center bg-asphalt-800/50 hover:bg-asphalt-700 rounded-xl transition-all border border-asphalt-700/50 active:scale-90"
