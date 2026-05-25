@@ -44,7 +44,7 @@ export default defineConfig(({mode}) => {
           background_color: '#0B111D',
           display: 'standalone',
           start_url: '/',
-          orientation: 'portrait',
+          orientation: 'any',
           dir: 'ltr',
           lang: 'id-ID',
           categories: [
