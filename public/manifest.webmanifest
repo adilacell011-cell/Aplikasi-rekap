@@ -7,7 +7,7 @@
   "display": "standalone",
   "background_color": "#0B111D",
   "theme_color": "#0B111D",
-  "orientation": "portrait",
+  "orientation": "any",
   "dir": "ltr",
   "lang": "id-ID",
   "categories": [
