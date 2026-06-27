@@ -544,18 +544,33 @@ body {
 .menu-tile {
   background-color: var(--bg-asphalt-700);
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.45),
-              -2px -2px 8px rgba(255, 255, 255, 0.04);
+              -2px -2px 8px rgba(255, 255, 255, 0.04),
+              0 0 18px -2px rgba(0, 132, 255, 0.40); /* blue "lampu" glow */
 }
-.menu-tile-icon { color: var(--brand-500); }
+/* The "lampu": blue accent icon glowing like a backlit lamp */
+.menu-tile-icon {
+  color: var(--brand-500);
+  filter: drop-shadow(0 0 5px rgba(0, 132, 255, 0.45));
+}
 
+/* Light mode — a lit, raised tile WRAPPED in a soft blue "lampu" halo
+   (balutan lampu). NOT a solid-blue fill: the surface stays neumorphic,
+   the blue only lives in the glow ring + the backlit icon. */
 [data-mode='light'] .menu-tile {
-  background-color: var(--bg-asphalt-800) !important;
+  background-image: linear-gradient(145deg, #ECF0F6 0%, #DBE1EA 100%) !important;
   box-shadow: 5px 5px 12px var(--neu-dark),
-              -5px -5px 12px var(--neu-light) !important;
+              -5px -5px 12px var(--neu-light),
+              inset 0 0 0 1.5px rgba(0, 132, 255, 0.14),
+              0 6px 18px -3px rgba(0, 132, 255, 0.30) !important;
 }
 [data-mode='light'] .menu-tile-btn:hover .menu-tile {
   box-shadow: 6px 6px 15px var(--neu-dark),
-              -6px -6px 15px var(--neu-light) !important;
+              -6px -6px 15px var(--neu-light),
+              inset 0 0 0 1.5px rgba(0, 132, 255, 0.22),
+              0 9px 26px -3px rgba(0, 132, 255, 0.44) !important;
+}
+[data-mode='light'] .menu-tile-btn:hover .menu-tile-icon {
+  filter: drop-shadow(0 0 8px rgba(0, 132, 255, 0.60));
 }
 
 /* Tactile press — tiles & buttons "come alive" by carving inward when tapped */
