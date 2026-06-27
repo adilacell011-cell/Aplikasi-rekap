@@ -1,0 +1,49 @@
+# AlfathPulsa - self-hosted deployment (CasaOS / Docker Compose)
+#
+# Quick start on your server:
+#   1. Copy .env.example to .env and fill in the values (especially AUTH_SECRET).
+#   2. Run:  docker compose up -d
+#   3. Open: http://<server-ip>:<APP_PORT>   (default 8080)
+#   4. Log in with  admin / admin123  and change the password.
+#
+# To use a prebuilt image from GitHub instead of building locally, set
+# APP_IMAGE in .env (e.g. ghcr.io/your-username/alfathpulsa:latest) and run
+# `docker compose pull` before `up -d`.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-alfath}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-alfathpulsa}
+      POSTGRES_DB: ${POSTGRES_DB:-alfathpulsa}
+    volumes:
+      - alfath_db:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-alfath} -d ${POSTGRES_DB:-alfathpulsa}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: ${APP_IMAGE:-alfathpulsa:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      NODE_ENV: production
+      DATABASE_URL: postgres://${POSTGRES_USER:-alfath}:${POSTGRES_PASSWORD:-alfathpulsa}@db:5432/${POSTGRES_DB:-alfathpulsa}
+      AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET in your .env file (a long random string)}
+      FONNTE_API_KEY: ${FONNTE_API_KEY:-}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+
+volumes:
+  alfath_db:

@@ -1,3 +1,4 @@
+import path from "node:path";
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
@@ -30,5 +31,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+// In a self-hosted (single-container) deployment the API server also serves the
+// built frontend. Enabled only when STATIC_DIR is set, so local dev (Vite) is
+// unaffected.
+const staticDir = process.env.STATIC_DIR;
+if (staticDir) {
+  app.use(express.static(staticDir));
+  // SPA fallback: serve index.html for any non-API GET so client-side routing works.
+  app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api")) return next();
+    res.sendFile(path.join(staticDir, "index.html"));
+  });
+}
 
 export default app;

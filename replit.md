@@ -12,6 +12,15 @@ A self-hostable Indonesian BRILink/pulsa finance management PWA for a small mult
 - Recommended env: `AUTH_SECRET` — HMAC token secret (required in production; dev falls back to an insecure default)
 - Optional env: `FONNTE_API_KEY` — WhatsApp notifications via Fonnte (notifications are skipped if unset)
 
+## Self-hosting (Docker / CasaOS)
+
+- `Dockerfile` (repo root) builds a single image that builds the React PWA + bundles the Express API and serves both from one port (default `8080`). The API serves the frontend statically only when `STATIC_DIR` is set (so local Vite dev is unaffected); built frontend lives at `artifacts/alfathpulsa/dist/public`.
+- `docker-compose.yml` runs two services: `postgres:16-alpine` (named volume `alfath_db`) + the app. Copy `.env.example` → `.env`, set `AUTH_SECRET` (required) and DB creds, then `docker compose up -d`.
+- Frontend is built with `BASE_PATH=/` so assets are root-relative; the API server's Express SPA fallback serves `index.html` for non-`/api` GETs.
+- Schema is applied on container start via `docker/entrypoint.sh` (`drizzle-kit push`); the server seeds the admin account on first run.
+- `.github/workflows/docker-publish.yml` builds and pushes the image to GHCR on push to `main`; set `APP_IMAGE` in the server's `.env` to pull it instead of building.
+- Keep `AUTH_SECRET` stable across restarts/upgrades — changing it invalidates all login tokens (logs everyone out).
+
 ## Default login
 
 - Seeded admin: username `admin`, password `admin123`, role `bos` (email `alfathpulsa27@gmail.com`). Change the password after first login. New accounts are created by a bos from the Team (Tim & Cabang) page.

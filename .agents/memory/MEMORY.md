@@ -1,2 +1,3 @@
 - [AlfathPulsa authz model](alfathpulsa-authz.md) — which finance/branch mutations are bos-only vs branch-staff; don't over-lock branch capital PATCH.
 - [AlfathPulsa theme system](alfathpulsa-theme.md) — light-first; theme set at App root (covers login), global index.css overrides (not per-component); persist key is versioned.
+- [AlfathPulsa Docker self-hosting](alfathpulsa-docker-deploy.md) — single image serves API+frontend (STATIC_DIR gate), BASE_PATH=/, drizzle push on start; test runtime locally, not via nested docker build.
