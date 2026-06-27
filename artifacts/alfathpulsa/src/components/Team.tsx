@@ -7,6 +7,7 @@ import { UserProfile } from '../types';
 import { checkIsBos } from '../utils/authUtils';
 import { ConfirmModal } from './ConfirmModal';
 import { sendWhatsAppMessage } from '../services/whatsappService';
+import { iosAlert } from '../store/dialogStore';
 
 export function Team() {
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -71,7 +72,7 @@ export function Team() {
       .filter(Boolean)
       .join(', ');
     navigator.clipboard.writeText(emails);
-    alert('Daftar email berhasil disalin ke clipboard!');
+    iosAlert('Tersalin', 'Daftar email berhasil disalin ke clipboard.');
   };
 
   const loadUsers = async () => {
@@ -115,7 +116,7 @@ export function Team() {
   const handleBroadcastTest = async () => {
     const targets = users.filter(u => u.phone);
     if (targets.length === 0) {
-      alert("Tidak ada nomor WhatsApp yang terdaftar.");
+      iosAlert('Tidak Ada Nomor', 'Tidak ada nomor WhatsApp yang terdaftar.');
       return;
     }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { AlertTriangle, X } from 'lucide-react';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -11,49 +10,39 @@ interface ConfirmModalProps {
   confirmVariant?: 'danger' | 'primary';
 }
 
-export function ConfirmModal({ 
-  isOpen, 
-  title, 
-  message, 
-  onConfirm, 
-  onCancel, 
+export function ConfirmModal({
+  isOpen,
+  title,
+  message,
+  onConfirm,
+  onCancel,
   confirmText = 'Hapus',
-  confirmVariant = 'danger'
+  confirmVariant = 'danger',
 }: ConfirmModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-asphalt-900/80 backdrop-blur-md">
-      <div className="bg-asphalt-800 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-300 border border-asphalt-700">
-        <div className="p-8">
-          <div className="flex flex-col items-center text-center gap-6">
-            <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center shadow-2xl border border-white/10 ${
-              confirmVariant === 'danger' ? 'bg-rose-500/20 text-rose-500' : 'bg-brand-500/20 text-brand-500'
-            }`}>
-              <AlertTriangle className="w-10 h-10 stroke-[1.5px]" />
-            </div>
-            <div>
-              <h3 className="text-xl font-black text-white leading-tight mb-3 uppercase tracking-tight">{title}</h3>
-              <div className="text-[12px] text-asphalt-text-400 font-medium leading-relaxed px-2">{message}</div>
-            </div>
-          </div>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-6 ios-backdrop animate-in fade-in duration-200"
+      onClick={onCancel}
+    >
+      <div
+        className="ios-alert ios-font animate-in zoom-in-95 fade-in duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="ios-alert-body">
+          <h3 className="ios-alert-title">{title}</h3>
+          {message && <div className="ios-alert-message">{message}</div>}
         </div>
-        <div className="px-8 pb-8 flex flex-col gap-3">
-          <button
-            onClick={() => {
-              onConfirm();
-            }}
-            className={`w-full py-4.5 text-[10px] font-black text-white rounded-2xl transition-all shadow-lg active:scale-[0.98] uppercase tracking-[0.25em] ${
-              confirmVariant === 'danger' ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/20' : 'bg-brand-500 hover:bg-brand-600 shadow-brand-500/20'
-            }`}
-          >
-            {confirmText === 'Hapus' ? 'YA, HAPUS SEKARANG' : confirmText.toUpperCase()}
+        <div className="ios-alert-actions">
+          <button onClick={onCancel} className="ios-alert-btn is-default">
+            Batal
           </button>
           <button
-            onClick={onCancel}
-            className="w-full py-4.5 text-[10px] font-black text-asphalt-text-400 bg-asphalt-900 border border-asphalt-700 rounded-2xl hover:bg-asphalt-700 transition-all uppercase tracking-[0.25em]"
+            onClick={onConfirm}
+            className={`ios-alert-btn ${confirmVariant === 'danger' ? 'is-destructive' : ''}`}
           >
-            BATALKAN
+            {confirmText}
           </button>
         </div>
       </div>

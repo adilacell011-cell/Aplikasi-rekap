@@ -8,6 +8,7 @@ import { formatRupiah, formatNumberInput } from '../utils/formatters';
 import { checkIsBos } from '../utils/authUtils';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
+import { iosAlert } from '../store/dialogStore';
 
 export function SalarySlips() {
   const [slips, setSlips] = useState<SalarySlip[]>([]);
@@ -171,7 +172,7 @@ export function SalarySlips() {
         setShowSuccess(true);
         await loadData();
       } else {
-        alert("Semua karyawan sudah punya slip gaji untuk bulan ini!");
+        iosAlert('Sudah Lengkap', 'Semua karyawan sudah punya slip gaji untuk bulan ini.');
       }
       setIsGeneratingBatch(false);
     } catch (error) {
@@ -187,7 +188,7 @@ export function SalarySlips() {
     // Check for duplicate
     const existing = slips.find(s => s.userId === selectedUserId && s.month === month && s.year === year);
     if (existing) {
-      alert(`Waduh! Sepertinya karyawan ini sudah punya slip gaji untuk periode ${getMonthName(month)} ${year}.`);
+      iosAlert('Slip Sudah Ada', `Karyawan ini sudah punya slip gaji untuk periode ${getMonthName(month)} ${year}.`);
       return;
     }
 

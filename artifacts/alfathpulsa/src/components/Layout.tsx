@@ -57,14 +57,16 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         {/* Global Error Display */}
         {error && (
           <div
-            className="absolute top-24 left-4 right-4 z-50 bg-rose-600 text-white p-4 rounded-xl shadow-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4"
+            className="absolute top-[calc(env(safe-area-inset-top,1rem)+0.75rem)] left-4 right-4 z-[60] ios-card ios-font flex items-center gap-3 px-4 py-3 animate-in fade-in slide-in-from-top-4 duration-300"
           >
-            <AlertCircle className="w-5 h-5 shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold leading-tight">Terjadi Kesalahan</p>
-              <p className="text-[10px] opacity-90 truncate">{error}</p>
+            <div className="w-9 h-9 rounded-full bg-[#ff3b30] flex items-center justify-center shrink-0">
+              <AlertCircle className="w-5 h-5 ios-on-color" />
             </div>
-            <button onClick={() => setError(null)} className="p-1 hover:bg-white/20 rounded-lg">
+            <div className="flex-1 min-w-0">
+              <p className="ios-card-title text-[15px] font-semibold leading-tight tracking-[-0.01em]">Terjadi Kesalahan</p>
+              <p className="ios-card-sub text-[13px] leading-tight truncate mt-0.5">{error}</p>
+            </div>
+            <button onClick={() => setError(null)} className="ios-card-sub p-1.5 -mr-1 rounded-full active:bg-black/5">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -150,8 +152,15 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
       
         {/* Theme Picker Overlay */}
         {showThemePicker && (
-          <div className="absolute inset-0 z-40 bg-black/60 backdrop-blur-md flex flex-col justify-end">
-            <div className="bg-asphalt-800 rounded-t-[3rem] p-8 pb-14 shadow-2xl animate-in slide-in-from-bottom duration-500 border-t border-asphalt-700">
+          <div
+            className="absolute inset-0 z-40 ios-backdrop flex flex-col justify-end animate-in fade-in duration-200"
+            onClick={() => setShowThemePicker(false)}
+          >
+            <div
+              className="ios-sheet ios-font px-8 pt-3 pb-14 animate-in slide-in-from-bottom duration-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-center mb-5"><div className="ios-grabber" /></div>
               <div className="flex items-center justify-between mb-8 text-white">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20">
