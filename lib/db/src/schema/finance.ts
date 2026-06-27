@@ -83,6 +83,10 @@ export const customers = pgTable("customers", {
   id: uuid("id").primaryKey().defaultRandom(),
   personName: text("person_name").notNull(),
   branchId: uuid("branch_id"),
+  // "nasabah" (pelanggan) by default; "karyawan" rows are staff bon/kasbon
+  ownerType: text("owner_type").default("nasabah"),
+  // links a karyawan bon record to a users.id (null for nasabah)
+  userId: uuid("user_id"),
   createdAt: text("created_at").notNull(),
 });
 
@@ -101,6 +105,10 @@ export const savings = pgTable("savings", {
   personName: text("person_name").notNull(),
   phone: text("phone"),
   branchId: uuid("branch_id"),
+  // "nasabah" (pelanggan) by default; "karyawan" rows are staff savings
+  ownerType: text("owner_type").default("nasabah"),
+  // links a karyawan savings record to a users.id (null for nasabah)
+  userId: uuid("user_id"),
   createdAt: text("created_at").notNull(),
 });
 
@@ -148,6 +156,10 @@ export const salarySlips = pgTable("salary_slips", {
   netSalary: doublePrecision("net_salary").default(0),
   dailyRate: doublePrecision("daily_rate").default(0),
   daysOff: integer("days_off").default(0),
+  // Allocations applied at gajian (distribution of net salary, NOT expense):
+  debtPayment: doublePrecision("debt_payment").default(0), // bayar hutang/kasbon karyawan
+  savingDeposit: doublePrecision("saving_deposit").default(0), // ditabung dari gaji
+  savingWithdraw: doublePrecision("saving_withdraw").default(0), // ambil tabungan saat gajian
   status: text("status").default("pending"),
   createdAt: text("created_at"),
   paidAt: text("paid_at"),

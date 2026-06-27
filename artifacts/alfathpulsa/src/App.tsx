@@ -14,6 +14,7 @@ import { Login } from './components/Login';
 import { Team } from './components/Team';
 import { SOPPage } from './components/SOPPage';
 import { SalarySlips } from './components/SalarySlips';
+import { EmployeeFinance } from './components/EmployeeFinance';
 import { NotificationManager } from './components/NotificationManager';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
@@ -25,7 +26,7 @@ import { logout } from './store/authStore';
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
   const { theme, themeMode } = useThemeStore();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance'>('dashboard');
 
   // Apply theme globally (also on login / loading screens, before Layout mounts)
   useEffect(() => {
@@ -122,6 +123,7 @@ export default function App() {
       {activeTab === 'team' && isBos && <Team />}
       {activeTab === 'sop' && <SOPPage />}
       {activeTab === 'salary-slips' && <SalarySlips />}
+      {activeTab === 'employee-finance' && (isBos || isMandor) && <EmployeeFinance />}
     </Layout>
   );
 }

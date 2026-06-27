@@ -10,8 +10,8 @@ import { checkIsBos, checkIsMandor } from '../utils/authUtils';
 
 interface LayoutProps {
   children: React.ReactNode;
-  activeTab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips';
-  setActiveTab: (tab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips') => void;
+  activeTab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance';
+  setActiveTab: (tab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance') => void;
   role?: 'bos' | 'mandor' | 'karyawan' | null;
 }
 

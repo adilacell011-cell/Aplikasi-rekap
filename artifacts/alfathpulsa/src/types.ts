@@ -18,6 +18,8 @@ export interface Debt {
   id: string;
   personName: string;
   branchId?: string;
+  ownerType?: 'nasabah' | 'karyawan';
+  userId?: string;
   details: DebtDetail[];
 }
 
@@ -41,6 +43,8 @@ export interface SavingCustomer {
   personName: string;
   phone?: string;
   branchId: string;
+  ownerType?: 'nasabah' | 'karyawan';
+  userId?: string;
   transactions: SavingTransaction[];
 }
 
@@ -123,6 +127,9 @@ export interface SalarySlip {
   netSalary: number;
   dailyRate?: number;
   daysOff?: number;
+  debtPayment?: number;
+  savingDeposit?: number;
+  savingWithdraw?: number;
   status: 'pending' | 'paid';
   createdAt: string;
   paidAt?: string;

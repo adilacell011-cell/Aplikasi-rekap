@@ -234,6 +234,8 @@ router.get("/debts", async (_req, res) => {
     id: c.id,
     personName: c.personName,
     branchId: c.branchId,
+    ownerType: c.ownerType ?? "nasabah",
+    userId: c.userId ?? undefined,
     createdAt: c.createdAt,
     details: (byCustomer.get(c.id) ?? []).sort((a, b) =>
       String(a.date).localeCompare(String(b.date)),
@@ -243,10 +245,16 @@ router.get("/debts", async (_req, res) => {
 });
 
 router.post("/debts", async (req, res) => {
-  const { personName, branchId } = req.body ?? {};
+  const { personName, branchId, ownerType, userId } = req.body ?? {};
   const [created] = await db
     .insert(customers)
-    .values({ personName, branchId: branchId ?? null, createdAt: now() })
+    .values({
+      personName,
+      branchId: branchId ?? null,
+      ownerType: ownerType ?? "nasabah",
+      userId: userId ?? null,
+      createdAt: now(),
+    })
     .returning();
   return res.status(201).json({ ...created, details: [] });
 });
@@ -307,6 +315,8 @@ router.get("/savings", async (_req, res) => {
     personName: s.personName,
     phone: s.phone ?? undefined,
     branchId: s.branchId,
+    ownerType: s.ownerType ?? "nasabah",
+    userId: s.userId ?? undefined,
     createdAt: s.createdAt,
     transactions: (bySaving.get(s.id) ?? []).sort((a, b) =>
       String(a.date).localeCompare(String(b.date)),
@@ -316,13 +326,15 @@ router.get("/savings", async (_req, res) => {
 });
 
 router.post("/savings", async (req, res) => {
-  const { personName, phone, branchId } = req.body ?? {};
+  const { personName, phone, branchId, ownerType, userId } = req.body ?? {};
   const [created] = await db
     .insert(savings)
     .values({
       personName,
       phone: phone ?? null,
       branchId: branchId ?? null,
+      ownerType: ownerType ?? "nasabah",
+      userId: userId ?? null,
       createdAt: now(),
     })
     .returning();
@@ -449,6 +461,9 @@ router.post("/salary-slips", requireBos, async (req, res) => {
       netSalary: b.netSalary ?? 0,
       dailyRate: b.dailyRate ?? 0,
       daysOff: b.daysOff ?? 0,
+      debtPayment: b.debtPayment ?? 0,
+      savingDeposit: b.savingDeposit ?? 0,
+      savingWithdraw: b.savingWithdraw ?? 0,
       status: b.status ?? "pending",
       createdAt: b.createdAt ?? now(),
       paidAt: b.paidAt ?? null,
@@ -474,6 +489,9 @@ router.patch("/salary-slips/:id", requireBos, async (req, res) => {
     "netSalary",
     "dailyRate",
     "daysOff",
+    "debtPayment",
+    "savingDeposit",
+    "savingWithdraw",
     "status",
     "paidAt",
   ]) {

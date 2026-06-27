@@ -15,7 +15,7 @@ export function SalarySlips() {
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { user, role, branchId: currentUserBranchId, isAuthLoaded } = useAuthStore();
-  const { branches } = useFinanceStore();
+  const { branches, getEmployeeDebtBalance, getEmployeeSavingBalance, addEmployeeBon, addEmployeeSaving } = useFinanceStore();
   
   const uid = user?.uid;
   const currentUserName = user?.displayName || 'Pengguna';
@@ -33,6 +33,10 @@ export function SalarySlips() {
   const [daysOff, setDaysOff] = useState('');
   const [bonus, setBonus] = useState('');
   const [deductions, setDeductions] = useState('');
+  // Salary-time allocations against the employee's own bon & tabungan.
+  const [debtPayment, setDebtPayment] = useState('');
+  const [savingDeposit, setSavingDeposit] = useState('');
+  const [savingWithdraw, setSavingWithdraw] = useState('');
 
   const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; id: string; name: string }>({
     isOpen: false,
@@ -218,7 +222,29 @@ export function SalarySlips() {
     const dedVal = parseInt(deductions.replace(/\D/g, ''), 10) || 0;
     const netSalary = baseVal + bonusVal - dedVal;
 
+    // Allocations: pay off bon, deposit/withdraw savings (distribution of net pay).
+    const debtPayVal = parseInt(debtPayment.replace(/\D/g, ''), 10) || 0;
+    const saveDepVal = parseInt(savingDeposit.replace(/\D/g, ''), 10) || 0;
+    const saveWdVal = parseInt(savingWithdraw.replace(/\D/g, ''), 10) || 0;
+
+    const empBon = getEmployeeDebtBalance(selectedUserId);
+    const empSaving = getEmployeeSavingBalance(selectedUserId);
+    if (debtPayVal > empBon) {
+      iosAlert('Melebihi Sisa Kasbon', `Sisa kasbon ${userToSalary.name} hanya ${formatRupiah(empBon)}.`);
+      return;
+    }
+    if (saveWdVal > empSaving) {
+      iosAlert('Saldo Tabungan Kurang', `Saldo tabungan ${userToSalary.name} hanya ${formatRupiah(empSaving)}.`);
+      return;
+    }
+    if (netSalary - debtPayVal - saveDepVal + saveWdVal < 0) {
+      iosAlert('Alokasi Berlebih', 'Total bayar kasbon + tabung melebihi gaji bersih. Uang yang diterima tunai tidak boleh minus.');
+      return;
+    }
+
     const branch = branches.find(b => b.id === userToSalary.branchId);
+    const bId = userToSalary.branchId || null;
+    const periode = `${getMonthName(month)} ${year}`;
 
     try {
       await api.post('/salary-slips', {
@@ -235,18 +261,29 @@ export function SalarySlips() {
         netSalary,
         dailyRate: dailyVal,
         daysOff: offVal,
+        debtPayment: debtPayVal,
+        savingDeposit: saveDepVal,
+        savingWithdraw: saveWdVal,
         status: 'pending',
         createdAt: new Date().toISOString(),
         createdBy: uid,
         createdByName: currentUserName
       });
-      
+
+      // Apply the allocations to the employee's bon & tabungan ledgers.
+      if (debtPayVal > 0) await addEmployeeBon(selectedUserId, userToSalary.name, bId, debtPayVal, `Potong gaji ${periode}`, 'pay');
+      if (saveDepVal > 0) await addEmployeeSaving(selectedUserId, userToSalary.name, bId, saveDepVal, `Tabung dari gaji ${periode}`, 'deposit');
+      if (saveWdVal > 0) await addEmployeeSaving(selectedUserId, userToSalary.name, bId, saveWdVal, `Tarik tabungan saat gajian ${periode}`, 'withdraw');
+
       setIsAdding(false);
       setSelectedUserId('');
       setDailyRate('');
       setDaysOff('');
       setBonus('0');
       setDeductions('0');
+      setDebtPayment('');
+      setSavingDeposit('');
+      setSavingWithdraw('');
       setSuccessMessage("Buah manggis di atas peti, dimakan satu manis sekali. Slip gaji sudah rapi, tinggal bayar biar happy! 💰");
       setShowSuccess(true);
       await loadData();
@@ -305,6 +342,14 @@ export function SalarySlips() {
   const formMonthlyBase = formDaily * formDim;
   const formBonus = parseInt(bonus.replace(/\D/g, ''), 10) || 0;
   const formDed = parseInt(deductions.replace(/\D/g, ''), 10) || 0;
+  const formDebtPay = parseInt(debtPayment.replace(/\D/g, ''), 10) || 0;
+  const formSaveDep = parseInt(savingDeposit.replace(/\D/g, ''), 10) || 0;
+  const formSaveWd = parseInt(savingWithdraw.replace(/\D/g, ''), 10) || 0;
+  const formNet = formMonthlyBase + formBonus - formDed;
+  const formTakeHome = formNet - formDebtPay - formSaveDep + formSaveWd;
+  const selEmpBon = selectedUserId ? getEmployeeDebtBalance(selectedUserId) : 0;
+  const selEmpSaving = selectedUserId ? getEmployeeSavingBalance(selectedUserId) : 0;
+  const hasAllocation = formDebtPay > 0 || formSaveDep > 0 || formSaveWd > 0;
 
   if (isLoading) {
     return (
@@ -520,6 +565,56 @@ export function SalarySlips() {
               </div>
             </div>
 
+            {selectedUserId && (
+              <div className="md:col-span-2 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 bg-asphalt-900/40 border border-rose-500/20 rounded-2xl p-3 shadow-inner">
+                    <p className="text-[8px] font-black text-rose-500 uppercase tracking-widest opacity-70">Sisa Kasbon</p>
+                    <p className="text-sm font-black text-rose-500">{formatRupiah(selEmpBon)}</p>
+                  </div>
+                  <div className="flex-1 bg-asphalt-900/40 border border-brand-500/20 rounded-2xl p-3 shadow-inner">
+                    <p className="text-[8px] font-black text-brand-500 uppercase tracking-widest opacity-70">Saldo Tabungan</p>
+                    <p className="text-sm font-black text-brand-500">{formatRupiah(selEmpSaving)}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bayar Kasbon</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                      value={formatNumberInput(debtPayment)}
+                      onChange={(e) => handleNumericInput(e, setDebtPayment)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tabung (Setor)</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                      value={formatNumberInput(savingDeposit)}
+                      onChange={(e) => handleNumericInput(e, setSavingDeposit)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Ambil Tabungan</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                      value={formatNumberInput(savingWithdraw)}
+                      onChange={(e) => handleNumericInput(e, setSavingWithdraw)}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="md:col-span-2">
               <div className="bg-asphalt-900/40 border border-asphalt-700 rounded-2xl p-4 shadow-inner space-y-2.5">
                 <div className="flex items-center justify-between">
@@ -537,9 +632,33 @@ export function SalarySlips() {
                   </div>
                 )}
                 <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-asphalt-700/60">
-                  <span className="text-[10px] font-black text-white uppercase tracking-widest">Estimasi Diterima</span>
-                  <span className="text-sm font-black text-emerald-500">{formatRupiah(formMonthlyBase + formBonus - formDed)}</span>
+                  <span className="text-[10px] font-black text-white uppercase tracking-widest">{hasAllocation ? 'Gaji Bersih' : 'Estimasi Diterima'}</span>
+                  <span className="text-sm font-black text-emerald-500">{formatRupiah(formNet)}</span>
                 </div>
+                {formDebtPay > 0 && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Bayar Kasbon</span>
+                    <span className="text-[11px] font-black text-rose-500">- {formatRupiah(formDebtPay)}</span>
+                  </div>
+                )}
+                {formSaveDep > 0 && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Tabung</span>
+                    <span className="text-[11px] font-black text-brand-500">- {formatRupiah(formSaveDep)}</span>
+                  </div>
+                )}
+                {formSaveWd > 0 && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Ambil Tabungan</span>
+                    <span className="text-[11px] font-black text-brand-500">+ {formatRupiah(formSaveWd)}</span>
+                  </div>
+                )}
+                {hasAllocation && (
+                  <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-asphalt-700/60">
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest">Diterima Tunai</span>
+                    <span className={`text-base font-black ${formTakeHome < 0 ? 'text-rose-500' : 'text-brand-500'}`}>{formatRupiah(formTakeHome)}</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -769,6 +888,11 @@ function SlipDocument({
   const dim = daysInMonth(slip.month, slip.year);
   const daily = slip.dailyRate && slip.dailyRate > 0 ? slip.dailyRate : (dim ? Math.round(slip.baseSalary / dim) : 0);
   const off = slip.daysOff && slip.daysOff > 0 ? slip.daysOff : (daily ? Math.round(slip.deductions / daily) : 0);
+  const debtPay = slip.debtPayment || 0;
+  const saveDep = slip.savingDeposit || 0;
+  const saveWd = slip.savingWithdraw || 0;
+  const hasAlloc = debtPay > 0 || saveDep > 0 || saveWd > 0;
+  const takeHome = slip.netSalary - debtPay - saveDep + saveWd;
   const fmtDate = (iso?: string) =>
     iso ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(iso)) : '-';
 
@@ -833,6 +957,18 @@ function SlipDocument({
               Terbilang: <span className="text-white not-italic font-black">{terbilang(slip.netSalary)}</span>
             </p>
           </div>
+
+          {/* Alokasi gaji (kasbon & tabungan karyawan) */}
+          {hasAlloc && (
+            <div className="mx-6 mt-5 rounded-2xl bg-asphalt-900/40 border border-asphalt-700 shadow-inner overflow-hidden">
+              <SectionHead title="Alokasi Gaji" />
+              <SlipRow label="Gaji Bersih" value={formatRupiah(slip.netSalary)} bold />
+              {debtPay > 0 && <SlipRow label="Bayar Kasbon" value={`- ${formatRupiah(debtPay)}`} valueClass="text-rose-500" />}
+              {saveDep > 0 && <SlipRow label="Tabungan (Setor)" value={`- ${formatRupiah(saveDep)}`} valueClass="text-brand-500" />}
+              {saveWd > 0 && <SlipRow label="Ambil Tabungan" value={`+ ${formatRupiah(saveWd)}`} valueClass="text-brand-500" />}
+              <SlipRow label="Diterima Tunai" value={formatRupiah(takeHome)} bold last />
+            </div>
+          )}
 
           {/* Status */}
           <div className="px-6 py-5 flex items-center justify-between gap-3">

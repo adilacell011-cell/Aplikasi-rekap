@@ -10,6 +10,8 @@ interface FinanceState {
   bankBalances: BankBalance[];
   debts: Debt[];
   savings: SavingCustomer[];
+  employeeDebts: Debt[];
+  employeeSavings: SavingCustomer[];
   branches: Branch[];
   voucherRecaps: VoucherRecap[];
   announcement: string;
@@ -35,6 +37,14 @@ interface FinanceState {
   addSavingTransaction: (personId: string, amount: number, description: string, type: 'deposit' | 'withdraw') => Promise<void>;
   deleteSavingTransaction: (personId: string, transactionId: string) => Promise<void>;
   getTotalSavings: () => number;
+
+  // Employee (karyawan) bon & tabungan — separate from nasabah, keyed by users.id
+  addEmployeeBon: (userId: string, userName: string, branchId: string | null, amount: number, description: string, type: 'add' | 'pay') => Promise<void>;
+  addEmployeeSaving: (userId: string, userName: string, branchId: string | null, amount: number, description: string, type: 'deposit' | 'withdraw') => Promise<void>;
+  deleteEmployeeBonDetail: (personId: string, detailId: string) => Promise<void>;
+  deleteEmployeeSavingTransaction: (personId: string, transactionId: string) => Promise<void>;
+  getEmployeeDebtBalance: (userId: string) => number;
+  getEmployeeSavingBalance: (userId: string) => number;
 
   addBranch: (name: string, totalSetor?: number) => Promise<void>;
   deleteBranch: (id: string) => Promise<void>;
@@ -70,6 +80,8 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
   bankBalances: [],
   debts: [],
   savings: [],
+  employeeDebts: [],
+  employeeSavings: [],
   branches: [],
   voucherRecaps: [],
   announcement: '',
@@ -232,6 +244,79 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     } catch (error) {
       setStoreError(error);
     }
+  },
+
+  addEmployeeBon: async (userId, userName, branchId, amount, description, type) => {
+    try {
+      const user = useAuthStore.getState().user;
+      // Find (or create) this employee's karyawan bon record, keyed by userId.
+      const allDebts: Debt[] = await api.get('/debts');
+      let personId = allDebts.find(d => d.userId === userId && d.ownerType === 'karyawan')?.id;
+      if (!personId) {
+        const created = await api.post('/debts', {
+          personName: userName, branchId: branchId ?? null, ownerType: 'karyawan', userId,
+        });
+        personId = created.id;
+      }
+      await api.post(`/debts/${personId}/details`, {
+        amount, description, type, createdBy: user?.uid || 'unknown',
+      });
+      await loadAll();
+    } catch (error) {
+      setStoreError(error);
+    }
+  },
+
+  addEmployeeSaving: async (userId, userName, branchId, amount, description, type) => {
+    try {
+      const user = useAuthStore.getState().user;
+      const allSavings: SavingCustomer[] = await api.get('/savings');
+      let personId = allSavings.find(s => s.userId === userId && s.ownerType === 'karyawan')?.id;
+      if (!personId) {
+        const created = await api.post('/savings', {
+          personName: userName, branchId: branchId ?? null, ownerType: 'karyawan', userId,
+        });
+        personId = created.id;
+      }
+      await api.post(`/savings/${personId}/transactions`, {
+        amount, description, type,
+        createdBy: user?.uid || 'unknown',
+        createdByName: user?.displayName || 'Karyawan',
+      });
+      await loadAll();
+    } catch (error) {
+      setStoreError(error);
+    }
+  },
+
+  deleteEmployeeBonDetail: async (personId: string, detailId: string) => {
+    try {
+      await api.delete(`/debts/${personId}/details/${detailId}`);
+      await loadAll();
+    } catch (error) {
+      setStoreError(error);
+    }
+  },
+
+  deleteEmployeeSavingTransaction: async (personId: string, transactionId: string) => {
+    try {
+      await api.delete(`/savings/${personId}/transactions/${transactionId}`);
+      await loadAll();
+    } catch (error) {
+      setStoreError(error);
+    }
+  },
+
+  getEmployeeDebtBalance: (userId: string) => {
+    return get().employeeDebts
+      .filter(d => d.userId === userId)
+      .reduce((sum, person) => sum + get().getPersonTotalDebt(person), 0);
+  },
+
+  getEmployeeSavingBalance: (userId: string) => {
+    return get().employeeSavings
+      .filter(s => s.userId === userId)
+      .reduce((sum, person) => sum + get().getPersonTotalSavings(person), 0);
   },
 
   addBranch: async (name: string, totalSetor?: number) => {
@@ -601,23 +686,39 @@ async function loadAll() {
     if (branchId) bankBalances = banks.filter((b: BankBalance) => b.branchId === branchId);
     else if (role === 'bos') bankBalances = banks;
 
-    // Debts (customers) — only roles other than mandor
+    // Branch visibility helper (shared by nasabah + karyawan records).
+    const inScope = (x: any) => {
+      if (branchId) return x.branchId === branchId;
+      if (isGlobalBos) return true;
+      return x.branchId == null;
+    };
+    const isKaryawanOwned = (x: any) => (x.ownerType ?? 'nasabah') === 'karyawan';
+
+    // Debts (customers): nasabah-only for the existing Hutang/Bon page (excludes mandor & karyawan rows).
+    const debtsScoped = (debts as any[]).filter(inScope);
     let debtList: Debt[] = [];
     if (role && role !== 'mandor') {
-      if (branchId) debtList = debts.filter((d: any) => d.branchId === branchId);
-      else if (isGlobalBos) debtList = debts;
-      else debtList = debts.filter((d: any) => d.branchId == null);
+      debtList = debtsScoped.filter((d: any) => !isKaryawanOwned(d));
     }
     debtList = sortByCreatedAtDesc(debtList as any) as Debt[];
 
-    // Savings — same rule as debts
+    // Employee bon (kasbon karyawan): managed separately; loaded for managers in scope.
+    const employeeDebtList = sortByCreatedAtDesc(
+      debtsScoped.filter((d: any) => isKaryawanOwned(d)) as any,
+    ) as Debt[];
+
+    // Savings — same rule as debts.
+    const savingsScoped = (savings as any[]).filter(inScope);
     let savingList: SavingCustomer[] = [];
     if (role && role !== 'mandor') {
-      if (branchId) savingList = savings.filter((s: any) => s.branchId === branchId);
-      else if (isGlobalBos) savingList = savings;
-      else savingList = savings.filter((s: any) => s.branchId == null);
+      savingList = savingsScoped.filter((s: any) => !isKaryawanOwned(s));
     }
     savingList = sortByCreatedAtDesc(savingList as any) as SavingCustomer[];
+
+    // Employee tabungan (tabungan karyawan): managed separately.
+    const employeeSavingList = sortByCreatedAtDesc(
+      savingsScoped.filter((s: any) => isKaryawanOwned(s)) as any,
+    ) as SavingCustomer[];
 
     // Branches — always all, sorted by name numeric
     const branchList: Branch[] = [...branches].sort((a: Branch, b: Branch) =>
@@ -636,6 +737,8 @@ async function loadAll() {
       bankBalances,
       debts: debtList,
       savings: savingList,
+      employeeDebts: employeeDebtList,
+      employeeSavings: employeeSavingList,
       branches: branchList,
       voucherRecaps: voucherList,
       isLoaded: true,
@@ -661,5 +764,5 @@ export const stopFinanceStoreListeners = () => {
     clearInterval(pollInterval);
     pollInterval = null;
   }
-  useFinanceStore.setState({ isLoaded: false, fixedBalance: 0, bankBalances: [], debts: [], savings: [], branches: [], voucherRecaps: [] });
+  useFinanceStore.setState({ isLoaded: false, fixedBalance: 0, bankBalances: [], debts: [], savings: [], employeeDebts: [], employeeSavings: [], branches: [], voucherRecaps: [] });
 };
