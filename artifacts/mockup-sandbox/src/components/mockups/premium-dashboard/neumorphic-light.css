@@ -1,0 +1,92 @@
+.neu-container {
+  background-color: #e8ebf2;
+  color: #1e293b;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100dvh;
+}
+
+.neu-raised {
+  background: #e8ebf2;
+  box-shadow: 
+    -8px -8px 16px rgba(255, 255, 255, 0.9),
+    8px 8px 16px rgba(163, 177, 198, 0.55);
+}
+
+.neu-inset {
+  background: #e8ebf2;
+  box-shadow: 
+    inset -4px -4px 8px rgba(255, 255, 255, 0.9),
+    inset 4px 4px 8px rgba(163, 177, 198, 0.55);
+}
+
+.neu-raised-sm {
+  background: #e8ebf2;
+  box-shadow: 
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    4px 4px 8px rgba(163, 177, 198, 0.55);
+}
+
+.neu-raised-icon {
+  background: #e8ebf2;
+  box-shadow: 
+    -6px -6px 12px rgba(255, 255, 255, 0.9),
+    6px 6px 12px rgba(163, 177, 198, 0.55);
+}
+
+.neu-glow {
+  box-shadow: 
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    4px 4px 8px rgba(163, 177, 198, 0.55),
+    0 0 20px rgba(14, 165, 233, 0.5);
+}
+
+.neu-glow-active {
+  box-shadow: 
+    -4px -4px 8px rgba(255, 255, 255, 0.9),
+    4px 4px 8px rgba(163, 177, 198, 0.55),
+    inset 0 0 10px rgba(14, 165, 233, 0.3),
+    0 0 15px rgba(14, 165, 233, 0.5);
+}
+
+.neu-glow-text {
+  text-shadow: 0 0 16px rgba(14, 165, 233, 0.6);
+  color: #0ea5e9;
+}
+
+.neu-glow-dot-green {
+  background: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+}
+
+.neu-glow-dot-amber {
+  background: #f59e0b;
+  box-shadow: 0 0 12px #f59e0b;
+}
+
+.neu-glow-dot-cyan {
+  background: #0ea5e9;
+  box-shadow: 0 0 12px #0ea5e9;
+}
+
+@keyframes pulse-glow {
+  0% { text-shadow: 0 0 12px rgba(14, 165, 233, 0.4); }
+  50% { text-shadow: 0 0 24px rgba(14, 165, 233, 0.8); }
+  100% { text-shadow: 0 0 12px rgba(14, 165, 233, 0.4); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+/* Subtle light source radial */
+.neu-light-source {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
