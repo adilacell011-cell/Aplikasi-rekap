@@ -5,6 +5,7 @@ import { formatRupiah, formatDate, formatNumberInput } from '../utils/formatters
 import { Users, Plus, Trash2, ArrowDownToLine, ArrowUpFromLine, ArrowLeft, Search, CheckCircle2, History as HistoryIcon } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
+import { BlockChoice } from './BlockChoice';
 
 export function Debts() {
   const store = useFinanceStore();
@@ -156,27 +157,26 @@ export function Debts() {
               <div className="p-7 bg-asphalt-900/40 h-full flex flex-col justify-center">
                 <h3 className="text-sm font-black text-white uppercase tracking-tight mb-4">Transaksi Baru</h3>
                 <form onSubmit={handleAddDetail} className="space-y-4">
-                  <div className="grid grid-cols-3 gap-3">
-                    <select
-                      className="px-4 py-3.5 text-xs bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black uppercase tracking-widest"
-                      value={typeInput}
-                      onChange={(e) => setTypeInput(e.target.value as 'add' | 'pay')}
-                    >
-                      <option value="add">BON</option>
-                      <option value="pay">BAYAR</option>
-                    </select>
-                    <div className="relative col-span-2">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
-                      <input
-                        type="text"
-                        placeholder="0"
-                        inputMode="numeric"
-                        className="w-full pl-10 pr-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black"
-                        value={formatNumberInput(amountInput)}
-                        onChange={(e) => handleNumericInput(e, setAmountInput)}
-                        required
-                      />
-                    </div>
+                  <BlockChoice
+                    columns={2}
+                    value={typeInput}
+                    onChange={(v) => setTypeInput(v as 'add' | 'pay')}
+                    options={[
+                      { value: 'add', label: 'BON' },
+                      { value: 'pay', label: 'BAYAR' },
+                    ]}
+                  />
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
+                    <input
+                      type="text"
+                      placeholder="0"
+                      inputMode="numeric"
+                      className="w-full pl-10 pr-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black"
+                      value={formatNumberInput(amountInput)}
+                      onChange={(e) => handleNumericInput(e, setAmountInput)}
+                      required
+                    />
                   </div>
                   <div className="flex gap-3">
                     <input
@@ -327,15 +327,16 @@ export function Debts() {
             </div>
             <h3 className="text-xs font-black text-asphalt-text-100 uppercase tracking-[0.2em]">Daftar Pelanggan</h3>
           </div>
-          <select 
+          <BlockChoice
+            size="sm"
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
-            className="text-[10px] font-black text-asphalt-text-400 bg-asphalt-800 border border-asphalt-700 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-rose-500 uppercase tracking-widest"
-          >
-            <option value="latest">TERBARU</option>
-            <option value="name">NAMA A-Z</option>
-            <option value="amount">SALDO</option>
-          </select>
+            onChange={(v) => setSortBy(v as any)}
+            options={[
+              { value: 'latest', label: 'TERBARU' },
+              { value: 'name', label: 'NAMA A-Z' },
+              { value: 'amount', label: 'SALDO' },
+            ]}
+          />
         </div>
 
         <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">

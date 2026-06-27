@@ -8,6 +8,7 @@ import { checkIsBos } from '../utils/authUtils';
 import { ConfirmModal } from './ConfirmModal';
 import { sendWhatsAppMessage } from '../services/whatsappService';
 import { iosAlert } from '../store/dialogStore';
+import { BlockChoice } from './BlockChoice';
 
 export function Team() {
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -464,28 +465,28 @@ export function Team() {
               </div>
               <div className="space-y-2">
                 <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Role</label>
-                <select
+                <BlockChoice
+                  columns={3}
                   value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
-                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner uppercase tracking-widest"
-                >
-                  <option value="karyawan">KARYAWAN</option>
-                  <option value="mandor">MANDOR</option>
-                  <option value="bos">BOS</option>
-                </select>
+                  onChange={(v) => setNewUser({ ...newUser, role: v as any })}
+                  options={[
+                    { value: 'karyawan', label: 'KARYAWAN' },
+                    { value: 'mandor', label: 'MANDOR' },
+                    { value: 'bos', label: 'BOS' },
+                  ]}
+                />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Penempatan Cabang</label>
-                <select
+                <BlockChoice
+                  columns={2}
                   value={newUser.branchId}
-                  onChange={(e) => setNewUser({ ...newUser, branchId: e.target.value })}
-                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner uppercase tracking-widest"
-                >
-                  <option value="">-- {newUser.role === 'bos' ? 'Pusat (Global)' : 'Pilih Cabang'} --</option>
-                  {branches.map(b => (
-                    <option key={b.id} value={b.id}>{b.name.toUpperCase()}</option>
-                  ))}
-                </select>
+                  onChange={(v) => setNewUser({ ...newUser, branchId: v })}
+                  options={[
+                    { value: '', label: newUser.role === 'bos' ? 'PUSAT (GLOBAL)' : 'TANPA CABANG' },
+                    ...branches.map(b => ({ value: b.id, label: b.name.toUpperCase() })),
+                  ]}
+                />
               </div>
             </div>
 
@@ -523,20 +524,6 @@ export function Team() {
                   </div>
 
                   <div className="shrink-0 flex items-center gap-3">
-                    <select
-                      value={user.role}
-                      onChange={(e) => handleRoleChange(user.uid, e.target.value as any)}
-                      disabled={!isBos || user.email === 'alfathpulsa27@gmail.com'}
-                      className={`text-[10px] font-black rounded-xl px-4 py-3 border border-asphalt-700 outline-none cursor-pointer uppercase tracking-widest transition-all ${
-                        user.role === 'bos' ? 'bg-purple-500/10 text-purple-500' :
-                        user.role === 'mandor' ? 'bg-orange-500/10 text-orange-500' :
-                        'bg-brand-500/10 text-brand-500'
-                      }`}
-                    >
-                      <option value="karyawan">KARYAWAN</option>
-                      <option value="mandor">MANDOR</option>
-                      <option value="bos">BOS</option>
-                    </select>
                     {isBos && user.email !== 'alfathpulsa27@gmail.com' && (
                       <button
                         onClick={() => setDeleteConfirm({ isOpen: true, type: 'user', id: user.uid, name: user.name })}
@@ -551,21 +538,34 @@ export function Team() {
 
                 {(user.role === 'karyawan' || user.role === 'mandor' || user.role === 'bos') && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pl-18 pr-2">
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Role</label>
+                      <BlockChoice
+                        columns={3}
+                        size="sm"
+                        value={user.role}
+                        onChange={(v) => handleRoleChange(user.uid, v as any)}
+                        disabled={!isBos || user.email === 'alfathpulsa27@gmail.com'}
+                        options={[
+                          { value: 'karyawan', label: 'KARYAWAN' },
+                          { value: 'mandor', label: 'MANDOR' },
+                          { value: 'bos', label: 'BOS' },
+                        ]}
+                      />
+                    </div>
                     <div className="space-y-2">
                       <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Penempatan Cabang</label>
-                      <div className="flex items-center gap-3">
-                        <select
-                          value={user.branchId || ''}
-                          onChange={(e) => handleBranchChange(user.uid, e.target.value)}
-                          disabled={!isBos}
-                          className="text-xs font-black rounded-2xl px-5 py-4 border border-asphalt-700 outline-none flex-1 transition-all shadow-inner bg-asphalt-900 text-white uppercase tracking-widest"
-                        >
-                          <option value="">-- {user.role === 'bos' ? 'Pusat (Global)' : 'Pilih Cabang'} --</option>
-                          {branches.map(b => (
-                            <option key={b.id} value={b.id}>{b.name.toUpperCase()}</option>
-                          ))}
-                        </select>
-                      </div>
+                      <BlockChoice
+                        columns={2}
+                        size="sm"
+                        value={user.branchId || ''}
+                        onChange={(v) => handleBranchChange(user.uid, v)}
+                        disabled={!isBos}
+                        options={[
+                          { value: '', label: user.role === 'bos' ? 'PUSAT (GLOBAL)' : 'TANPA CABANG' },
+                          ...branches.map(b => ({ value: b.id, label: b.name.toUpperCase() })),
+                        ]}
+                      />
                     </div>
 
                     <div className="space-y-2">

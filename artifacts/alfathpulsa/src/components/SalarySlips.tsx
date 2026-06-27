@@ -9,6 +9,7 @@ import { checkIsBos } from '../utils/authUtils';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 import { iosAlert } from '../store/dialogStore';
+import { BlockChoice } from './BlockChoice';
 
 export function SalarySlips() {
   const [slips, setSlips] = useState<SalarySlip[]>([]);
@@ -136,7 +137,11 @@ export function SalarySlips() {
 
   const handleAddSlip = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedUserId || !dailyRate || !uid) return;
+    if (!selectedUserId) {
+      await iosAlert('Pilih Anggota', 'Silakan pilih dulu anggota (karyawan/mandor) yang akan dibuatkan slip gaji.');
+      return;
+    }
+    if (!dailyRate || !uid) return;
 
     // Check for duplicate
     const existing = slips.find(s => s.userId === selectedUserId && s.month === month && s.year === year);
@@ -338,43 +343,43 @@ export function SalarySlips() {
             <div className="space-y-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Pilih Anggota</label>
-                <select
+                <BlockChoice
+                  columns={1}
                   value={selectedUserId}
-                  onChange={(e) => setSelectedUserId(e.target.value)}
-                  required
-                  className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-bold focus:ring-2 focus:ring-brand-500 outline-none uppercase tracking-widest"
-                >
-                  <option value="">-- Pilih Karyawan/Mandor --</option>
-                  {users.map(u => (
-                    <option key={u.uid} value={u.uid}>{(u.name || 'TANPA NAMA').toUpperCase()} ({(u.role || 'ROLE').toUpperCase()})</option>
-                  ))}
-                </select>
+                  onChange={(v) => setSelectedUserId(v)}
+                  options={users.map(u => ({
+                    value: u.uid,
+                    label: `${(u.name || 'TANPA NAMA').toUpperCase()} (${(u.role || 'ROLE').toUpperCase()})`,
+                  }))}
+                />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bulan</label>
-                  <select
-                    value={month}
-                    onChange={(e) => setMonth(parseInt(e.target.value))}
-                    className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-bold outline-none uppercase tracking-widest"
-                  >
-                    {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
-                      <option key={m} value={m}>{getMonthName(m).toUpperCase()}</option>
-                    ))}
-                  </select>
+                  <BlockChoice
+                    columns={3}
+                    size="sm"
+                    value={String(month)}
+                    onChange={(v) => setMonth(parseInt(v))}
+                    options={Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
+                      value: String(m),
+                      label: getMonthName(m).toUpperCase(),
+                    }))}
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tahun</label>
-                  <select
-                    value={year}
-                    onChange={(e) => setYear(parseInt(e.target.value))}
-                    className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-bold outline-none uppercase tracking-widest"
-                  >
-                    {[year - 1, year, year + 1].map(y => (
-                      <option key={y} value={y}>{y}</option>
-                    ))}
-                  </select>
+                  <BlockChoice
+                    columns={3}
+                    size="sm"
+                    value={String(year)}
+                    onChange={(v) => setYear(parseInt(v))}
+                    options={[year - 1, year, year + 1].map(y => ({
+                      value: String(y),
+                      label: String(y),
+                    }))}
+                  />
                 </div>
               </div>
             </div>
@@ -561,30 +566,32 @@ export function SalarySlips() {
           </div>
 
           {!showAllHistory && (
-             <div className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700 flex items-center gap-3 animate-in fade-in slide-in-from-top-1">
-              <div className="flex-1 space-y-1">
+             <div className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700 space-y-4 animate-in fade-in slide-in-from-top-1">
+              <div className="space-y-1">
                 <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bulan</span>
-                <select
-                  value={filterMonth}
-                  onChange={(e) => setFilterMonth(parseInt(e.target.value))}
-                  className="w-full bg-asphalt-900 border border-asphalt-700/50 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none uppercase"
-                >
-                  {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
-                    <option key={m} value={m}>{getMonthName(m)}</option>
-                  ))}
-                </select>
+                <BlockChoice
+                  columns={3}
+                  size="sm"
+                  value={String(filterMonth)}
+                  onChange={(v) => setFilterMonth(parseInt(v))}
+                  options={Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
+                    value: String(m),
+                    label: getMonthName(m),
+                  }))}
+                />
               </div>
-              <div className="flex-1 space-y-1">
+              <div className="space-y-1">
                 <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tahun</span>
-                <select
-                  value={filterYear}
-                  onChange={(e) => setFilterYear(parseInt(e.target.value))}
-                  className="w-full bg-asphalt-900 border border-asphalt-700/50 rounded-xl px-3 py-2 text-xs text-white font-bold outline-none capitalize"
-                >
-                  {[filterYear - 1, filterYear, filterYear + 1].map(y => (
-                    <option key={y} value={y}>{y}</option>
-                  ))}
-                </select>
+                <BlockChoice
+                  columns={3}
+                  size="sm"
+                  value={String(filterYear)}
+                  onChange={(v) => setFilterYear(parseInt(v))}
+                  options={[filterYear - 1, filterYear, filterYear + 1].map(y => ({
+                    value: String(y),
+                    label: String(y),
+                  }))}
+                />
               </div>
             </div>
           )}

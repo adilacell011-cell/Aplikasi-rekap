@@ -5,6 +5,7 @@ import { formatRupiah, formatDate, formatNumberInput } from '../utils/formatters
 import { PiggyBank, Plus, Trash2, ArrowDownToLine, ArrowUpFromLine, ArrowLeft, Search, CheckCircle2 } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
+import { BlockChoice } from './BlockChoice';
 
 export function Savings() {
   const store = useFinanceStore();
@@ -167,27 +168,26 @@ export function Savings() {
               <div className="p-7 bg-asphalt-900/40 h-full flex flex-col justify-center">
                 <h3 className="text-sm font-black text-white uppercase tracking-tight mb-4">Transaksi Baru</h3>
                 <form onSubmit={handleAddTransaction} className="space-y-4">
-                  <div className="grid grid-cols-3 gap-3">
-                    <select
-                      className="px-4 py-3.5 text-xs bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black uppercase tracking-widest"
-                      value={typeInput}
-                      onChange={(e) => setTypeInput(e.target.value as 'deposit' | 'withdraw')}
-                    >
-                      <option value="deposit">NABUNG</option>
-                      <option value="withdraw">TARIK</option>
-                    </select>
-                    <div className="relative col-span-2">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
-                      <input
-                        type="text"
-                        placeholder="0"
-                        inputMode="numeric"
-                        className="w-full pl-10 pr-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black"
-                        value={formatNumberInput(amountInput)}
-                        onChange={(e) => handleNumericInput(e, setAmountInput)}
-                        required
-                      />
-                    </div>
+                  <BlockChoice
+                    columns={2}
+                    value={typeInput}
+                    onChange={(v) => setTypeInput(v as 'deposit' | 'withdraw')}
+                    options={[
+                      { value: 'deposit', label: 'NABUNG' },
+                      { value: 'withdraw', label: 'TARIK' },
+                    ]}
+                  />
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
+                    <input
+                      type="text"
+                      placeholder="0"
+                      inputMode="numeric"
+                      className="w-full pl-10 pr-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black"
+                      value={formatNumberInput(amountInput)}
+                      onChange={(e) => handleNumericInput(e, setAmountInput)}
+                      required
+                    />
                   </div>
                   <div className="flex gap-3">
                     <input
@@ -406,15 +406,16 @@ export function Savings() {
             </div>
             
             {activeMainTab === 'savers' && (
-              <select 
+              <BlockChoice
+                size="sm"
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="text-[10px] font-black text-asphalt-text-400 bg-asphalt-800 border border-asphalt-700 rounded-xl px-3 py-2 outline-none focus:ring-1 focus:ring-emerald-500 uppercase tracking-widest transition-all hover:border-asphalt-600"
-              >
-                <option value="latest">URUT: TERBARU</option>
-                <option value="name">URUT: A-Z</option>
-                <option value="amount">URUT: SALDO</option>
-              </select>
+                onChange={(v) => setSortBy(v as any)}
+                options={[
+                  { value: 'latest', label: 'TERBARU' },
+                  { value: 'name', label: 'A-Z' },
+                  { value: 'amount', label: 'SALDO' },
+                ]}
+              />
             )}
           </div>
         </div>

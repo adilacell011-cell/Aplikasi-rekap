@@ -6,6 +6,7 @@ import { VoucherRecap } from '../types';
 import { Plus, Trash2, Calendar, Calculator, FileText, TrendingUp, Wallet, ArrowDownCircle, ChevronRight, ArrowLeft, TrendingDown, AlertCircle, Edit2, CheckCircle2, Send } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
+import { BlockChoice } from './BlockChoice';
 
 export function VoucherRecaps() {
   const { voucherRecaps, addVoucherRecap, updateVoucherRecap, reportVoucherRecaps, deleteVoucherRecap, isLoaded, branches } = useFinanceStore();
@@ -371,25 +372,21 @@ export function VoucherRecaps() {
                 </div>
 
                 {/* Filter Controls for Global View */}
-                <div className="flex items-center gap-2 pt-2">
-                  <select 
-                    value={selectedMonth}
-                    onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                    className="flex-1 bg-asphalt-900/50 border border-asphalt-700 rounded-xl px-4 py-2.5 text-[9px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-brand-500"
-                  >
-                    {months.map((m, i) => (
-                      <option key={m} value={i}>{m}</option>
-                    ))}
-                  </select>
-                  <select 
-                    value={selectedYear}
-                    onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    className="w-24 bg-asphalt-900/50 border border-asphalt-700 rounded-xl px-4 py-2.5 text-[9px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-brand-500"
-                  >
-                    {years.map(y => (
-                      <option key={y} value={y}>{y}</option>
-                    ))}
-                  </select>
+                <div className="space-y-2 pt-2">
+                  <BlockChoice
+                    columns={3}
+                    size="sm"
+                    value={String(selectedMonth)}
+                    onChange={(v) => setSelectedMonth(parseInt(v))}
+                    options={months.map((m, i) => ({ value: String(i), label: m }))}
+                  />
+                  <BlockChoice
+                    columns={3}
+                    size="sm"
+                    value={String(selectedYear)}
+                    onChange={(v) => setSelectedYear(parseInt(v))}
+                    options={years.map(y => ({ value: String(y), label: String(y) }))}
+                  />
                 </div>
               </div>
             </div>
@@ -570,25 +567,21 @@ export function VoucherRecaps() {
           </div>
 
           {/* Month/Year Filter */}
-          <div className="flex items-center gap-3 pt-6 border-t border-white/5">
-            <select 
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-              className="flex-1 bg-asphalt-900/50 border border-asphalt-700 rounded-xl px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-brand-500"
-            >
-              {months.map((m, i) => (
-                <option key={m} value={i}>{m}</option>
-              ))}
-            </select>
-            <select 
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-              className="w-24 bg-asphalt-900/50 border border-asphalt-700 rounded-xl px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:ring-1 focus:ring-brand-500"
-            >
-              {years.map(y => (
-                <option key={y} value={y}>{y}</option>
-              ))}
-            </select>
+          <div className="space-y-3 pt-6 border-t border-white/5">
+            <BlockChoice
+              columns={3}
+              size="sm"
+              value={String(selectedMonth)}
+              onChange={(v) => setSelectedMonth(parseInt(v))}
+              options={months.map((m, i) => ({ value: String(i), label: m }))}
+            />
+            <BlockChoice
+              columns={3}
+              size="sm"
+              value={String(selectedYear)}
+              onChange={(v) => setSelectedYear(parseInt(v))}
+              options={years.map(y => ({ value: String(y), label: String(y) }))}
+            />
           </div>
         </div>
       </div>
