@@ -51,15 +51,19 @@
   --text-asphalt-400: #94A3B8;
 }
 
-/* Light Mode Variables - Elegant warm alabaster off-white, safe for eyes, zero screen glare */
+/* Light Mode Variables — "Neumorphism Tajam + Lampu": soft cool-gray surface, raised/inset shadows, glowing accent */
 [data-mode='light'] {
-  --bg-asphalt-900: #EAF1FD; /* Airy light-blue canvas */
-  --bg-asphalt-800: #FFFFFF; /* Crisp clean white cards */
-  --bg-asphalt-700: #E6ECF5; /* Soft blue-grey borders and dividers */
-  --text-asphalt-100: #1C2434; /* Soft deep charcoal (not high contrast pure-black) */
-  --text-asphalt-400: #5E6A7D; /* Comfortable slate grey subtitle print */
+  --bg-asphalt-900: #E4E8EF; /* Neumorphic base canvas */
+  --bg-asphalt-800: #E4E8EF; /* Cards share the base surface (raised purely via shadow) */
+  --bg-asphalt-700: #DCE1EA; /* Subtle inner surfaces / dividers */
+  --text-asphalt-100: #1C2434; /* Deep charcoal text */
+  --text-asphalt-400: #5E6A7D; /* Slate grey subtitle */
 
   --brand-50: #F0F6FF;
+
+  /* Neumorphic shadow tokens (the "sharp high-res" look) */
+  --neu-light: rgba(255, 255, 255, 0.95);
+  --neu-dark: rgba(163, 177, 198, 0.55);
 }
 
 /* Light Mode Styling Override Injectors */
@@ -206,69 +210,90 @@
   background-color: var(--bg-asphalt-700) !important;
 }
 
-/* Borders Adaptations */
+/* Borders Adaptations — neumorphism keeps borders minimal & cool */
 [data-mode='light'] .border-asphalt-700 {
-  border-color: var(--bg-asphalt-700) !important;
+  border-color: rgba(163, 177, 198, 0.28) !important;
 }
 [data-mode='light'] .border-asphalt-850 {
-  border-color: var(--bg-asphalt-700) !important;
+  border-color: rgba(163, 177, 198, 0.28) !important;
 }
 [data-mode='light'] .border-asphalt-700\/55,
 [data-mode='light'] .border-asphalt-700\/50 {
-  border-color: rgba(210, 208, 195, 0.7) !important;
+  border-color: rgba(163, 177, 198, 0.22) !important;
 }
 [data-mode='light'] .border-asphalt-700\/30,
 [data-mode='light'] .divide-asphalt-700\/30 {
-  border-color: rgba(210, 208, 195, 0.45) !important;
+  border-color: rgba(163, 177, 198, 0.16) !important;
 }
 [data-mode='light'] .divide-asphalt-700\/30 > :not([hidden]) ~ :not([hidden]) {
-  border-color: rgba(210, 208, 195, 0.45) !important;
+  border-color: rgba(163, 177, 198, 0.16) !important;
 }
 [data-mode='light'] .border-asphalt-800\/30 {
-  border-color: rgba(210, 208, 195, 0.4) !important;
+  border-color: rgba(163, 177, 198, 0.14) !important;
 }
 [data-mode='light'] .border-asphalt-700\/25 {
-  border-color: rgba(210, 208, 195, 0.3) !important;
+  border-color: rgba(163, 177, 198, 0.12) !important;
 }
 
-/* Gradients Overrides */
+/* Main balance card (dark gradient) → neumorphic raised panel */
 [data-mode='light'] .from-\[\#181E2B\] {
-  --tw-gradient-from: #FFFFFF !important;
-  --tw-gradient-stops: var(--tw-gradient-from), #EEF4FF !important;
-  background-image: linear-gradient(to bottom right, #FFFFFF, #EEF4FF) !important;
-  border-color: #E6ECF5 !important;
+  --tw-gradient-from: var(--bg-asphalt-800) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--bg-asphalt-800) !important;
+  background-image: none !important;
+  background-color: var(--bg-asphalt-800) !important;
+  box-shadow: 9px 9px 24px var(--neu-dark),
+              -9px -9px 24px var(--neu-light) !important;
+  border-color: transparent !important;
 }
 [data-mode='light'] .via-\[\#101520\] {
-  --tw-gradient-via: #F4F8FF !important;
+  --tw-gradient-via: var(--bg-asphalt-800) !important;
 }
 [data-mode='light'] .to-\[\#0A0E17\] {
-  --tw-gradient-to: #EAF1FD !important;
+  --tw-gradient-to: var(--bg-asphalt-800) !important;
 }
 [data-mode='light'] .bg-\[\#181E2B\] {
   background-color: var(--bg-asphalt-800) !important;
 }
 [data-mode='light'] .border-\[\#262E3D\]\/30 {
-  border-color: rgba(226, 224, 212, 0.5) !important;
+  border-color: transparent !important;
 }
 
-/* Form Fields */
+/* Form Fields — inset neumorphic (pressed-in feel) */
 [data-mode='light'] input,
 [data-mode='light'] textarea,
 [data-mode='light'] select {
-  background-color: #FEFCF9 !important;
-  border-color: #DDDBCF !important;
+  background-color: var(--bg-asphalt-900) !important;
+  border-color: transparent !important;
   color: #1E293B !important;
+  box-shadow: inset 3px 3px 7px var(--neu-dark),
+              inset -3px -3px 7px var(--neu-light) !important;
 }
 [data-mode='light'] input::placeholder,
 [data-mode='light'] textarea::placeholder {
   color: #9CA3AF !important;
 }
+/* Keep a clearly visible focus indicator (inset look + brand "lampu" ring) */
+[data-mode='light'] input:focus,
+[data-mode='light'] input:focus-visible,
+[data-mode='light'] textarea:focus,
+[data-mode='light'] textarea:focus-visible,
+[data-mode='light'] select:focus,
+[data-mode='light'] select:focus-visible {
+  outline: none !important;
+  box-shadow: inset 2px 2px 5px var(--neu-dark),
+              inset -2px -2px 5px var(--neu-light),
+              0 0 0 2px var(--brand-500),
+              0 0 12px rgba(0, 132, 255, 0.35) !important;
+}
 
-/* Mid transparency boxes */
+/* Inner panels → inset neumorphic (carved-in) */
 [data-mode='light'] .bg-asphalt-900\/50,
 [data-mode='light'] .bg-asphalt-900\/40,
 [data-mode='light'] .bg-asphalt-900\/60 {
-  background-color: #EEF3FB !important;
+  background-color: var(--bg-asphalt-900) !important;
+  box-shadow: inset 4px 4px 9px var(--neu-dark),
+              inset -4px -4px 9px var(--neu-light) !important;
+  border-color: transparent !important;
 }
 
 [data-mode='light'] .divide-asphalt-700\/50 > :not([hidden]) ~ :not([hidden]) {
@@ -349,6 +374,19 @@
   }
 }
 
+/* Fluid base type — scales sensibly across phone/tablet & portrait/landscape
+   so nothing looks oversized. rem-based Tailwind sizes follow this root. */
+html {
+  font-size: clamp(13.5px, 12.6px + 0.3vw, 17px);
+  -webkit-text-size-adjust: 100%;
+}
+/* Short landscape (phones lying down) → tighten a touch more */
+@media (orientation: landscape) and (max-height: 600px) {
+  html {
+    font-size: clamp(12.5px, 11.8px + 0.2vw, 15px);
+  }
+}
+
 body {
   -webkit-tap-highlight-color: transparent;
   background-color: var(--bg-asphalt-900);
@@ -369,9 +407,10 @@ body {
 }
 
 /* ============================================================
-   "FRESH LIGHT" — airy blue dashboard (inspired by reference):
-   a soft blue gradient canvas, crisp white cards with premium
-   soft shadows, and compact neat radii. Light mode is default.
+   "NEUMORPHISM TAJAM + LAMPU" — sharp high-res neumorphism:
+   one soft cool-gray surface for canvas + cards, with raised
+   twin-shadow cards, inset inputs/inner panels, and a glowing
+   blue "lampu" accent on primary buttons. Light mode is default.
    ============================================================ */
 
 /* Slimmer, neater radii in BOTH modes so cards aren't oversized */
@@ -381,19 +420,35 @@ body {
 .rounded-\[2rem\]    { border-radius: 1.25rem !important; }
 .p-7 { padding: 1.35rem !important; }
 
-/* Airy blue gradient canvas behind the whole app (light mode) */
+/* Flat neumorphic canvas behind the whole app (light mode) */
 [data-mode='light'] body {
-  background-color: #EAF1FD;
+  background-color: var(--bg-asphalt-900);
 }
 [data-mode='light'] .bg-asphalt-900 {
-  background-image: linear-gradient(180deg, #E4EEFD 0%, #EFF5FF 36%, #FAFCFF 100%) !important;
-  background-attachment: fixed !important;
+  background-image: none !important;
+  background-color: var(--bg-asphalt-900) !important;
 }
 
-/* Crisp white cards with a soft, premium shadow */
+/* Neumorphic raised cards (same surface as canvas, defined purely by twin shadows) */
 [data-mode='light'] .bg-asphalt-800 {
-  box-shadow: 0 8px 26px -12px rgba(30, 64, 124, 0.18),
-              0 2px 6px -3px rgba(30, 64, 124, 0.08) !important;
+  background-color: var(--bg-asphalt-800) !important;
+  box-shadow: 7px 7px 18px var(--neu-dark),
+              -7px -7px 18px var(--neu-light) !important;
+  border-color: transparent !important;
+}
+
+/* "Lampu" — glowing accent on solid brand surfaces (buttons, accent cards) */
+[data-mode='light'] .bg-brand-500 {
+  box-shadow: 0 6px 16px rgba(0, 132, 255, 0.30),
+              0 0 22px rgba(0, 132, 255, 0.22) !important;
+}
+[data-mode='light'] button.bg-brand-500:active {
+  box-shadow: inset 3px 3px 7px rgba(0, 80, 160, 0.40),
+              inset -3px -3px 7px rgba(150, 205, 255, 0.55) !important;
+}
+[data-mode='light'] .bg-emerald-500 {
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.28),
+              0 0 20px rgba(16, 185, 129, 0.18) !important;
 }
 
 /* Dark mode keeps a calm ambient blue tint (no heavy glass) */

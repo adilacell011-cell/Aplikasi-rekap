@@ -714,7 +714,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
         </div>
       )}
 
-      {!isBosGlobal && (
+      {role !== 'bos' && (
         <div className="pt-4 pb-12">
           <div className="bg-asphalt-800 rounded-3xl border border-asphalt-700/50 p-6 flex items-center justify-between shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
