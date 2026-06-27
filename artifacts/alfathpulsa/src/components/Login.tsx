@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Zap } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 export function Login() {
@@ -25,18 +26,25 @@ export function Login() {
   return (
     <div className="min-h-screen bg-asphalt-900 flex flex-col justify-center py-12 px-6">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="bg-asphalt-800 px-8 py-5 rounded-[2.5rem] flex items-center justify-center shadow-2xl border border-asphalt-700 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 to-transparent"></div>
-            <span className="text-white font-black tracking-tighter text-3xl relative z-10">AlfathPulsa</span>
+        <div className="bg-asphalt-800 px-7 py-6 rounded-[2.5rem] shadow-2xl border border-asphalt-700 relative overflow-hidden flex flex-col items-center text-center">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 to-transparent pointer-events-none"></div>
+
+          <div className="relative z-10 flex items-center gap-3">
+            <div className="menu-tile w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+              <Zap className="menu-tile-icon w-6 h-6" strokeWidth={2.5} />
+            </div>
+            <span className="text-white font-black tracking-tighter text-3xl">AlfathPulsa</span>
+          </div>
+
+          <div className="relative z-10 w-full mt-4 pt-4 border-t border-asphalt-700/60 flex flex-col items-center gap-1">
+            <span className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.3em]">
+              Manajemen Keuangan
+            </span>
+            <span className="text-xs text-asphalt-text-400 font-medium">
+              Sistem Manajemen Keuangan Agen BRILink
+            </span>
           </div>
         </div>
-        <h2 className="mt-8 text-center text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.3em]">
-          Manajemen Keuangan
-        </h2>
-        <p className="mt-2 text-center text-xs text-asphalt-text-400 font-medium">
-          Sistem Manajemen Keuangan Agen BRILink
-        </p>
       </div>
 
       <div className="mt-12 sm:mx-auto sm:w-full sm:max-w-md">
