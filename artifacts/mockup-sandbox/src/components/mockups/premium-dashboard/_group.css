@@ -1,0 +1,45 @@
+.vibrant-gradient-app {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: #f3f5f8;
+  color: #1a202c;
+}
+
+.vg-font-mono {
+  font-family: 'Space Mono', monospace;
+}
+
+.vg-hero-gradient {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+}
+
+.vg-glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.vg-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.vg-marquee-content {
+  display: inline-block;
+  animation: vg-marquee-scroll 15s linear infinite;
+}
+
+@keyframes vg-marquee-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Hide scrollbar for clean look */
+.vg-hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.vg-hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
