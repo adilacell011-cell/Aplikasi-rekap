@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api';
-import { FileText, Plus, Trash2, Check, Clock, User, Calendar, CreditCard, ArrowLeft, Download, Send } from 'lucide-react';
+import { FileText, Plus, Trash2, Check, Clock, User, Calendar, CreditCard, ArrowLeft, Download, Send, Zap, Printer, X, BadgeCheck } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { SalarySlip, UserProfile } from '../types';
@@ -38,6 +38,8 @@ export function SalarySlips() {
     id: '',
     name: ''
   });
+
+  const [viewSlip, setViewSlip] = useState<SalarySlip | null>(null);
 
   const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>, setter: (val: string) => void) => {
     const value = e.target.value.replace(/\D/g, '');
@@ -545,15 +547,27 @@ export function SalarySlips() {
               <SlipCard 
                 key={slip.id} 
                 slip={slip} 
-                isBos={isBos} 
                 getMonthName={getMonthName} 
-                handleStatusChange={handleStatusChange} 
-                setDeleteConfirm={setDeleteConfirm} 
+                onView={() => setViewSlip(slip)} 
               />
             ))
           )}
         </div>
       </div>
+
+      {viewSlip && (
+        <SlipDocument
+          slip={viewSlip}
+          isBos={isBos}
+          getMonthName={getMonthName}
+          onClose={() => setViewSlip(null)}
+          onPay={async () => { await handleStatusChange(viewSlip.id, 'paid'); setViewSlip(null); }}
+          onDelete={() => {
+            setDeleteConfirm({ isOpen: true, id: viewSlip.id, name: `${viewSlip.userName} (${getMonthName(viewSlip.month)})` });
+            setViewSlip(null);
+          }}
+        />
+      )}
 
       <ConfirmModal
         isOpen={deleteConfirm.isOpen}
@@ -567,120 +581,246 @@ export function SalarySlips() {
   );
 }
 
-function SlipCard({ 
-  slip, 
-  isBos, 
-  getMonthName, 
-  handleStatusChange, 
-  setDeleteConfirm 
-}: { 
-  slip: SalarySlip, 
-  isBos: boolean, 
-  getMonthName: (m: number) => string, 
-  handleStatusChange: (id: string, status: 'paid') => void, 
-  setDeleteConfirm: (conf: any) => void 
+function SlipCard({
+  slip,
+  getMonthName,
+  onView,
+}: {
+  slip: SalarySlip,
+  getMonthName: (m: number) => string,
+  onView: () => void,
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const isPaid = slip.status === 'paid';
 
   return (
-    <div className="bg-asphalt-800 rounded-3xl border border-asphalt-700/50 shadow-xl overflow-hidden group">
-      <div 
-        className="p-5 cursor-pointer hover:bg-asphalt-700/20 transition-all"
-        onClick={() => setExpanded(!expanded)}
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg border border-white/10 ${
-              slip.status === 'paid' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'
+    <button
+      onClick={onView}
+      className="text-left w-full bg-asphalt-800 rounded-3xl border border-asphalt-700/50 shadow-xl overflow-hidden group active:scale-[0.98] transition-all"
+    >
+      <div className="p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-lg border border-white/10 shrink-0 ${
+              isPaid ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'
             }`}>
-              {slip.status === 'paid' ? <Check className="w-5 h-5 stroke-[3px]" /> : <Clock className="w-5 h-5" />}
+              {isPaid ? <Check className="w-5 h-5 stroke-[3px]" /> : <Clock className="w-5 h-5" />}
             </div>
-            <div>
-              <h4 className="text-xs font-black text-white uppercase tracking-tight">{slip.userName || 'Karyawan'}</h4>
+            <div className="min-w-0">
+              <h4 className="text-xs font-black text-white uppercase tracking-tight truncate">{slip.userName || 'Karyawan'}</h4>
               <p className="text-[9px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">
                 {getMonthName(slip.month)} {slip.year}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">
-              {expanded ? 'TUTUP DETAIL' : 'LIHAT DETAIL'}
-            </span>
-          </div>
+          <span className={`px-2.5 py-1 rounded-lg text-[7px] font-black uppercase tracking-widest border shrink-0 ${
+            isPaid ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
+          }`}>
+            {isPaid ? 'LUNAS' : 'PENDING'}
+          </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mt-4">
-          <div className="bg-asphalt-900/40 p-3 rounded-xl border border-asphalt-700 shadow-inner">
-            <p className="text-[7px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1 opacity-60">Gaji Pokok</p>
-            <p className="text-[11px] font-black text-white">{formatRupiah(slip.baseSalary)}</p>
+        <div className="mt-4 bg-asphalt-900/40 p-4 rounded-2xl border border-asphalt-700 shadow-inner flex items-end justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[7px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1 opacity-60">Gaji Bersih Diterima</p>
+            <p className="text-base font-black text-emerald-500 truncate">{formatRupiah(slip.netSalary)}</p>
           </div>
-          <div className="bg-asphalt-900/40 p-3 rounded-xl border border-asphalt-700 shadow-inner">
-            <p className="text-[7px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1 opacity-60">Diterima</p>
-            <p className="text-[11px] font-black text-emerald-500">{formatRupiah(slip.netSalary)}</p>
+          <span className="text-[8px] font-black text-brand-500 uppercase tracking-widest flex items-center gap-1 shrink-0">
+            Lihat Slip <ArrowLeft className="w-3 h-3 rotate-180" />
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function MetaItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="min-w-0">
+      <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest mb-1 opacity-70">{label}</p>
+      <p className="text-[11px] font-black text-white leading-tight break-words">{value}</p>
+    </div>
+  );
+}
+
+function SectionHead({ title }: { title: string }) {
+  return (
+    <div className="px-4 pt-3 pb-2 bg-asphalt-800/50">
+      <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-[0.2em]">{title}</p>
+    </div>
+  );
+}
+
+function SlipRow({ label, value, valueClass, bold, last }: { label: string; value: string; valueClass?: string; bold?: boolean; last?: boolean }) {
+  return (
+    <div className={`flex items-center justify-between px-4 py-2.5 gap-3 ${last ? '' : 'border-b border-asphalt-700/40'} ${bold ? 'bg-asphalt-800/40' : ''}`}>
+      <span className={`text-[10px] uppercase tracking-wide ${bold ? 'font-black text-white' : 'font-bold text-asphalt-text-400'}`}>{label}</span>
+      <span className={`text-[11px] font-black text-right ${valueClass || 'text-white'}`}>{value}</span>
+    </div>
+  );
+}
+
+function terbilang(value: number): string {
+  const n = Math.floor(Math.abs(value));
+  if (n === 0) return 'Nol Rupiah';
+  const satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas'];
+  const toWords = (x: number): string => {
+    if (x < 12) return satuan[x];
+    if (x < 20) return toWords(x - 10) + ' belas';
+    if (x < 100) return toWords(Math.floor(x / 10)) + ' puluh' + (x % 10 ? ' ' + toWords(x % 10) : '');
+    if (x < 200) return 'seratus' + (x - 100 ? ' ' + toWords(x - 100) : '');
+    if (x < 1000) return toWords(Math.floor(x / 100)) + ' ratus' + (x % 100 ? ' ' + toWords(x % 100) : '');
+    if (x < 2000) return 'seribu' + (x - 1000 ? ' ' + toWords(x - 1000) : '');
+    if (x < 1_000_000) return toWords(Math.floor(x / 1000)) + ' ribu' + (x % 1000 ? ' ' + toWords(x % 1000) : '');
+    if (x < 1_000_000_000) return toWords(Math.floor(x / 1_000_000)) + ' juta' + (x % 1_000_000 ? ' ' + toWords(x % 1_000_000) : '');
+    if (x < 1_000_000_000_000) return toWords(Math.floor(x / 1_000_000_000)) + ' miliar' + (x % 1_000_000_000 ? ' ' + toWords(x % 1_000_000_000) : '');
+    return toWords(Math.floor(x / 1_000_000_000_000)) + ' triliun' + (x % 1_000_000_000_000 ? ' ' + toWords(x % 1_000_000_000_000) : '');
+  };
+  const words = toWords(n).trim().replace(/\s+/g, ' ');
+  return words.charAt(0).toUpperCase() + words.slice(1) + ' Rupiah';
+}
+
+function SlipDocument({
+  slip,
+  isBos,
+  getMonthName,
+  onClose,
+  onPay,
+  onDelete,
+}: {
+  slip: SalarySlip,
+  isBos: boolean,
+  getMonthName: (m: number) => string,
+  onClose: () => void,
+  onPay: () => void | Promise<void>,
+  onDelete: () => void,
+}) {
+  const isPaid = slip.status === 'paid';
+  const [processing, setProcessing] = useState(false);
+  const totalPendapatan = slip.baseSalary + slip.bonus;
+  const fmtDate = (iso?: string) =>
+    iso ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(iso)) : '-';
+
+  return (
+    <div className="fixed inset-0 z-[110] ios-backdrop flex flex-col" onClick={onClose}>
+      <div className="flex-1 overflow-y-auto px-4 py-6 flex items-start justify-center">
+        <div
+          className="slip-print-area w-full max-w-md bg-asphalt-800 rounded-[2rem] border border-asphalt-700 shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="h-1.5 w-full bg-brand-500"></div>
+
+          {/* Header */}
+          <div className="px-6 pt-6 pb-5 flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="menu-tile w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+                <Zap className="menu-tile-icon w-5 h-5" strokeWidth={2.5} />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-white tracking-tighter leading-none">AlfathPulsa</h3>
+                <p className="text-[8px] text-asphalt-text-400 font-bold uppercase tracking-[0.2em] mt-1">Agen BRILink &amp; Pulsa</p>
+              </div>
+            </div>
+            <div className="text-right shrink-0">
+              <p className="text-[9px] font-black text-brand-500 uppercase tracking-[0.2em]">Slip Gaji</p>
+              <p className="text-[10px] font-black text-white uppercase tracking-tight mt-0.5">{getMonthName(slip.month)} {slip.year}</p>
+            </div>
+          </div>
+
+          <div className="mx-6 border-t border-dashed border-asphalt-700"></div>
+
+          {/* Employee meta */}
+          <div className="px-6 py-5 grid grid-cols-2 gap-x-4 gap-y-4">
+            <MetaItem label="Nama Karyawan" value={slip.userName || '-'} />
+            <MetaItem label="Jabatan" value={(slip.role || '-').toUpperCase()} />
+            <MetaItem label="Cabang" value={slip.branchName || 'Pusat'} />
+            <MetaItem label="Periode" value={`${getMonthName(slip.month)} ${slip.year}`} />
+          </div>
+
+          {/* Earnings & deductions */}
+          <div className="mx-6 rounded-2xl bg-asphalt-900/40 border border-asphalt-700 shadow-inner overflow-hidden">
+            <SectionHead title="Pendapatan" />
+            <SlipRow label="Gaji Pokok" value={formatRupiah(slip.baseSalary)} />
+            <SlipRow label="Bonus / Tunjangan" value={`+ ${formatRupiah(slip.bonus)}`} valueClass="text-emerald-500" />
+            <SlipRow label="Total Pendapatan" value={formatRupiah(totalPendapatan)} bold />
+            <SectionHead title="Potongan" />
+            <SlipRow label="Potongan" value={`- ${formatRupiah(slip.deductions)}`} valueClass="text-rose-500" last />
+          </div>
+
+          {/* Net pay */}
+          <div className="mx-6 mt-5 rounded-2xl border-2 border-brand-500/30 bg-brand-500/5 px-5 py-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-[0.2em]">Gaji Bersih</p>
+                <p className="text-[8px] font-bold text-asphalt-text-400 uppercase tracking-widest opacity-70">Take Home Pay</p>
+              </div>
+              <p className="text-xl font-black text-emerald-500 text-right">{formatRupiah(slip.netSalary)}</p>
+            </div>
+            <p className="mt-3 pt-3 border-t border-asphalt-700/60 text-[9px] font-bold text-asphalt-text-400 italic leading-relaxed">
+              Terbilang: <span className="text-white not-italic font-black">{terbilang(slip.netSalary)}</span>
+            </p>
+          </div>
+
+          {/* Status */}
+          <div className="px-6 py-5 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              {isPaid ? <BadgeCheck className="w-4 h-4 text-emerald-500" /> : <Clock className="w-4 h-4 text-amber-500" />}
+              <span className={`text-[9px] font-black uppercase tracking-widest ${isPaid ? 'text-emerald-500' : 'text-amber-500'}`}>
+                {isPaid ? 'Lunas Dibayarkan' : 'Belum Dibayar'}
+              </span>
+            </div>
+            <span className="text-[9px] font-bold text-asphalt-text-400 text-right">
+              {isPaid ? `Dibayar ${fmtDate(slip.paidAt)}` : `Diterbitkan ${fmtDate(slip.createdAt)}`}
+            </span>
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 pb-6">
+            <div className="border-t border-dashed border-asphalt-700 pt-4">
+              <p className="text-[8px] text-asphalt-text-400 font-medium leading-relaxed text-center">
+                Slip gaji ini diterbitkan secara digital oleh <span className="font-black text-brand-500">AlfathPulsa</span> dan sah tanpa tanda tangan basah.
+                {slip.createdByName ? <> Diproses oleh <span className="font-bold text-white">{slip.createdByName}</span>.</> : null}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      {expanded && (
-        <div className="px-5 pb-5 pt-2 border-t border-asphalt-700/50 bg-asphalt-900/40 space-y-4">
-          <div className="space-y-3">
-            <h5 className="text-[9px] font-black text-white uppercase tracking-widest border-b border-asphalt-700 pb-2">Rincian Slip Gaji</h5>
-            <div className="flex justify-between items-center text-[10px]">
-              <span className="text-asphalt-text-400 font-bold uppercase">Gaji Pokok</span>
-              <span className="font-black text-white">{formatRupiah(slip.baseSalary)}</span>
-            </div>
-            <div className="flex justify-between items-center text-[10px]">
-              <span className="text-asphalt-text-400 font-bold uppercase">Bonus</span>
-              <span className="font-black text-emerald-500">+{formatRupiah(slip.bonus)}</span>
-            </div>
-            <div className="flex justify-between items-center text-[10px]">
-              <span className="text-asphalt-text-400 font-bold uppercase">Potongan</span>
-              <span className="font-black text-rose-500">-{formatRupiah(slip.deductions)}</span>
-            </div>
-            <div className="flex justify-between items-center text-[11px] pt-3 border-t border-asphalt-700 border-dashed">
-              <span className="text-white font-black uppercase">TOTAL DITERIMA</span>
-              <span className="font-black text-emerald-500">{formatRupiah(slip.netSalary)}</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between pt-2 px-1">
-            <div className="flex items-center gap-2">
-              <span className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest border ${
-                slip.status === 'paid' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
-              }`}>
-                STATUS: {slip.status === 'paid' ? 'LUNAS DIBAYARKAN' : 'PENDING'}
-              </span>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <button
-                onClick={(e) => { e.stopPropagation(); window.print(); }}
-                className="p-1.5 text-asphalt-text-400 hover:text-brand-500 bg-asphalt-800 rounded-lg border border-asphalt-700 transition-all flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                <span className="text-[8px] font-black uppercase tracking-widest hidden sm:inline">CETAK</span>
-              </button>
-              {isBos && slip.status === 'pending' && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleStatusChange(slip.id, 'paid'); }}
-                  className="px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center gap-1.5"
-                >
-                 <Check className="w-3 h-3 stroke-[3px]" />
-                 BAYAR
-                </button>
-              )}
-              {isBos && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ isOpen: true, id: slip.id, name: `${slip.userName} (${getMonthName(slip.month)})` }); }}
-                  className="p-1.5 text-asphalt-text-400 hover:text-rose-500 bg-asphalt-800 rounded-lg border border-asphalt-700 transition-all"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Action bar */}
+      <div
+        className="slip-no-print bg-asphalt-800/95 backdrop-blur border-t border-asphalt-700 px-4 py-3 flex items-center gap-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="px-4 py-3 rounded-2xl bg-asphalt-900 border border-asphalt-700 text-asphalt-text-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
+        >
+          <X className="w-4 h-4" /> Tutup
+        </button>
+        <button
+          onClick={() => window.print()}
+          className="flex-1 px-4 py-3 rounded-2xl bg-asphalt-900 border border-asphalt-700 text-brand-500 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-all"
+        >
+          <Printer className="w-4 h-4" /> Cetak / PDF
+        </button>
+        {isBos && !isPaid && (
+          <button
+            onClick={async () => { setProcessing(true); try { await onPay(); } finally { setProcessing(false); } }}
+            disabled={processing}
+            className="px-4 py-3 rounded-2xl bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+          >
+            <Check className="w-4 h-4 stroke-[3px]" /> {processing ? 'Memproses…' : 'Bayar'}
+          </button>
+        )}
+        {isBos && (
+          <button
+            onClick={onDelete}
+            disabled={processing}
+            className="px-3 py-3 rounded-2xl bg-asphalt-900 border border-asphalt-700 text-rose-500 active:scale-95 transition-all disabled:opacity-50"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
+      </div>
     </div>
   );
 }

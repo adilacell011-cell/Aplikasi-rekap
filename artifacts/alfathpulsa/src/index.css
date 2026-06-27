@@ -847,3 +847,29 @@ button:not(:disabled):active { transform: scale(0.96); }
   }
 }
 
+/* Isolate the digital salary slip for clean print / Save-as-PDF */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .slip-print-area,
+  .slip-print-area * {
+    visibility: visible !important;
+  }
+  .slip-print-area {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    padding: 24px !important;
+  }
+  .slip-no-print {
+    display: none !important;
+  }
+}
+
