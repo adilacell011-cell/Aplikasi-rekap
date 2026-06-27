@@ -121,6 +121,8 @@ export interface SalarySlip {
   bonus: number;
   deductions: number;
   netSalary: number;
+  dailyRate?: number;
+  daysOff?: number;
   status: 'pending' | 'paid';
   createdAt: string;
   paidAt?: string;

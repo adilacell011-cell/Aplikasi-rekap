@@ -29,7 +29,8 @@ export function SalarySlips() {
   const [selectedUserId, setSelectedUserId] = useState('');
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [baseSalary, setBaseSalary] = useState('');
+  const [dailyRate, setDailyRate] = useState('');
+  const [daysOff, setDaysOff] = useState('');
   const [bonus, setBonus] = useState('');
   const [deductions, setDeductions] = useState('');
 
@@ -124,15 +125,23 @@ export function SalarySlips() {
     return () => clearInterval(interval);
   }, [isBos, isGlobalBos, currentUserBranchId, uid, isAuthLoaded, filterMonth, filterYear, showAllHistory]);
 
-  // Auto-fill base salary when user selected
+  // Auto-suggest daily rate when user selected (monthly base / 30, still editable)
   useEffect(() => {
     if (selectedUserId) {
       const selectedUser = users.find(u => u.uid === selectedUserId);
       if (selectedUser && selectedUser.baseSalary) {
-        setBaseSalary(formatRupiah(selectedUser.baseSalary).replace('Rp ', ''));
+        setDailyRate(String(Math.round(selectedUser.baseSalary / 30)));
       }
     }
   }, [selectedUserId, users]);
+
+  // Auto-calculate potongan from hari libur (= hari libur x gaji per hari); still editable manually.
+  // When hari libur is 0/empty, reset to 0 so no stale deduction lingers (bos can still type a manual amount after).
+  useEffect(() => {
+    const daily = parseInt(dailyRate.replace(/\D/g, ''), 10) || 0;
+    const off = parseInt(daysOff.replace(/\D/g, ''), 10) || 0;
+    setDeductions(off > 0 ? String(off * daily) : '0');
+  }, [dailyRate, daysOff]);
 
   const handleBatchGenerate = async () => {
     if (!isBos || users.length === 0) return;
@@ -145,7 +154,9 @@ export function SalarySlips() {
         const exists = slips.find(s => s.userId === targetUser.uid && s.month === batchMonth && s.year === batchYear);
         
         if (!exists) {
-          const salaryBase = targetUser.baseSalary || 2000000; // Default 2jt jika belum ada
+          const dim = daysInMonth(batchMonth, batchYear);
+          const daily = Math.round((targetUser.baseSalary || 2000000) / 30);
+          const salaryBase = daily * dim;
           const branch = branches.find(b => b.id === targetUser.branchId);
           
           await api.post('/salary-slips', {
@@ -160,6 +171,8 @@ export function SalarySlips() {
             bonus: 0,
             deductions: 0,
             netSalary: salaryBase,
+            dailyRate: daily,
+            daysOff: 0,
             status: 'pending',
             createdAt: new Date().toISOString(),
             createdBy: uid,
@@ -185,7 +198,7 @@ export function SalarySlips() {
 
   const handleAddSlip = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedUserId || !baseSalary || !uid) return;
+    if (!selectedUserId || !dailyRate || !uid) return;
 
     // Check for duplicate
     const existing = slips.find(s => s.userId === selectedUserId && s.month === month && s.year === year);
@@ -197,7 +210,10 @@ export function SalarySlips() {
     const userToSalary = users.find(u => u.uid === selectedUserId);
     if (!userToSalary) return;
 
-    const baseVal = parseInt(baseSalary.replace(/\D/g, ''), 10);
+    const dim = daysInMonth(month, year);
+    const dailyVal = parseInt(dailyRate.replace(/\D/g, ''), 10) || 0;
+    const offVal = parseInt(daysOff.replace(/\D/g, ''), 10) || 0;
+    const baseVal = dailyVal * dim;
     const bonusVal = parseInt(bonus.replace(/\D/g, ''), 10) || 0;
     const dedVal = parseInt(deductions.replace(/\D/g, ''), 10) || 0;
     const netSalary = baseVal + bonusVal - dedVal;
@@ -217,6 +233,8 @@ export function SalarySlips() {
         bonus: bonusVal,
         deductions: dedVal,
         netSalary,
+        dailyRate: dailyVal,
+        daysOff: offVal,
         status: 'pending',
         createdAt: new Date().toISOString(),
         createdBy: uid,
@@ -225,7 +243,8 @@ export function SalarySlips() {
       
       setIsAdding(false);
       setSelectedUserId('');
-      setBaseSalary('');
+      setDailyRate('');
+      setDaysOff('');
       setBonus('0');
       setDeductions('0');
       setSuccessMessage("Buah manggis di atas peti, dimakan satu manis sekali. Slip gaji sudah rapi, tinggal bayar biar happy! 💰");
@@ -278,6 +297,14 @@ export function SalarySlips() {
   const getMonthName = (m: number) => {
     return new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(2000, m - 1, 1));
   };
+
+  // Live preview values for the "Buat Slip Gaji" form (daily-rate model)
+  const formDim = daysInMonth(month, year);
+  const formDaily = parseInt(dailyRate.replace(/\D/g, ''), 10) || 0;
+  const formOff = parseInt(daysOff.replace(/\D/g, ''), 10) || 0;
+  const formMonthlyBase = formDaily * formDim;
+  const formBonus = parseInt(bonus.replace(/\D/g, ''), 10) || 0;
+  const formDed = parseInt(deductions.replace(/\D/g, ''), 10) || 0;
 
   if (isLoading) {
     return (
@@ -439,7 +466,7 @@ export function SalarySlips() {
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Gaji Pokok</label>
+                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Gaji Per Hari</label>
                 <div className="relative">
                   <span className="absolute left-5 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
                   <input
@@ -447,14 +474,28 @@ export function SalarySlips() {
                     inputMode="numeric"
                     placeholder="0"
                     className="w-full pl-12 pr-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
-                    value={formatNumberInput(baseSalary)}
-                    onChange={(e) => handleNumericInput(e, setBaseSalary)}
+                    value={formatNumberInput(dailyRate)}
+                    onChange={(e) => handleNumericInput(e, setDailyRate)}
                     required
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Hari Libur</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      className="w-full pl-5 pr-14 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                      value={daysOff}
+                      onChange={(e) => handleNumericInput(e, setDaysOff)}
+                    />
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-[10px] font-black uppercase tracking-widest">Hari</span>
+                  </div>
+                </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bonus</label>
                   <input
@@ -465,15 +506,39 @@ export function SalarySlips() {
                     onChange={(e) => handleNumericInput(e, setBonus)}
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Potongan</label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
-                    value={formatNumberInput(deductions)}
-                    onChange={(e) => handleNumericInput(e, setDeductions)}
-                  />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Potongan (Otomatis Dari Hari Libur)</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                  value={formatNumberInput(deductions)}
+                  onChange={(e) => handleNumericInput(e, setDeductions)}
+                />
+              </div>
+            </div>
+
+            <div className="md:col-span-2">
+              <div className="bg-asphalt-900/40 border border-asphalt-700 rounded-2xl p-4 shadow-inner space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Jumlah Hari {getMonthName(month)} {year}</span>
+                  <span className="text-[11px] font-black text-white">{formDim} Hari</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Gaji Pokok Sebulan</span>
+                  <span className="text-[11px] font-black text-white">{formatRupiah(formMonthlyBase)}</span>
+                </div>
+                {formOff > 0 && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Potongan {formOff} Hari Libur</span>
+                    <span className="text-[11px] font-black text-rose-500">- {formatRupiah(formOff * formDaily)}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-asphalt-700/60">
+                  <span className="text-[10px] font-black text-white uppercase tracking-widest">Estimasi Diterima</span>
+                  <span className="text-sm font-black text-emerald-500">{formatRupiah(formMonthlyBase + formBonus - formDed)}</span>
                 </div>
               </div>
             </div>
@@ -659,6 +724,10 @@ function SlipRow({ label, value, valueClass, bold, last }: { label: string; valu
   );
 }
 
+function daysInMonth(month: number, year: number): number {
+  return new Date(year, month, 0).getDate();
+}
+
 function terbilang(value: number): string {
   const n = Math.floor(Math.abs(value));
   if (n === 0) return 'Nol Rupiah';
@@ -697,6 +766,9 @@ function SlipDocument({
   const isPaid = slip.status === 'paid';
   const [processing, setProcessing] = useState(false);
   const totalPendapatan = slip.baseSalary + slip.bonus;
+  const dim = daysInMonth(slip.month, slip.year);
+  const daily = slip.dailyRate && slip.dailyRate > 0 ? slip.dailyRate : (dim ? Math.round(slip.baseSalary / dim) : 0);
+  const off = slip.daysOff && slip.daysOff > 0 ? slip.daysOff : (daily ? Math.round(slip.deductions / daily) : 0);
   const fmtDate = (iso?: string) =>
     iso ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(iso)) : '-';
 
@@ -739,11 +811,13 @@ function SlipDocument({
           {/* Earnings & deductions */}
           <div className="mx-6 rounded-2xl bg-asphalt-900/40 border border-asphalt-700 shadow-inner overflow-hidden">
             <SectionHead title="Pendapatan" />
-            <SlipRow label="Gaji Pokok" value={formatRupiah(slip.baseSalary)} />
+            <SlipRow label="Gaji / Hari" value={formatRupiah(daily)} />
+            <SlipRow label={`Jumlah Hari (${getMonthName(slip.month)})`} value={`${dim} hari`} />
+            <SlipRow label="Gaji Pokok" value={formatRupiah(slip.baseSalary)} bold />
             <SlipRow label="Bonus / Tunjangan" value={`+ ${formatRupiah(slip.bonus)}`} valueClass="text-emerald-500" />
             <SlipRow label="Total Pendapatan" value={formatRupiah(totalPendapatan)} bold />
             <SectionHead title="Potongan" />
-            <SlipRow label="Potongan" value={`- ${formatRupiah(slip.deductions)}`} valueClass="text-rose-500" last />
+            <SlipRow label={off > 0 ? `Potongan (${off} hari libur)` : 'Potongan'} value={`- ${formatRupiah(slip.deductions)}`} valueClass="text-rose-500" last />
           </div>
 
           {/* Net pay */}

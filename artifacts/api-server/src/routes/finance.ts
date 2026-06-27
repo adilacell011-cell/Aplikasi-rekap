@@ -447,6 +447,8 @@ router.post("/salary-slips", requireBos, async (req, res) => {
       bonus: b.bonus ?? 0,
       deductions: b.deductions ?? 0,
       netSalary: b.netSalary ?? 0,
+      dailyRate: b.dailyRate ?? 0,
+      daysOff: b.daysOff ?? 0,
       status: b.status ?? "pending",
       createdAt: b.createdAt ?? now(),
       paidAt: b.paidAt ?? null,
@@ -470,6 +472,8 @@ router.patch("/salary-slips/:id", requireBos, async (req, res) => {
     "bonus",
     "deductions",
     "netSalary",
+    "dailyRate",
+    "daysOff",
     "status",
     "paidAt",
   ]) {

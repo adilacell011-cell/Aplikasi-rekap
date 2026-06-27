@@ -146,6 +146,8 @@ export const salarySlips = pgTable("salary_slips", {
   bonus: doublePrecision("bonus").default(0),
   deductions: doublePrecision("deductions").default(0),
   netSalary: doublePrecision("net_salary").default(0),
+  dailyRate: doublePrecision("daily_rate").default(0),
+  daysOff: integer("days_off").default(0),
   status: text("status").default("pending"),
   createdAt: text("created_at"),
   paidAt: text("paid_at"),
