@@ -19,7 +19,7 @@ import { useAuthStore } from './store/authStore';
 import { initFinanceStoreListeners } from './hooks/useFinanceStore';
 import { checkIsBos, checkIsMandor } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
-import { logout } from './firebase';
+import { logout } from './store/authStore';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();

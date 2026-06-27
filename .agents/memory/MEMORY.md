@@ -1,0 +1,1 @@
+- [AlfathPulsa authz model](alfathpulsa-authz.md) — which finance/branch mutations are bos-only vs branch-staff; don't over-lock branch capital PATCH.

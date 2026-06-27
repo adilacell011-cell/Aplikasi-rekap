@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from '../firebase';
-import { Shield, UserCog, User as UserIcon, Trash2, Store, Plus, Check, Phone, Send } from 'lucide-react';
+import { api } from '../api';
+import { Shield, UserCog, User as UserIcon, Trash2, Store, Plus, Check, Phone, Send, X, UserPlus } from 'lucide-react';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { UserProfile } from '../types';
@@ -31,6 +30,40 @@ export function Team() {
     name: ''
   });
 
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [addUserError, setAddUserError] = useState<string | null>(null);
+  const [newUser, setNewUser] = useState<{ username: string; password: string; name: string; role: 'bos' | 'mandor' | 'karyawan'; branchId: string }>({
+    username: '',
+    password: '',
+    name: '',
+    role: 'karyawan',
+    branchId: ''
+  });
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUser.username.trim() || !newUser.password || !newUser.name.trim()) return;
+    setIsCreating(true);
+    setAddUserError(null);
+    try {
+      await api.post('/users', {
+        username: newUser.username.trim(),
+        password: newUser.password,
+        name: newUser.name.trim(),
+        role: newUser.role,
+        branchId: newUser.branchId || null
+      });
+      setNewUser({ username: '', password: '', name: '', role: 'karyawan', branchId: '' });
+      setShowAddUser(false);
+      await loadUsers();
+    } catch (error) {
+      setAddUserError(error instanceof Error ? error.message : 'Gagal membuat akun');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   const handleCopyEmails = () => {
     const emails = users
       .filter(u => u.role === 'karyawan' || u.role === 'mandor')
@@ -41,35 +74,41 @@ export function Team() {
     alert('Daftar email berhasil disalin ke clipboard!');
   };
 
-  useEffect(() => {
-    const unsub = onSnapshot(collection(db, 'users'), (snapshot) => {
-      const usersData = snapshot.docs.map(doc => ({ ...doc.data(), uid: doc.id } as UserProfile));
-      setUsers(usersData);
+  const loadUsers = async () => {
+    try {
+      const data: UserProfile[] = await api.get('/users');
+      setUsers(data);
+    } catch (error) {
+      console.error('Error loading users:', error);
+    } finally {
       setIsLoading(false);
-    }, (error) => {
-      handleFirestoreError(error, OperationType.GET, 'users');
-      setIsLoading(false);
-    });
+    }
+  };
 
-    return () => unsub();
+  useEffect(() => {
+    loadUsers();
+    const interval = setInterval(loadUsers, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const handlePhoneChange = async (uid: string, phone: string) => {
     try {
-      await updateDoc(doc(db, 'users', uid), { phone });
+      await api.patch(`/users/${uid}`, { phone });
       setEditingPhone(null);
+      await loadUsers();
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, `users/${uid}`);
+      console.error('Error updating phone:', error);
     }
   };
   
   const handleSalaryChange = async (uid: string, salary: string) => {
     const val = parseInt(salary.replace(/\D/g, ''), 10);
     try {
-      await updateDoc(doc(db, 'users', uid), { baseSalary: val });
+      await api.patch(`/users/${uid}`, { baseSalary: val });
       setEditingSalary(null);
+      await loadUsers();
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, `users/${uid}`);
+      console.error('Error updating salary:', error);
     }
   };
 
@@ -111,17 +150,19 @@ export function Team() {
 
   const handleRoleChange = async (uid: string, newRole: 'bos' | 'mandor' | 'karyawan') => {
     try {
-      await updateDoc(doc(db, 'users', uid), { role: newRole });
+      await api.patch(`/users/${uid}`, { role: newRole });
+      await loadUsers();
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, `users/${uid}`);
+      console.error('Error updating role:', error);
     }
   };
 
   const handleBranchChange = async (uid: string, newBranchId: string) => {
     try {
-      await updateDoc(doc(db, 'users', uid), { branchId: newBranchId || null });
+      await api.patch(`/users/${uid}`, { branchId: newBranchId || null });
+      await loadUsers();
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, `users/${uid}`);
+      console.error('Error updating branch:', error);
     }
   };
 
@@ -129,13 +170,14 @@ export function Team() {
     if (!deleteConfirm.id) return;
     try {
       if (deleteConfirm.type === 'user') {
-        await deleteDoc(doc(db, 'users', deleteConfirm.id));
+        await api.delete(`/users/${deleteConfirm.id}`);
+        await loadUsers();
       } else {
         await deleteBranch(deleteConfirm.id);
       }
       setDeleteConfirm({ isOpen: false, type: 'user', id: '', name: '' });
     } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, `${deleteConfirm.type === 'user' ? 'users' : 'branches'}/${deleteConfirm.id}`);
+      console.error('Error deleting:', error);
     }
   };
 
@@ -369,14 +411,110 @@ export function Team() {
             <h3 className="text-sm font-black text-white uppercase tracking-tight">Anggota Tim</h3>
           </div>
           {isBos && (
-            <button
-              onClick={handleCopyEmails}
-              className="text-[9px] font-black text-brand-500 uppercase tracking-widest px-3 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-xl hover:bg-brand-500/20 transition-all"
-            >
-              Copy Semua Email
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => { setShowAddUser(v => !v); setAddUserError(null); }}
+                className="flex items-center gap-1.5 text-[9px] font-black text-emerald-500 uppercase tracking-widest px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl hover:bg-emerald-500/20 transition-all"
+              >
+                <UserPlus className="w-3.5 h-3.5" /> Tambah Akun
+              </button>
+              <button
+                onClick={handleCopyEmails}
+                className="text-[9px] font-black text-brand-500 uppercase tracking-widest px-3 py-1.5 bg-brand-500/10 border border-brand-500/20 rounded-xl hover:bg-brand-500/20 transition-all"
+              >
+                Copy Semua Email
+              </button>
+            </div>
           )}
         </div>
+
+        {isBos && showAddUser && (
+          <form onSubmit={handleCreateUser} className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-emerald-500/30 p-6 space-y-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <UserPlus className="w-5 h-5 text-emerald-500" />
+                <h3 className="text-sm font-black text-white uppercase tracking-tight">Buat Akun Baru</h3>
+              </div>
+              <button type="button" onClick={() => setShowAddUser(false)} className="w-9 h-9 flex items-center justify-center text-asphalt-text-400 hover:text-white rounded-xl border border-asphalt-700 transition-all">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="space-y-2">
+                <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Nama Lengkap</label>
+                <input
+                  type="text"
+                  value={newUser.name}
+                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                  placeholder="Nama anggota"
+                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Username</label>
+                <input
+                  type="text"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  value={newUser.username}
+                  onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                  placeholder="username"
+                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Password</label>
+                <input
+                  type="text"
+                  value={newUser.password}
+                  onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                  placeholder="Password awal"
+                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Role</label>
+                <select
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
+                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner uppercase tracking-widest"
+                >
+                  <option value="karyawan">KARYAWAN</option>
+                  <option value="mandor">MANDOR</option>
+                  <option value="bos">BOS</option>
+                </select>
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Penempatan Cabang</label>
+                <select
+                  value={newUser.branchId}
+                  onChange={(e) => setNewUser({ ...newUser, branchId: e.target.value })}
+                  className="w-full px-5 py-4 text-xs bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 text-white font-black shadow-inner uppercase tracking-widest"
+                >
+                  <option value="">-- {newUser.role === 'bos' ? 'Pusat (Global)' : 'Pilih Cabang'} --</option>
+                  {branches.map(b => (
+                    <option key={b.id} value={b.id}>{b.name.toUpperCase()}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {addUserError && (
+              <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3">
+                <p className="text-[10px] text-rose-400 font-bold text-center uppercase tracking-wider">{addUserError}</p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isCreating || !newUser.username.trim() || !newUser.password || !newUser.name.trim()}
+              className="w-full flex justify-center items-center gap-2 py-4 px-4 rounded-2xl shadow-lg text-xs font-black text-white bg-emerald-500 hover:bg-emerald-600 transition-all active:scale-[0.98] uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isCreating ? 'MENYIMPAN...' : 'Simpan Akun'}
+            </button>
+          </form>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {users.map((user) => (

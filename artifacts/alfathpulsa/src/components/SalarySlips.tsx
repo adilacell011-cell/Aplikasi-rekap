@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot, query, where, addDoc, updateDoc, deleteDoc, doc, orderBy, getDocs } from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from '../firebase';
+import { api } from '../api';
 import { FileText, Plus, Trash2, Check, Clock, User, Calendar, CreditCard, ArrowLeft, Download, Send } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useFinanceStore } from '../hooks/useFinanceStore';
@@ -65,75 +64,61 @@ export function SalarySlips() {
   const [batchMonth, setBatchMonth] = useState(new Date().getMonth() + 1);
   const [batchYear, setBatchYear] = useState(new Date().getFullYear());
 
-  useEffect(() => {
-    if (!isAuthLoaded || !role) return;
-    
+  const loadData = async () => {
     if (!uid) {
       setIsLoading(false);
       return;
     }
+    try {
+      const allSlips: SalarySlip[] = await api.get('/salary-slips');
 
-    let isMounted = true;
-    let q;
-    
-    // Determine query based on role
-    // As per user request: Only Bos handles all, employees see their own.
-    if (isBos) {
-      if (isGlobalBos) {
-        q = query(collection(db, 'salarySlips'));
+      // Scope slips by role: Bos handles all (or branch), others see only their own.
+      let scoped = allSlips;
+      if (isBos) {
+        if (!isGlobalBos) {
+          scoped = allSlips.filter(s => s.branchId === currentUserBranchId);
+        }
       } else {
-        q = query(collection(db, 'salarySlips'), where('branchId', '==', currentUserBranchId));
+        scoped = allSlips.filter(s => s.userId === uid);
       }
-    } else {
-      // Regular user (including Mandor for this page) only see their own
-      q = query(collection(db, 'salarySlips'), where('userId', '==', uid));
-    }
 
-    const unsub = onSnapshot(q, (snapshot) => {
-      if (!isMounted) return;
-      const slipsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as SalarySlip));
-      
       // Filter by month/year if not "showAllHistory"
-      let filtered = slipsData;
+      let filtered = scoped;
       if (!showAllHistory) {
-        filtered = slipsData.filter(s => s.month === filterMonth && s.year === filterYear);
+        filtered = scoped.filter(s => s.month === filterMonth && s.year === filterYear);
       }
-      
+
       // Sort by year desc, then month desc
       const sortedData = [...filtered].sort((a, b) => {
         if (b.year !== a.year) return b.year - a.year;
         return b.month - a.month;
       });
       setSlips(sortedData);
-      setIsLoading(false);
-    }, (error) => {
-      if (!isMounted) return;
-      console.error("FULL FIRESTORE ERROR IN SALARY SLIPS:", error);
-      handleFirestoreError(error, OperationType.GET, 'salarySlips');
-      setIsLoading(false);
-    });
 
-    if (isBos) {
-      let usersQuery;
-      if (isGlobalBos) {
-        usersQuery = query(collection(db, 'users'));
-      } else {
-        usersQuery = query(collection(db, 'users'), where('branchId', '==', currentUserBranchId));
+      // Bos also needs the user list to generate slips
+      if (isBos) {
+        const allUsers: UserProfile[] = await api.get('/users');
+        const scopedUsers = isGlobalBos
+          ? allUsers
+          : allUsers.filter(u => u.branchId === currentUserBranchId);
+        setUsers(scopedUsers.filter(u => u.role !== 'bos'));
       }
-
-      const unsubUsers = onSnapshot(usersQuery, (snapshot) => {
-        if (!isMounted) return;
-        const usersData = snapshot.docs.map(doc => ({ ...doc.data(), uid: doc.id } as UserProfile));
-        setUsers(usersData.filter(u => u.role !== 'bos'));
-      }, (error) => {
-        if (!isMounted) return;
-        console.error("Error fetching users for salary slips:", error);
-        // Silently handle - maybe they are no longer Bos
-      });
-      return () => { isMounted = false; unsub(); unsubUsers(); };
+    } catch (error) {
+      console.error('Error loading salary slips:', error);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    return () => { isMounted = false; unsub(); };
+  useEffect(() => {
+    if (!isAuthLoaded || !role) return;
+    if (!uid) {
+      setIsLoading(false);
+      return;
+    }
+    loadData();
+    const interval = setInterval(loadData, 5000);
+    return () => clearInterval(interval);
   }, [isBos, isGlobalBos, currentUserBranchId, uid, isAuthLoaded, filterMonth, filterYear, showAllHistory]);
 
   // Auto-fill base salary when user selected
@@ -160,7 +145,7 @@ export function SalarySlips() {
           const salaryBase = targetUser.baseSalary || 2000000; // Default 2jt jika belum ada
           const branch = branches.find(b => b.id === targetUser.branchId);
           
-          await addDoc(collection(db, 'salarySlips'), {
+          await api.post('/salary-slips', {
             userId: targetUser.uid,
             userName: targetUser.name,
             role: targetUser.role,
@@ -184,13 +169,13 @@ export function SalarySlips() {
       if (createdCount > 0) {
         setSuccessMessage("Makan sate di pinggir jalan, rasanya enak bikin ketagihan. Gajian masal sudah dijalankan, karyawan senang dapur pun aman! 🔥");
         setShowSuccess(true);
+        await loadData();
       } else {
         alert("Semua karyawan sudah punya slip gaji untuk bulan ini!");
       }
       setIsGeneratingBatch(false);
     } catch (error) {
       console.error("Error batch generating:", error);
-      handleFirestoreError(error, OperationType.CREATE, 'salarySlips-batch');
       setIsGeneratingBatch(false);
     }
   };
@@ -217,7 +202,7 @@ export function SalarySlips() {
     const branch = branches.find(b => b.id === userToSalary.branchId);
 
     try {
-      await addDoc(collection(db, 'salarySlips'), {
+      await api.post('/salary-slips', {
         userId: userToSalary.uid,
         userName: userToSalary.name,
         role: userToSalary.role,
@@ -242,19 +227,21 @@ export function SalarySlips() {
       setDeductions('0');
       setSuccessMessage("Buah manggis di atas peti, dimakan satu manis sekali. Slip gaji sudah rapi, tinggal bayar biar happy! 💰");
       setShowSuccess(true);
+      await loadData();
     } catch (error) {
-      handleFirestoreError(error, OperationType.CREATE, 'salarySlips');
+      console.error('Error adding salary slip:', error);
     }
   };
 
   const handleStatusChange = async (slipId: string, newStatus: 'paid') => {
     try {
-      await updateDoc(doc(db, 'salarySlips', slipId), {
+      await api.patch(`/salary-slips/${slipId}`, {
         status: newStatus,
         paidAt: new Date().toISOString()
       });
+      await loadData();
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, `salarySlips/${slipId}`);
+      console.error('Error updating salary slip status:', error);
     }
   };
 
@@ -263,28 +250,25 @@ export function SalarySlips() {
     
     if (deleteConfirm.id === 'ALL') {
       try {
-        let q;
-        if (isGlobalBos) {
-          q = query(collection(db, 'salarySlips'));
-        } else {
-          q = query(collection(db, 'salarySlips'), where('branchId', '==', currentUserBranchId));
-        }
-        
-        const querySnapshot = await getDocs(q);
-        const deletePromises = querySnapshot.docs.map(d => deleteDoc(doc(db, 'salarySlips', d.id)));
-        await Promise.all(deletePromises);
+        const allSlips: SalarySlip[] = await api.get('/salary-slips');
+        const toDelete = isGlobalBos
+          ? allSlips
+          : allSlips.filter(s => s.branchId === currentUserBranchId);
+        await Promise.all(toDelete.map(s => api.delete(`/salary-slips/${s.id}`)));
         setDeleteConfirm({ isOpen: false, id: '', name: '' });
+        await loadData();
       } catch (error) {
-        handleFirestoreError(error, OperationType.DELETE, 'salarySlips-all');
+        console.error('Error deleting all salary slips:', error);
       }
       return;
     }
 
     try {
-      await deleteDoc(doc(db, 'salarySlips', deleteConfirm.id));
+      await api.delete(`/salary-slips/${deleteConfirm.id}`);
       setDeleteConfirm({ isOpen: false, id: '', name: '' });
+      await loadData();
     } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, `salarySlips/${deleteConfirm.id}`);
+      console.error('Error deleting salary slip:', error);
     }
   };
 

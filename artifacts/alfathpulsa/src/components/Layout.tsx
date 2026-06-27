@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
-import { logout } from '../firebase';
+import { logout } from '../store/authStore';
 
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
