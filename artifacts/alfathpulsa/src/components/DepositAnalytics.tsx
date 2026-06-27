@@ -180,7 +180,7 @@ export function DepositAnalytics() {
               <span className="text-[9px] font-black text-asphalt-text-400 uppercase">Total</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(77,159,255,0.4)]"></div>
               <span className="text-[9px] font-black text-asphalt-text-400 uppercase">Bank</span>
             </div>
           </div>
@@ -201,7 +201,7 @@ export function DepositAnalytics() {
               />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: '#0f172a' }} />
               <Bar dataKey="total" fill="var(--brand-500)" radius={[0, 6, 6, 0]} barSize={14} animationDuration={1500} />
-              <Bar dataKey="verified" fill="#10b981" radius={[0, 6, 6, 0]} barSize={14} animationDuration={1500} />
+              <Bar dataKey="verified" fill="#4D9FFF" radius={[0, 6, 6, 0]} barSize={14} animationDuration={1500} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -219,8 +219,8 @@ export function DepositAnalytics() {
                   <stop offset="95%" stopColor="var(--brand-500)" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="colorVerified" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#4D9FFF" stopOpacity={0.2}/>
+                  <stop offset="95%" stopColor="#4D9FFF" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
@@ -245,7 +245,7 @@ export function DepositAnalytics() {
               <Area 
                 type="monotone" 
                 dataKey="verified" 
-                stroke="#10b981" 
+                stroke="#4D9FFF" 
                 strokeWidth={3}
                 fillOpacity={1} 
                 fill="url(#colorVerified)" 

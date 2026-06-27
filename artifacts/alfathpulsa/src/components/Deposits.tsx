@@ -433,7 +433,7 @@ export function Deposits() {
                         <div className="flex items-center gap-2.5">
                           <h4 className="text-base font-black text-white uppercase tracking-tight truncate">{deposit.branchName}</h4>
                           {deposit.status === 'pending' && (
-                            <span className="flex h-3 w-3 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></span>
+                            <span className="flex h-3 w-3 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(172,130,53,0.5)]"></span>
                           )}
                         </div>
                         <p className="text-[9px] text-brand-500 font-black uppercase tracking-widest mt-1">{formatDate(deposit.date)}</p>
@@ -467,15 +467,15 @@ export function Deposits() {
                   {/* Flow Logic Visualization */}
                   <div className="flex items-center gap-3 mb-6 px-1">
                     <div className="flex-1 flex flex-col gap-2">
-                      <div className="h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></div>
+                      <div className="h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]"></div>
                       <span className="text-[9px] font-black text-emerald-500 uppercase tracking-tighter">1. Input</span>
                     </div>
                     <div className="flex-1 flex flex-col gap-2">
-                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status !== 'pending' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]' : 'bg-asphalt-900 group-hover:bg-asphalt-700'}`}></div>
+                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status !== 'pending' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]' : 'bg-asphalt-900 group-hover:bg-asphalt-700'}`}></div>
                       <span className={`text-[9px] font-black uppercase tracking-tighter ${deposit.status !== 'pending' ? 'text-emerald-500' : 'text-asphalt-700'}`}>2. Terima</span>
                     </div>
                     <div className="flex-1 flex flex-col gap-2">
-                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status === 'verified' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.3)]' : 'bg-asphalt-900 group-hover:bg-asphalt-700'}`}></div>
+                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status === 'verified' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]' : 'bg-asphalt-900 group-hover:bg-asphalt-700'}`}></div>
                       <span className={`text-[9px] font-black uppercase tracking-tighter ${deposit.status === 'verified' ? 'text-emerald-500' : 'text-asphalt-700'}`}>3. Selesai</span>
                     </div>
                   </div>

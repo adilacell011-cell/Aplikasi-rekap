@@ -22,6 +22,93 @@
   --color-asphalt-text-100: var(--text-asphalt-100);
   --color-asphalt-text-400: var(--text-asphalt-400);
 
+  /* ── Harmonized palette ──────────────────────────────────────────────
+     Remove jarring default hues (especially bright green) and fold every
+     accent into the calm theme. Three families only:
+       • success / positive  → brand blue
+       • pending / warning    → muted gold (kept distinct, de-saturated)
+       • danger / negative    → muted red (kept for delete/negative meaning)
+     Overriding the values here (static) means BOTH solid AND opacity
+     utilities (bg-x/10, border-x/20, …) pick up the harmonized color. */
+
+  /* success / positive / cool accents → brand blue */
+  --color-emerald-50: #EAF4FF;  --color-emerald-100: #D6E9FF; --color-emerald-200: #ADD3FF;
+  --color-emerald-300: #7FBAFF; --color-emerald-400: #4D9FFF; --color-emerald-500: #0084FF;
+  --color-emerald-600: #0076E5; --color-emerald-700: #0068CC; --color-emerald-800: #0055A8;
+  --color-emerald-900: #004485; --color-emerald-950: #002A52;
+
+  --color-teal-50: #EAF4FF;  --color-teal-100: #D6E9FF; --color-teal-200: #ADD3FF;
+  --color-teal-300: #7FBAFF; --color-teal-400: #4D9FFF; --color-teal-500: #0084FF;
+  --color-teal-600: #0076E5; --color-teal-700: #0068CC; --color-teal-800: #0055A8;
+  --color-teal-900: #004485; --color-teal-950: #002A52;
+
+  --color-green-50: #EAF4FF;  --color-green-100: #D6E9FF; --color-green-200: #ADD3FF;
+  --color-green-300: #7FBAFF; --color-green-400: #4D9FFF; --color-green-500: #0084FF;
+  --color-green-600: #0076E5; --color-green-700: #0068CC; --color-green-800: #0055A8;
+  --color-green-900: #004485; --color-green-950: #002A52;
+
+  --color-cyan-50: #EAF4FF;  --color-cyan-100: #D6E9FF; --color-cyan-200: #ADD3FF;
+  --color-cyan-300: #7FBAFF; --color-cyan-400: #4D9FFF; --color-cyan-500: #0084FF;
+  --color-cyan-600: #0076E5; --color-cyan-700: #0068CC; --color-cyan-800: #0055A8;
+  --color-cyan-900: #004485; --color-cyan-950: #002A52;
+
+  --color-sky-50: #EAF4FF;  --color-sky-100: #D6E9FF; --color-sky-200: #ADD3FF;
+  --color-sky-300: #7FBAFF; --color-sky-400: #4D9FFF; --color-sky-500: #0084FF;
+  --color-sky-600: #0076E5; --color-sky-700: #0068CC; --color-sky-800: #0055A8;
+  --color-sky-900: #004485; --color-sky-950: #002A52;
+
+  --color-indigo-50: #EAF4FF;  --color-indigo-100: #D6E9FF; --color-indigo-200: #ADD3FF;
+  --color-indigo-300: #7FBAFF; --color-indigo-400: #4D9FFF; --color-indigo-500: #0084FF;
+  --color-indigo-600: #0076E5; --color-indigo-700: #0068CC; --color-indigo-800: #0055A8;
+  --color-indigo-900: #004485; --color-indigo-950: #002A52;
+
+  --color-violet-50: #EAF4FF;  --color-violet-100: #D6E9FF; --color-violet-200: #ADD3FF;
+  --color-violet-300: #7FBAFF; --color-violet-400: #4D9FFF; --color-violet-500: #0084FF;
+  --color-violet-600: #0076E5; --color-violet-700: #0068CC; --color-violet-800: #0055A8;
+  --color-violet-900: #004485; --color-violet-950: #002A52;
+
+  --color-purple-50: #EAF4FF;  --color-purple-100: #D6E9FF; --color-purple-200: #ADD3FF;
+  --color-purple-300: #7FBAFF; --color-purple-400: #4D9FFF; --color-purple-500: #0084FF;
+  --color-purple-600: #0076E5; --color-purple-700: #0068CC; --color-purple-800: #0055A8;
+  --color-purple-900: #004485; --color-purple-950: #002A52;
+
+  --color-fuchsia-50: #EAF4FF;  --color-fuchsia-100: #D6E9FF; --color-fuchsia-200: #ADD3FF;
+  --color-fuchsia-300: #7FBAFF; --color-fuchsia-400: #4D9FFF; --color-fuchsia-500: #0084FF;
+  --color-fuchsia-600: #0076E5; --color-fuchsia-700: #0068CC; --color-fuchsia-800: #0055A8;
+  --color-fuchsia-900: #004485; --color-fuchsia-950: #002A52;
+
+  /* pending / warning → muted gold */
+  --color-amber-50: #FAF5EA;  --color-amber-100: #F2E7CC; --color-amber-200: #E6CF9D;
+  --color-amber-300: #D5B36A; --color-amber-400: #C39B45; --color-amber-500: #AC8235;
+  --color-amber-600: #946E2D; --color-amber-700: #785826; --color-amber-800: #614823;
+  --color-amber-900: #4F3B1F; --color-amber-950: #2B2010;
+
+  --color-orange-50: #FAF5EA;  --color-orange-100: #F2E7CC; --color-orange-200: #E6CF9D;
+  --color-orange-300: #D5B36A; --color-orange-400: #C39B45; --color-orange-500: #AC8235;
+  --color-orange-600: #946E2D; --color-orange-700: #785826; --color-orange-800: #614823;
+  --color-orange-900: #4F3B1F; --color-orange-950: #2B2010;
+
+  --color-yellow-50: #FAF5EA;  --color-yellow-100: #F2E7CC; --color-yellow-200: #E6CF9D;
+  --color-yellow-300: #D5B36A; --color-yellow-400: #C39B45; --color-yellow-500: #AC8235;
+  --color-yellow-600: #946E2D; --color-yellow-700: #785826; --color-yellow-800: #614823;
+  --color-yellow-900: #4F3B1F; --color-yellow-950: #2B2010;
+
+  /* danger / negative / delete → muted red */
+  --color-rose-50: #FCF1F1;  --color-rose-100: #F8DEDF; --color-rose-200: #F0BCBF;
+  --color-rose-300: #E29699; --color-rose-400: #D06E74; --color-rose-500: #BE4A52;
+  --color-rose-600: #A93C44; --color-rose-700: #8C3037; --color-rose-800: #71272D;
+  --color-rose-900: #5C2227; --color-rose-950: #371214;
+
+  --color-red-50: #FCF1F1;  --color-red-100: #F8DEDF; --color-red-200: #F0BCBF;
+  --color-red-300: #E29699; --color-red-400: #D06E74; --color-red-500: #BE4A52;
+  --color-red-600: #A93C44; --color-red-700: #8C3037; --color-red-800: #71272D;
+  --color-red-900: #5C2227; --color-red-950: #371214;
+
+  --color-pink-50: #FCF1F1;  --color-pink-100: #F8DEDF; --color-pink-200: #F0BCBF;
+  --color-pink-300: #E29699; --color-pink-400: #D06E74; --color-pink-500: #BE4A52;
+  --color-pink-600: #A93C44; --color-pink-700: #8C3037; --color-pink-800: #71272D;
+  --color-pink-900: #5C2227; --color-pink-950: #371214;
+
   @keyframes marquee {
     from {
       transform: translateX(0);
@@ -115,19 +202,19 @@
   color: #0076E5 !important;
 }
 [data-mode='light'] .text-emerald-400 {
-  color: #047857 !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-emerald-500\/80 {
-  color: #047857 !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-emerald-500\/30 {
-  color: #10B981 !important;
+  color: #0084FF !important;
 }
 [data-mode='light'] .text-rose-400 {
-  color: #BE123C !important;
+  color: #A93C44 !important;
 }
 [data-mode='light'] .text-amber-400 {
-  color: #C2410C !important;
+  color: #785826 !important;
 }
 
 /* Solid Color High-Contrast Backgrounds - RESTORE pure white text */
@@ -148,55 +235,55 @@
   color: #FFFFFF !important;
 }
 
-/* Enhancing service menus with rich contrast in light mode */
+/* Enhancing service menus with rich contrast in light mode (harmonized) */
 [data-mode='light'] .text-indigo-400 {
-  color: #4F46E5 !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-amber-400 {
-  color: #C2410C !important;
+  color: #785826 !important;
 }
 [data-mode='light'] .text-emerald-400 {
-  color: #047857 !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-sky-400 {
-  color: #0369A1 !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-orange-400 {
-  color: #C2410C !important;
+  color: #785826 !important;
 }
 [data-mode='light'] .text-purple-400 {
-  color: #7E22CE !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-cyan-400 {
-  color: #0E7490 !important;
+  color: #0068CC !important;
 }
 [data-mode='light'] .text-rose-400 {
-  color: #BE123C !important;
+  color: #A93C44 !important;
 }
 
 [data-mode='light'] .group-hover\:text-indigo-300 {
-  color: #3730A3 !important;
+  color: #004485 !important;
 }
 [data-mode='light'] .group-hover\:text-amber-300 {
-  color: #7C2D12 !important;
+  color: #614823 !important;
 }
 [data-mode='light'] .group-hover\:text-emerald-300 {
-  color: #064E3B !important;
+  color: #004485 !important;
 }
 [data-mode='light'] .group-hover\:text-sky-300 {
-  color: #0C4A6E !important;
+  color: #004485 !important;
 }
 [data-mode='light'] .group-hover\:text-orange-300 {
-  color: #7C2D12 !important;
+  color: #614823 !important;
 }
 [data-mode='light'] .group-hover\:text-purple-300 {
-  color: #581C87 !important;
+  color: #004485 !important;
 }
 [data-mode='light'] .group-hover\:text-cyan-300 {
-  color: #164E63 !important;
+  color: #004485 !important;
 }
 [data-mode='light'] .group-hover\:text-rose-300 {
-  color: #881337 !important;
+  color: #71272D !important;
 }
 
 /* Background Adapters */
@@ -447,8 +534,8 @@ body {
               inset -3px -3px 7px rgba(150, 205, 255, 0.55) !important;
 }
 [data-mode='light'] .bg-emerald-500 {
-  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.28),
-              0 0 20px rgba(16, 185, 129, 0.18) !important;
+  box-shadow: 0 6px 16px rgba(0, 132, 255, 0.28),
+              0 0 20px rgba(0, 132, 255, 0.18) !important;
 }
 
 /* ── Harmonized menu tiles ─────────────────────────────────────────────
