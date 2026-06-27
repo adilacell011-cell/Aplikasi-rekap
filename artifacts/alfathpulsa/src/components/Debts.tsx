@@ -420,8 +420,8 @@ export function Debts() {
                 
                 const colors = [
                   'from-brand-500 to-brand-600',
-                  'from-rose-500 to-rose-600',
-                  'from-emerald-500 to-emerald-600'
+                  'from-brand-500 to-brand-600',
+                  'from-brand-500 to-brand-600'
                 ];
                 const colorIndex = person.personName.length % colors.length;
                 const avatarColor = colors[colorIndex];

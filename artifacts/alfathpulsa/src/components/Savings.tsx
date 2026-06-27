@@ -489,7 +489,7 @@ export function Savings() {
                   filteredSavings.map((person) => {
                     const total = person.totalSavings;
                     const initials = person.personName.substring(0, 2).toUpperCase();
-                    const colors = ['from-emerald-500 to-emerald-600', 'from-brand-500 to-brand-600', 'from-rose-500 to-rose-600'];
+                    const colors = ['from-brand-500 to-brand-600', 'from-brand-500 to-brand-600', 'from-brand-500 to-brand-600'];
                     const colorIndex = person.personName.length % colors.length;
                     const avatarColor = colors[colorIndex];
 
