@@ -38,6 +38,7 @@ A self-hostable Indonesian BRILink/pulsa finance management PWA for a small mult
 - Role/branch visibility filtering is done client-side in the stores (parity with original). Server-side authorization enforces bos-only access on genuinely admin-only mutations: create/delete branch, settings, and salary-slip writes. Branch capital PATCH stays open to branch staff (used for capital shifts on the Dashboard).
 - Orval/OpenAPI codegen is intentionally skipped for the frontend (store-based, not hook-based).
 - Date columns are stored as ISO strings to match prior Firestore behavior.
+- UI uses a "glowing glass" (Kaca Bercahaya) dark theme applied globally via utility-class overrides in `artifacts/alfathpulsa/src/index.css` (frosted translucent surfaces, ambient blue glow, brand rim-light), not per-component. Light Mode is intentionally left untouched.
 
 ## User preferences
 

@@ -1,1 +1,2 @@
 - [AlfathPulsa authz model](alfathpulsa-authz.md) — which finance/branch mutations are bos-only vs branch-staff; don't over-lock branch capital PATCH.
+- [AlfathPulsa glass theme](alfathpulsa-glass-theme.md) — glowing-glass UI is global utility overrides in index.css, not per-component; edit vars there.

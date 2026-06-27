@@ -368,6 +368,78 @@ body {
   display: none !important;
 }
 
+/* ============================================================
+   "KACA BERCAHAYA" — Glowing Glass theme (dark mode only)
+   Frosted translucent surfaces over an ambient blue-lit asphalt
+   backdrop with a brand rim-light. Cards are slimmer + cleaner
+   so they no longer feel oversized. (AgenBRILink finance)
+   Scoped to :not([data-mode='light']) so Light Mode is untouched.
+   ============================================================ */
+:root:not([data-mode='light']) {
+  --glass-bg: rgba(22, 28, 41, 0.55);
+  --glass-bg-soft: rgba(20, 26, 38, 0.40);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  --glow-brand: rgba(0, 132, 255, 0.30);
+}
+
+/* Ambient "lamp" glow behind the whole app */
+:root:not([data-mode='light']) body {
+  background-color: #070b13;
+  background-image:
+    radial-gradient(58rem 58rem at 12% -12%, rgba(0, 132, 255, 0.14), transparent 60%),
+    radial-gradient(48rem 48rem at 105% 2%, rgba(0, 132, 255, 0.11), transparent 55%),
+    radial-gradient(46rem 46rem at 50% 118%, rgba(0, 132, 255, 0.09), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Frosted glass for primary surfaces (cards, header, nav, inputs) */
+:root:not([data-mode='light']) .bg-asphalt-800 {
+  background-color: var(--glass-bg) !important;
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+:root:not([data-mode='light']) .bg-asphalt-800\/50,
+:root:not([data-mode='light']) .bg-asphalt-900\/50,
+:root:not([data-mode='light']) .bg-asphalt-900\/40,
+:root:not([data-mode='light']) .bg-asphalt-900\/60 {
+  background-color: var(--glass-bg-soft) !important;
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+/* Brighter, softer glass borders */
+:root:not([data-mode='light']) .border-asphalt-700,
+:root:not([data-mode='light']) .border-asphalt-700\/50,
+:root:not([data-mode='light']) .border-asphalt-700\/55,
+:root:not([data-mode='light']) .border-asphalt-700\/30,
+:root:not([data-mode='light']) .border-asphalt-700\/25 {
+  border-color: var(--glass-border) !important;
+}
+
+/* Slimmer, less bubbly radii + trimmed padding so cards aren't oversized */
+.rounded-\[2\.5rem\] { border-radius: 1.5rem !important; }
+.rounded-\[2rem\]    { border-radius: 1.3rem !important; }
+.p-7 { padding: 1.35rem !important; }
+
+/* Glowing rim-light on the large card surfaces */
+:root:not([data-mode='light']) .rounded-\[2\.5rem\],
+:root:not([data-mode='light']) .rounded-\[2rem\] {
+  box-shadow:
+    0 0 0 1px var(--glass-border),
+    var(--glass-rim),
+    0 18px 42px -20px rgba(0, 0, 0, 0.8),
+    0 0 30px -12px var(--glow-brand) !important;
+}
+
+/* Brand buttons / accents actually emit light */
+:root:not([data-mode='light']) .bg-brand-500,
+:root:not([data-mode='light']) .bg-brand-600 {
+  box-shadow:
+    0 0 22px -4px rgba(0, 132, 255, 0.55),
+    0 6px 18px -8px rgba(0, 0, 0, 0.6);
+}
+
 @media print {
   body {
     background-color: white !important;
