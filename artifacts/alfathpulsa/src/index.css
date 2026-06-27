@@ -130,12 +130,12 @@
   --brand-800: #0059B2;
   --brand-900: #004B99;
 
-  /* Asphalt Colors */
-  --bg-asphalt-900: #0B111D;
-  --bg-asphalt-800: #181E2B;
-  --bg-asphalt-700: #262E3D;
-  --text-asphalt-100: #E1E7EF;
-  --text-asphalt-400: #94A3B8;
+  /* Asphalt Colors — deeper "pekat" dark canvas so cards clearly stand out */
+  --bg-asphalt-900: #080C15;
+  --bg-asphalt-800: #1A2233;
+  --bg-asphalt-700: #2A3343;
+  --text-asphalt-100: #E8EEF6;
+  --text-asphalt-400: #9FACC1;
 }
 
 /* Light Mode Variables — "Neumorphism Tajam + Lampu": soft cool-gray surface, raised/inset shadows, glowing accent */
@@ -259,12 +259,12 @@
 [data-mode='light'] .bg-gradient-to-br.from-emerald-500 {
   background-color: var(--bg-asphalt-800) !important;
   background-image: linear-gradient(145deg, #ECF0F6 0%, #DBE1EA 100%) !important;
-  color: #0A6FE0 !important;
+  color: var(--brand-600) !important;
   border-color: transparent !important;
   box-shadow: 5px 5px 12px var(--neu-dark),
               -5px -5px 12px var(--neu-light),
-              inset 0 0 0 1.5px rgba(0, 132, 255, 0.32),
-              0 4px 16px -3px rgba(0, 132, 255, 0.30) !important;
+              inset 0 0 0 1.5px color-mix(in srgb, var(--brand-500) 34%, transparent),
+              0 4px 16px -3px color-mix(in srgb, var(--brand-500) 30%, transparent) !important;
   transition: box-shadow .18s ease, transform .12s ease, color .18s ease !important;
 }
 /* recolor any white letters / icons living inside the converted blue blocks */
@@ -278,7 +278,7 @@
 [data-mode='light'] .bg-brand-500.self-stretch .text-white,
 [data-mode='light'] .bg-gradient-to-br.from-brand-500 .text-white,
 [data-mode='light'] .bg-gradient-to-br.from-emerald-500 .text-white {
-  color: #0A6FE0 !important;
+  color: var(--brand-600) !important;
 }
 /* hover — intensify the glow ("menyala") */
 [data-mode='light'] button.bg-brand-500:hover,
@@ -292,8 +292,8 @@
 [data-mode='light'] .bg-emerald-600.text-white:hover {
   box-shadow: 6px 6px 14px var(--neu-dark),
               -6px -6px 14px var(--neu-light),
-              inset 0 0 0 1.5px rgba(0, 132, 255, 0.42),
-              0 7px 22px -4px rgba(0, 132, 255, 0.42) !important;
+              inset 0 0 0 1.5px color-mix(in srgb, var(--brand-500) 44%, transparent),
+              0 7px 22px -4px color-mix(in srgb, var(--brand-500) 42%, transparent) !important;
 }
 /* press — the block "mengangkat menyala": lifts up + glows brighter */
 [data-mode='light'] button.bg-brand-500:active,
@@ -308,8 +308,8 @@
   transform: translateY(-3px) !important;
   box-shadow: 7px 9px 20px var(--neu-dark),
               -7px -7px 18px var(--neu-light),
-              inset 0 0 0 1.5px rgba(0, 132, 255, 0.55),
-              0 12px 30px -4px rgba(0, 132, 255, 0.60) !important;
+              inset 0 0 0 1.5px color-mix(in srgb, var(--brand-500) 58%, transparent),
+              0 12px 30px -4px color-mix(in srgb, var(--brand-500) 60%, transparent) !important;
 }
 
 /* Enhancing service menus with rich contrast in light mode (harmonized) */
@@ -671,11 +671,48 @@ button:not(:disabled):active { transform: scale(0.96); }
 
 /* Dark mode keeps a calm ambient blue tint (no heavy glass) */
 :root:not([data-mode='light']) body {
-  background-color: #070b13;
+  background-color: #03050A;
   background-image:
-    radial-gradient(56rem 56rem at 12% -12%, rgba(0, 132, 255, 0.10), transparent 60%),
-    radial-gradient(46rem 46rem at 105% 2%, rgba(0, 132, 255, 0.08), transparent 55%);
+    radial-gradient(56rem 56rem at 12% -12%, rgba(0, 132, 255, 0.07), transparent 60%),
+    radial-gradient(46rem 46rem at 105% 2%, rgba(0, 132, 255, 0.05), transparent 55%);
   background-attachment: fixed;
+}
+
+/* Dark mode: cards clearly "timbul" (raised) on the pekat canvas */
+[data-mode='dark'] .bg-asphalt-800 {
+  box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.78),
+              0 3px 10px -2px rgba(0, 0, 0, 0.55),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Dark mode: solid action buttons follow the chosen accent color.
+   bg-brand-* already uses --brand-* (so it follows automatically); the
+   success/cool families were folded to a fixed blue by the palette remap,
+   so re-point their solid 500/600 button fills back to the accent var. */
+[data-mode='dark'] button.bg-emerald-500,
+[data-mode='dark'] .bg-emerald-500.text-white,
+[data-mode='dark'] button.bg-teal-500,
+[data-mode='dark'] .bg-teal-500.text-white,
+[data-mode='dark'] button.bg-green-500,
+[data-mode='dark'] .bg-green-500.text-white,
+[data-mode='dark'] button.bg-sky-500,
+[data-mode='dark'] .bg-sky-500.text-white,
+[data-mode='dark'] button.bg-cyan-500,
+[data-mode='dark'] .bg-cyan-500.text-white {
+  background-color: var(--brand-500) !important;
+}
+[data-mode='dark'] button.bg-emerald-600,
+[data-mode='dark'] .bg-emerald-600.text-white,
+[data-mode='dark'] button.bg-teal-600,
+[data-mode='dark'] .bg-teal-600.text-white,
+[data-mode='dark'] button.bg-green-600,
+[data-mode='dark'] .bg-green-600.text-white,
+[data-mode='dark'] button.bg-sky-600,
+[data-mode='dark'] .bg-sky-600.text-white,
+[data-mode='dark'] button.bg-cyan-600,
+[data-mode='dark'] .bg-cyan-600.text-white {
+  background-color: var(--brand-600) !important;
 }
 
 @media print {
