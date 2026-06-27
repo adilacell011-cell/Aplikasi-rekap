@@ -77,8 +77,8 @@ export function NeumorphicLight() {
           
           <div className="mb-6 relative z-10">
             <div className="flex items-start">
-              <span className="text-xl font-bold text-[#0ea5e9] mt-2 mr-1">Rp</span>
-              <h1 className="text-4xl sm:text-5xl font-black text-[#0ea5e9] tracking-tight animate-pulse-glow" style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}>
+              <span className="text-xl font-bold text-slate-700 mt-2 mr-1">Rp</span>
+              <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight" style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}>
                 47.850.000
               </h1>
             </div>
