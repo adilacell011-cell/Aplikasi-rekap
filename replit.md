@@ -38,7 +38,7 @@ A self-hostable Indonesian BRILink/pulsa finance management PWA for a small mult
 - Role/branch visibility filtering is done client-side in the stores (parity with original). Server-side authorization enforces bos-only access on genuinely admin-only mutations: create/delete branch, settings, and salary-slip writes. Branch capital PATCH stays open to branch staff (used for capital shifts on the Dashboard).
 - Orval/OpenAPI codegen is intentionally skipped for the frontend (store-based, not hook-based).
 - Date columns are stored as ISO strings to match prior Firestore behavior.
-- UI uses a "glowing glass" (Kaca Bercahaya) dark theme applied globally via utility-class overrides in `artifacts/alfathpulsa/src/index.css` (frosted translucent surfaces, ambient blue glow, brand rim-light), not per-component. Light Mode is intentionally left untouched.
+- UI is **light-first ("Fresh Light")**: an airy blue gradient canvas, crisp white cards with soft shadows, and colorful gradient rounded-square menu icon tiles (white icons). Theme styling is applied globally via utility-class overrides in `artifacts/alfathpulsa/src/index.css` (not per-component); the menu-tile gradients are the one exception, mapped per-label in the `ServiceIcon` component in `Dashboard.tsx`. Default mode is light; dark mode is retained as a calm ambient-blue option. Theme attributes (`data-mode`/`data-theme`) are set at the App root so the Login/loading screens are themed too. The `themeStore` persist key is versioned (`alfath-theme-storage-v2`); bumping it resets existing users to defaults (both mode and accent color). (User rejected an earlier dark "glowing glass" theme.)
 
 ## User preferences
 

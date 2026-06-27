@@ -16,70 +16,32 @@ interface ServiceIconProps {
 }
 
 function ServiceIcon({ icon, label, onClick, badge, index }: ServiceIconProps) {
-  const serviceStyles: Record<string, { bg: string; border: string; iconColor: string }> = {
-    "Hutang / Bon": { 
-      bg: "bg-indigo-500/15 hover:bg-indigo-500/25 active:bg-indigo-500/35 border-indigo-500/20", 
-      border: "border-indigo-500/25", 
-      iconColor: "text-indigo-400 group-hover:text-indigo-300" 
-    },
-    "Tabungan": { 
-      bg: "bg-amber-500/15 hover:bg-amber-500/25 active:bg-amber-500/35 border-amber-500/20", 
-      border: "border-amber-500/25", 
-      iconColor: "text-amber-400 group-hover:text-amber-300" 
-    },
-    "Setoran": { 
-      bg: "bg-emerald-500/15 hover:bg-emerald-500/25 active:bg-emerald-500/35 border-emerald-500/20", 
-      border: "border-emerald-500/25", 
-      iconColor: "text-emerald-400 group-hover:text-emerald-300" 
-    },
-    "Rekap Data": { 
-      bg: "bg-sky-500/15 hover:bg-sky-500/25 active:bg-sky-500/35 border-sky-500/20", 
-      border: "border-sky-500/25", 
-      iconColor: "text-sky-400 group-hover:text-sky-300" 
-    },
-    "Info SOP": { 
-      bg: "bg-orange-500/15 hover:bg-orange-500/25 active:bg-orange-500/35 border-orange-500/20", 
-      border: "border-orange-500/25", 
-      iconColor: "text-orange-400 group-hover:text-orange-300" 
-    },
-    "Log Aktivitas": { 
-      bg: "bg-purple-500/15 hover:bg-purple-500/25 active:bg-purple-500/35 border-purple-500/20", 
-      border: "border-purple-500/25", 
-      iconColor: "text-purple-400 group-hover:text-purple-300" 
-    },
-    "Kelola Tim": { 
-      bg: "bg-cyan-500/15 hover:bg-cyan-500/25 active:bg-cyan-500/35 border-cyan-500/20", 
-      border: "border-cyan-500/25", 
-      iconColor: "text-cyan-400 group-hover:text-cyan-300" 
-    },
-    "Slip Gaji": { 
-      bg: "bg-rose-500/15 hover:bg-rose-500/25 active:bg-rose-500/35 border-rose-500/20", 
-      border: "border-rose-500/25", 
-      iconColor: "text-rose-400 group-hover:text-rose-300" 
-    },
+  const serviceStyles: Record<string, { grad: string; shadow: string }> = {
+    "Hutang / Bon":  { grad: "from-violet-500 to-indigo-600",  shadow: "shadow-indigo-500/40" },
+    "Tabungan":      { grad: "from-amber-400 to-orange-500",   shadow: "shadow-orange-500/40" },
+    "Setoran":       { grad: "from-emerald-400 to-teal-500",   shadow: "shadow-teal-500/40" },
+    "Rekap Data":    { grad: "from-sky-400 to-blue-600",       shadow: "shadow-blue-500/40" },
+    "Info SOP":      { grad: "from-orange-400 to-rose-500",    shadow: "shadow-orange-500/40" },
+    "Log Aktivitas": { grad: "from-fuchsia-500 to-purple-600", shadow: "shadow-purple-500/40" },
+    "Kelola Tim":    { grad: "from-cyan-400 to-sky-500",       shadow: "shadow-cyan-500/40" },
+    "Slip Gaji":     { grad: "from-pink-500 to-rose-500",      shadow: "shadow-rose-500/40" },
   };
 
-  const style = serviceStyles[label] || { 
-    bg: "bg-brand-500/15 hover:bg-brand-500/25 active:bg-brand-500/35 border-brand-500/20", 
-    border: "border-brand-500/25", 
-    iconColor: "text-brand-400" 
-  };
+  const style = serviceStyles[label] || { grad: "from-brand-500 to-brand-700", shadow: "shadow-brand-500/40" };
 
   return (
     <button 
       onClick={onClick}
-      className="flex flex-col items-center gap-2 group relative active:scale-90 transition-all duration-200"
+      className="flex flex-col items-center gap-2.5 group relative active:scale-90 transition-all duration-200"
     >
-      <div className={`w-14 h-14 md:w-16 md:h-16 ${style.bg} border ${style.border} rounded-[1.6rem] flex items-center justify-center transition-all duration-300 shadow-md shadow-black/15 relative overflow-hidden group-hover:scale-105`}>
-        {/* Ambient highlight glow */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        {/* Bottom indicator bar matching Material You tap design */}
-        <div className="absolute inset-x-2.5 bottom-1 h-0.5 rounded-full bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
-        <div className={`${style.iconColor} group-hover:scale-110 transition-transform duration-300 stroke-[2px]`}>
+      <div className={`w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br ${style.grad} rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg ${style.shadow} relative overflow-hidden group-hover:scale-105 group-hover:-translate-y-0.5`}>
+        {/* Glossy top highlight for a fresh tile look */}
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent"></div>
+        <div className="relative text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
           {React.cloneElement(icon as React.ReactElement, { className: 'w-6 h-6 md:w-7 md:h-7' })}
         </div>
       </div>
-      <span className="text-[11px] md:text-xs font-semibold text-slate-300/90 text-center leading-tight tracking-normal group-hover:text-white transition-colors">
+      <span className="text-[11px] md:text-xs font-bold text-asphalt-text-100 text-center leading-tight tracking-tight">
         {label}
       </span>
       {badge && (
@@ -470,13 +432,13 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
         </div>
       )}
 
-      {/* Grid Services - Android Widget Style Menu (Material You) */}
-      <div className="bg-[#181E2B] rounded-[2.2rem] p-6 border border-asphalt-700/25 shadow-xl shadow-black/10">
-        <div className="flex items-center gap-2 mb-6 px-1.5">
+      {/* Grid Services - colorful gradient tiles, clean & fresh */}
+      <div className="bg-asphalt-800 rounded-[1.75rem] p-5 border border-asphalt-700/40 shadow-xl shadow-black/10">
+        <div className="flex items-center gap-2 mb-5 px-1">
           <div className="w-1.5 h-4 bg-brand-500 rounded-full"></div>
           <span className="text-[11px] font-black text-brand-500 tracking-wider uppercase">Menu Layanan Utama</span>
         </div>
-        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-y-6">
+        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-3 gap-y-5">
           {role !== 'mandor' && (
             <>
               <ServiceIcon 

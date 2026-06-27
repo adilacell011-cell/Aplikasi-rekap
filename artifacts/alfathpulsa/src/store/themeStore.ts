@@ -15,12 +15,12 @@ export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
       theme: 'blue',
-      themeMode: 'dark',
+      themeMode: 'light',
       setTheme: (theme) => set({ theme }),
       setThemeMode: (themeMode) => set({ themeMode }),
     }),
     {
-      name: 'alfath-theme-storage',
+      name: 'alfath-theme-storage-v2',
     }
   )
 );

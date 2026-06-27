@@ -16,6 +16,7 @@ import { SOPPage } from './components/SOPPage';
 import { SalarySlips } from './components/SalarySlips';
 import { NotificationManager } from './components/NotificationManager';
 import { useAuthStore } from './store/authStore';
+import { useThemeStore } from './store/themeStore';
 import { initFinanceStoreListeners } from './hooks/useFinanceStore';
 import { checkIsBos, checkIsMandor } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
@@ -23,7 +24,14 @@ import { logout } from './store/authStore';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
+  const { theme, themeMode } = useThemeStore();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips'>('dashboard');
+
+  // Apply theme globally (also on login / loading screens, before Layout mounts)
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-mode', themeMode);
+  }, [theme, themeMode]);
 
   useEffect(() => {
     if (user && role) {

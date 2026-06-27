@@ -53,9 +53,9 @@
 
 /* Light Mode Variables - Elegant warm alabaster off-white, safe for eyes, zero screen glare */
 [data-mode='light'] {
-  --bg-asphalt-900: #F6F5F0; /* Soft warm-grey glare-free background */
-  --bg-asphalt-800: #FAF9F5; /* Premium soft off-white card canvas */
-  --bg-asphalt-700: #E2E0D4; /* Smooth warm borders and split dividers */
+  --bg-asphalt-900: #EAF1FD; /* Airy light-blue canvas */
+  --bg-asphalt-800: #FFFFFF; /* Crisp clean white cards */
+  --bg-asphalt-700: #E6ECF5; /* Soft blue-grey borders and dividers */
   --text-asphalt-100: #1C2434; /* Soft deep charcoal (not high contrast pure-black) */
   --text-asphalt-400: #5E6A7D; /* Comfortable slate grey subtitle print */
 
@@ -233,16 +233,16 @@
 
 /* Gradients Overrides */
 [data-mode='light'] .from-\[\#181E2B\] {
-  --tw-gradient-from: #FEFCF9 !important;
-  --tw-gradient-stops: var(--tw-gradient-from), #F3F1E7 !important;
-  background-image: linear-gradient(to bottom right, #FEFCF9, #F3F1E7) !important;
-  border-color: rgba(226, 224, 212, 0.8) !important;
+  --tw-gradient-from: #FFFFFF !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #EEF4FF !important;
+  background-image: linear-gradient(to bottom right, #FFFFFF, #EEF4FF) !important;
+  border-color: #E6ECF5 !important;
 }
 [data-mode='light'] .via-\[\#101520\] {
-  --tw-gradient-via: #FAF8F2 !important;
+  --tw-gradient-via: #F4F8FF !important;
 }
 [data-mode='light'] .to-\[\#0A0E17\] {
-  --tw-gradient-to: #F3F1E7 !important;
+  --tw-gradient-to: #EAF1FD !important;
 }
 [data-mode='light'] .bg-\[\#181E2B\] {
   background-color: var(--bg-asphalt-800) !important;
@@ -268,7 +268,7 @@
 [data-mode='light'] .bg-asphalt-900\/50,
 [data-mode='light'] .bg-asphalt-900\/40,
 [data-mode='light'] .bg-asphalt-900\/60 {
-  background-color: #ECE9DE !important;
+  background-color: #EEF3FB !important;
 }
 
 [data-mode='light'] .divide-asphalt-700\/50 > :not([hidden]) ~ :not([hidden]) {
@@ -369,75 +369,40 @@ body {
 }
 
 /* ============================================================
-   "KACA BERCAHAYA" — Glowing Glass theme (dark mode only)
-   Frosted translucent surfaces over an ambient blue-lit asphalt
-   backdrop with a brand rim-light. Cards are slimmer + cleaner
-   so they no longer feel oversized. (AgenBRILink finance)
-   Scoped to :not([data-mode='light']) so Light Mode is untouched.
+   "FRESH LIGHT" — airy blue dashboard (inspired by reference):
+   a soft blue gradient canvas, crisp white cards with premium
+   soft shadows, and compact neat radii. Light mode is default.
    ============================================================ */
-:root:not([data-mode='light']) {
-  --glass-bg: rgba(22, 28, 41, 0.55);
-  --glass-bg-soft: rgba(20, 26, 38, 0.40);
-  --glass-border: rgba(255, 255, 255, 0.09);
-  --glass-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-  --glow-brand: rgba(0, 132, 255, 0.30);
+
+/* Slimmer, neater radii in BOTH modes so cards aren't oversized */
+.rounded-\[2\.5rem\] { border-radius: 1.4rem !important; }
+.rounded-\[2\.4rem\] { border-radius: 1.4rem !important; }
+.rounded-\[2\.2rem\] { border-radius: 1.4rem !important; }
+.rounded-\[2rem\]    { border-radius: 1.25rem !important; }
+.p-7 { padding: 1.35rem !important; }
+
+/* Airy blue gradient canvas behind the whole app (light mode) */
+[data-mode='light'] body {
+  background-color: #EAF1FD;
+}
+[data-mode='light'] .bg-asphalt-900 {
+  background-image: linear-gradient(180deg, #E4EEFD 0%, #EFF5FF 36%, #FAFCFF 100%) !important;
+  background-attachment: fixed !important;
 }
 
-/* Ambient "lamp" glow behind the whole app */
+/* Crisp white cards with a soft, premium shadow */
+[data-mode='light'] .bg-asphalt-800 {
+  box-shadow: 0 8px 26px -12px rgba(30, 64, 124, 0.18),
+              0 2px 6px -3px rgba(30, 64, 124, 0.08) !important;
+}
+
+/* Dark mode keeps a calm ambient blue tint (no heavy glass) */
 :root:not([data-mode='light']) body {
   background-color: #070b13;
   background-image:
-    radial-gradient(58rem 58rem at 12% -12%, rgba(0, 132, 255, 0.14), transparent 60%),
-    radial-gradient(48rem 48rem at 105% 2%, rgba(0, 132, 255, 0.11), transparent 55%),
-    radial-gradient(46rem 46rem at 50% 118%, rgba(0, 132, 255, 0.09), transparent 60%);
+    radial-gradient(56rem 56rem at 12% -12%, rgba(0, 132, 255, 0.10), transparent 60%),
+    radial-gradient(46rem 46rem at 105% 2%, rgba(0, 132, 255, 0.08), transparent 55%);
   background-attachment: fixed;
-}
-
-/* Frosted glass for primary surfaces (cards, header, nav, inputs) */
-:root:not([data-mode='light']) .bg-asphalt-800 {
-  background-color: var(--glass-bg) !important;
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-}
-:root:not([data-mode='light']) .bg-asphalt-800\/50,
-:root:not([data-mode='light']) .bg-asphalt-900\/50,
-:root:not([data-mode='light']) .bg-asphalt-900\/40,
-:root:not([data-mode='light']) .bg-asphalt-900\/60 {
-  background-color: var(--glass-bg-soft) !important;
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-}
-
-/* Brighter, softer glass borders */
-:root:not([data-mode='light']) .border-asphalt-700,
-:root:not([data-mode='light']) .border-asphalt-700\/50,
-:root:not([data-mode='light']) .border-asphalt-700\/55,
-:root:not([data-mode='light']) .border-asphalt-700\/30,
-:root:not([data-mode='light']) .border-asphalt-700\/25 {
-  border-color: var(--glass-border) !important;
-}
-
-/* Slimmer, less bubbly radii + trimmed padding so cards aren't oversized */
-.rounded-\[2\.5rem\] { border-radius: 1.5rem !important; }
-.rounded-\[2rem\]    { border-radius: 1.3rem !important; }
-.p-7 { padding: 1.35rem !important; }
-
-/* Glowing rim-light on the large card surfaces */
-:root:not([data-mode='light']) .rounded-\[2\.5rem\],
-:root:not([data-mode='light']) .rounded-\[2rem\] {
-  box-shadow:
-    0 0 0 1px var(--glass-border),
-    var(--glass-rim),
-    0 18px 42px -20px rgba(0, 0, 0, 0.8),
-    0 0 30px -12px var(--glow-brand) !important;
-}
-
-/* Brand buttons / accents actually emit light */
-:root:not([data-mode='light']) .bg-brand-500,
-:root:not([data-mode='light']) .bg-brand-600 {
-  box-shadow:
-    0 0 22px -4px rgba(0, 132, 255, 0.55),
-    0 6px 18px -8px rgba(0, 0, 0, 0.6);
 }
 
 @media print {
