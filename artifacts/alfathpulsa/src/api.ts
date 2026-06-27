@@ -21,7 +21,6 @@ export interface AppUser {
   role: 'bos' | 'mandor' | 'karyawan';
   branchId: string | null;
   phone?: string | null;
-  baseSalary?: number | null;
 }
 
 let onUnauthorized: (() => void) | null = null;
@@ -80,7 +79,6 @@ function toAppUser(profile: any): AppUser {
     role: profile.role,
     branchId: profile.branchId ?? null,
     phone: profile.phone ?? null,
-    baseSalary: profile.baseSalary ?? null,
   };
 }
 

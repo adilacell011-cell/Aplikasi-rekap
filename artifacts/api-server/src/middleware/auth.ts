@@ -18,7 +18,6 @@ export function toProfile(u: DbUser) {
     role: u.role,
     branchId: u.branchId,
     phone: u.phone,
-    baseSalary: u.baseSalary,
     createdAt: u.createdAt,
   };
 }

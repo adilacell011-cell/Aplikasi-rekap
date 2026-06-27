@@ -27,7 +27,6 @@ export const users = pgTable("users", {
   role: text("role").notNull().default("karyawan"),
   branchId: uuid("branch_id"),
   phone: text("phone"),
-  baseSalary: doublePrecision("base_salary"),
   createdAt: text("created_at").notNull(),
 });
 

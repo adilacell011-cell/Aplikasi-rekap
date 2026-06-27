@@ -21,7 +21,6 @@ router.post("/", requireBos, async (req, res) => {
     role,
     branchId,
     phone,
-    baseSalary,
     email,
   } = req.body ?? {};
   if (!username || !password || !name) {
@@ -46,7 +45,6 @@ router.post("/", requireBos, async (req, res) => {
       role: role ?? "karyawan",
       branchId: branchId ?? null,
       phone: phone ?? null,
-      baseSalary: baseSalary ?? null,
       email: email ?? null,
       createdAt: new Date().toISOString(),
     })
@@ -57,14 +55,13 @@ router.post("/", requireBos, async (req, res) => {
 // Update a user (bos only)
 router.patch("/:id", requireBos, async (req, res) => {
   const id = String(req.params.id);
-  const { name, role, branchId, phone, baseSalary, email, password } =
+  const { name, role, branchId, phone, email, password } =
     req.body ?? {};
   const updates: Record<string, unknown> = {};
   if (name !== undefined) updates.name = name;
   if (role !== undefined) updates.role = role;
   if (branchId !== undefined) updates.branchId = branchId;
   if (phone !== undefined) updates.phone = phone;
-  if (baseSalary !== undefined) updates.baseSalary = baseSalary;
   if (email !== undefined) updates.email = email;
   if (password) updates.passwordHash = hashPassword(String(password));
   if (Object.keys(updates).length === 0) {
