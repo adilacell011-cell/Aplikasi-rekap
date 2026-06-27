@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --animate-marquee: marquee 15s linear infinite;
+  
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  
+  --color-asphalt-900: var(--bg-asphalt-900);
+  --color-asphalt-800: var(--bg-asphalt-800);
+  --color-asphalt-700: var(--bg-asphalt-700);
+  --color-asphalt-text-100: var(--text-asphalt-100);
+  --color-asphalt-text-400: var(--text-asphalt-400);
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-33.33%);
+    }
+  }
+}
+
+:root {
+  /* GoPay Asphalt Dark Theme */
+  --brand-50: #e0f2fe;
+  --brand-100: #bae6fd;
+  --brand-200: #7dd3fc;
+  --brand-500: #0084FF; /* GoPay Blue */
+  --brand-600: #0076E5;
+  --brand-700: #0068CC;
+  --brand-800: #0059B2;
+  --brand-900: #004B99;
+
+  /* Asphalt Colors */
+  --bg-asphalt-900: #0B111D;
+  --bg-asphalt-800: #181E2B;
+  --bg-asphalt-700: #262E3D;
+  --text-asphalt-100: #E1E7EF;
+  --text-asphalt-400: #94A3B8;
+}
+
+/* Light Mode Variables - Elegant warm alabaster off-white, safe for eyes, zero screen glare */
+[data-mode='light'] {
+  --bg-asphalt-900: #F6F5F0; /* Soft warm-grey glare-free background */
+  --bg-asphalt-800: #FAF9F5; /* Premium soft off-white card canvas */
+  --bg-asphalt-700: #E2E0D4; /* Smooth warm borders and split dividers */
+  --text-asphalt-100: #1C2434; /* Soft deep charcoal (not high contrast pure-black) */
+  --text-asphalt-400: #5E6A7D; /* Comfortable slate grey subtitle print */
+
+  --brand-50: #F0F6FF;
+}
+
+/* Light Mode Styling Override Injectors */
+[data-mode='light'] .text-white {
+  color: #1A2232 !important;
+}
+[data-mode='light'] .text-white\/95 {
+  color: #1A2232 !important;
+}
+[data-mode='light'] .text-white\/90 {
+  color: #242E40 !important;
+}
+[data-mode='light'] .text-white\/80 {
+  color: #2D394D !important;
+}
+[data-mode='light'] .text-white\/70 {
+  color: #334155 !important;
+}
+[data-mode='light'] .text-white\/60 {
+  color: #4B5A70 !important;
+}
+[data-mode='light'] .text-white\/50 {
+  color: #556173 !important;
+}
+[data-mode='light'] .text-white\/40 {
+  color: #64748B !important;
+}
+[data-mode='light'] .text-white\/30 {
+  color: #8E9FBC !important;
+}
+[data-mode='light'] .text-slate-300 {
+  color: #2B374A !important;
+}
+[data-mode='light'] .text-slate-300\/90 {
+  color: #2B374A !important;
+}
+[data-mode='light'] .text-asphalt-text-100 {
+  color: #1A2232 !important;
+}
+[data-mode='light'] .text-asphalt-text-400 {
+  color: #5E6A7D !important;
+}
+[data-mode='light'] .text-asphalt-text-500 {
+  color: #4B5E78 !important;
+}
+
+/* Ensure rich contrast for text with color names in Light Mode */
+[data-mode='light'] .text-brand-400 {
+  color: #0076E5 !important;
+}
+[data-mode='light'] .text-emerald-400 {
+  color: #047857 !important;
+}
+[data-mode='light'] .text-emerald-500\/80 {
+  color: #047857 !important;
+}
+[data-mode='light'] .text-emerald-500\/30 {
+  color: #10B981 !important;
+}
+[data-mode='light'] .text-rose-400 {
+  color: #BE123C !important;
+}
+[data-mode='light'] .text-amber-400 {
+  color: #C2410C !important;
+}
+
+/* Solid Color High-Contrast Backgrounds - RESTORE pure white text */
+[data-mode='light'] .bg-brand-500.text-white,
+[data-mode='light'] .bg-brand-500 .text-white,
+[data-mode='light'] .bg-brand-600.text-white,
+[data-mode='light'] .bg-brand-600 .text-white,
+[data-mode='light'] .bg-emerald-500.text-white,
+[data-mode='light'] .bg-emerald-500 .text-white,
+[data-mode='light'] .bg-emerald-600.text-white,
+[data-mode='light'] .bg-emerald-600 .text-white,
+[data-mode='light'] .bg-rose-500.text-white,
+[data-mode='light'] .bg-rose-500 .text-white,
+[data-mode='light'] .bg-rose-600.text-white,
+[data-mode='light'] .bg-rose-600 .text-white,
+[data-mode='light'] button.text-white,
+[data-mode='light'] button .text-white {
+  color: #FFFFFF !important;
+}
+
+/* Enhancing service menus with rich contrast in light mode */
+[data-mode='light'] .text-indigo-400 {
+  color: #4F46E5 !important;
+}
+[data-mode='light'] .text-amber-400 {
+  color: #C2410C !important;
+}
+[data-mode='light'] .text-emerald-400 {
+  color: #047857 !important;
+}
+[data-mode='light'] .text-sky-400 {
+  color: #0369A1 !important;
+}
+[data-mode='light'] .text-orange-400 {
+  color: #C2410C !important;
+}
+[data-mode='light'] .text-purple-400 {
+  color: #7E22CE !important;
+}
+[data-mode='light'] .text-cyan-400 {
+  color: #0E7490 !important;
+}
+[data-mode='light'] .text-rose-400 {
+  color: #BE123C !important;
+}
+
+[data-mode='light'] .group-hover\:text-indigo-300 {
+  color: #3730A3 !important;
+}
+[data-mode='light'] .group-hover\:text-amber-300 {
+  color: #7C2D12 !important;
+}
+[data-mode='light'] .group-hover\:text-emerald-300 {
+  color: #064E3B !important;
+}
+[data-mode='light'] .group-hover\:text-sky-300 {
+  color: #0C4A6E !important;
+}
+[data-mode='light'] .group-hover\:text-orange-300 {
+  color: #7C2D12 !important;
+}
+[data-mode='light'] .group-hover\:text-purple-300 {
+  color: #581C87 !important;
+}
+[data-mode='light'] .group-hover\:text-cyan-300 {
+  color: #164E63 !important;
+}
+[data-mode='light'] .group-hover\:text-rose-300 {
+  color: #881337 !important;
+}
+
+/* Background Adapters */
+[data-mode='light'] .bg-asphalt-900 {
+  background-color: var(--bg-asphalt-900) !important;
+}
+[data-mode='light'] .bg-asphalt-800 {
+  background-color: var(--bg-asphalt-800) !important;
+}
+[data-mode='light'] .bg-asphalt-700 {
+  background-color: var(--bg-asphalt-700) !important;
+}
+
+/* Borders Adaptations */
+[data-mode='light'] .border-asphalt-700 {
+  border-color: var(--bg-asphalt-700) !important;
+}
+[data-mode='light'] .border-asphalt-850 {
+  border-color: var(--bg-asphalt-700) !important;
+}
+[data-mode='light'] .border-asphalt-700\/55,
+[data-mode='light'] .border-asphalt-700\/50 {
+  border-color: rgba(210, 208, 195, 0.7) !important;
+}
+[data-mode='light'] .border-asphalt-700\/30,
+[data-mode='light'] .divide-asphalt-700\/30 {
+  border-color: rgba(210, 208, 195, 0.45) !important;
+}
+[data-mode='light'] .divide-asphalt-700\/30 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(210, 208, 195, 0.45) !important;
+}
+[data-mode='light'] .border-asphalt-800\/30 {
+  border-color: rgba(210, 208, 195, 0.4) !important;
+}
+[data-mode='light'] .border-asphalt-700\/25 {
+  border-color: rgba(210, 208, 195, 0.3) !important;
+}
+
+/* Gradients Overrides */
+[data-mode='light'] .from-\[\#181E2B\] {
+  --tw-gradient-from: #FEFCF9 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #F3F1E7 !important;
+  background-image: linear-gradient(to bottom right, #FEFCF9, #F3F1E7) !important;
+  border-color: rgba(226, 224, 212, 0.8) !important;
+}
+[data-mode='light'] .via-\[\#101520\] {
+  --tw-gradient-via: #FAF8F2 !important;
+}
+[data-mode='light'] .to-\[\#0A0E17\] {
+  --tw-gradient-to: #F3F1E7 !important;
+}
+[data-mode='light'] .bg-\[\#181E2B\] {
+  background-color: var(--bg-asphalt-800) !important;
+}
+[data-mode='light'] .border-\[\#262E3D\]\/30 {
+  border-color: rgba(226, 224, 212, 0.5) !important;
+}
+
+/* Form Fields */
+[data-mode='light'] input,
+[data-mode='light'] textarea,
+[data-mode='light'] select {
+  background-color: #FEFCF9 !important;
+  border-color: #DDDBCF !important;
+  color: #1E293B !important;
+}
+[data-mode='light'] input::placeholder,
+[data-mode='light'] textarea::placeholder {
+  color: #9CA3AF !important;
+}
+
+/* Mid transparency boxes */
+[data-mode='light'] .bg-asphalt-900\/50,
+[data-mode='light'] .bg-asphalt-900\/40,
+[data-mode='light'] .bg-asphalt-900\/60 {
+  background-color: #ECE9DE !important;
+}
+
+[data-mode='light'] .divide-asphalt-700\/50 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--bg-asphalt-700) !important;
+}
+
+[data-theme='emerald'] {
+  --brand-50: #ecfdf5;
+  --brand-100: #d1fae5;
+  --brand-200: #a7f3d0;
+  --brand-500: #10b981;
+  --brand-600: #059669;
+  --brand-700: #047857;
+  --brand-800: #065f46;
+  --brand-900: #064e3b;
+}
+
+[data-theme='rose'] {
+  --brand-50: #fff1f2;
+  --brand-100: #ffe4e6;
+  --brand-200: #fecdd3;
+  --brand-500: #f43f5e;
+  --brand-600: #e11d48;
+  --brand-700: #be123c;
+  --brand-800: #9f1239;
+  --brand-900: #881337;
+}
+
+[data-theme='amber'] {
+  --brand-50: #fffbeb;
+  --brand-100: #fef3c7;
+  --brand-200: #fde68a;
+  --brand-500: #f59e0b;
+  --brand-600: #d97706;
+  --brand-700: #b45309;
+  --brand-800: #92400e;
+  --brand-900: #78350f;
+}
+
+[data-theme='indigo'] {
+  --brand-50: #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-200: #c7d2fe;
+  --brand-500: #6366f1;
+  --brand-600: #4f46e5;
+  --brand-700: #4338ca;
+  --brand-800: #3730a3;
+  --brand-900: #312e81;
+}
+
+[data-theme='slate'] {
+  --brand-50: #f8fafc;
+  --brand-100: #f1f5f9;
+  --brand-200: #e2e8f0;
+  --brand-500: #64748b;
+  --brand-600: #475569;
+  --brand-700: #334155;
+  --brand-800: #1e293b;
+  --brand-900: #0f172a;
+}
+
+@layer utilities {
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--bg-asphalt-900);
+}
+
+/* Sembunyikan indikator loading sisa jika ada */
+#nprogress .bar {
+  background: var(--brand-500) !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--brand-500), 0 0 5px var(--brand-500) !important;
+}
+
+/* Jika ingin benar-benar hilang, gunakan ini: */
+#nprogress {
+  display: none !important;
+}
+
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  /* Hide the layout header and nav */
+  header, nav, button:not(.print-visible) {
+    display: none !important;
+  }
+  
+  /* Make the main content take full screen for printing */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  
+  /* Ensure backgrounds render on print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Make cards look good on paper */
+  .bg-asphalt-800, .bg-asphalt-900 {
+    background-color: #f7f7f7 !important;
+    border: 1px solid #ddd !important;
+    color: #111 !important;
+  }
+  
+  .text-white {
+    color: black !important;
+  }
+  
+  .text-asphalt-text-400 {
+    color: #555 !important;
+  }
+}
+
