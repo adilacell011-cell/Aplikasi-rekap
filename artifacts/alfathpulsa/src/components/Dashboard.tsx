@@ -12,33 +12,18 @@ interface ServiceIconProps {
   label: string;
   onClick: () => void;
   badge?: string;
-  index: number;
+  index?: number;
 }
 
-function ServiceIcon({ icon, label, onClick, badge, index }: ServiceIconProps) {
-  const serviceStyles: Record<string, { grad: string; shadow: string }> = {
-    "Hutang / Bon":  { grad: "from-violet-500 to-indigo-600",  shadow: "shadow-indigo-500/40" },
-    "Tabungan":      { grad: "from-amber-400 to-orange-500",   shadow: "shadow-orange-500/40" },
-    "Setoran":       { grad: "from-emerald-400 to-teal-500",   shadow: "shadow-teal-500/40" },
-    "Rekap Data":    { grad: "from-sky-400 to-blue-600",       shadow: "shadow-blue-500/40" },
-    "Info SOP":      { grad: "from-orange-400 to-rose-500",    shadow: "shadow-orange-500/40" },
-    "Log Aktivitas": { grad: "from-fuchsia-500 to-purple-600", shadow: "shadow-purple-500/40" },
-    "Kelola Tim":    { grad: "from-cyan-400 to-sky-500",       shadow: "shadow-cyan-500/40" },
-    "Slip Gaji":     { grad: "from-pink-500 to-rose-500",      shadow: "shadow-rose-500/40" },
-  };
-
-  const style = serviceStyles[label] || { grad: "from-brand-500 to-brand-700", shadow: "shadow-brand-500/40" };
-
+function ServiceIcon({ icon, label, onClick, badge }: ServiceIconProps) {
   return (
     <button 
       onClick={onClick}
-      className="flex flex-col items-center gap-2.5 group relative active:scale-90 transition-all duration-200"
+      className="menu-tile-btn flex flex-col items-center gap-2.5 group relative transition-transform duration-150"
     >
-      <div className={`w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br ${style.grad} rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg ${style.shadow} relative overflow-hidden group-hover:scale-105 group-hover:-translate-y-0.5`}>
-        {/* Glossy top highlight for a fresh tile look */}
-        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent"></div>
-        <div className="relative text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          {React.cloneElement(icon as React.ReactElement, { className: 'w-6 h-6 md:w-7 md:h-7' })}
+      <div className="menu-tile w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-200 relative overflow-hidden group-hover:-translate-y-0.5">
+        <div className="menu-tile-icon relative transition-transform duration-200 group-hover:scale-110">
+          {React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6 md:w-7 md:h-7' })}
         </div>
       </div>
       <span className="text-[11px] md:text-xs font-bold text-asphalt-text-100 text-center leading-tight tracking-tight">
@@ -46,7 +31,7 @@ function ServiceIcon({ icon, label, onClick, badge, index }: ServiceIconProps) {
       </span>
       {badge && (
         <div className="absolute top-0 right-1.5 pointer-events-none z-10">
-          <div className="bg-rose-500 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full leading-none shadow-md shadow-rose-500/30 border border-[#0B111D]">
+          <div className="bg-rose-500 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-full leading-none shadow-md shadow-rose-500/30">
             {badge}
           </div>
         </div>

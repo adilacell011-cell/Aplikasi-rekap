@@ -451,6 +451,45 @@ body {
               0 0 20px rgba(16, 185, 129, 0.18) !important;
 }
 
+/* ── Harmonized menu tiles ─────────────────────────────────────────────
+   No more rainbow gradients — every tile is one calm raised surface with a
+   single blue "lampu" accent icon, so the menu feels unified with the theme. */
+.menu-tile {
+  background-color: var(--bg-asphalt-700);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.45),
+              -2px -2px 8px rgba(255, 255, 255, 0.04);
+}
+.menu-tile-icon { color: var(--brand-500); }
+
+[data-mode='light'] .menu-tile {
+  background-color: var(--bg-asphalt-800) !important;
+  box-shadow: 5px 5px 12px var(--neu-dark),
+              -5px -5px 12px var(--neu-light) !important;
+}
+[data-mode='light'] .menu-tile-btn:hover .menu-tile {
+  box-shadow: 6px 6px 15px var(--neu-dark),
+              -6px -6px 15px var(--neu-light) !important;
+}
+
+/* Tactile press — tiles & buttons "come alive" by carving inward when tapped */
+.menu-tile-btn:active { transform: scale(0.93); }
+.menu-tile-btn:active .menu-tile {
+  box-shadow: inset 4px 4px 9px rgba(0, 0, 0, 0.55),
+              inset -3px -3px 8px rgba(255, 255, 255, 0.04);
+}
+[data-mode='light'] .menu-tile-btn:active .menu-tile {
+  box-shadow: inset 5px 5px 11px var(--neu-dark),
+              inset -5px -5px 11px var(--neu-light) !important;
+}
+
+/* Every button gets a subtle, springy press feedback */
+button { transition: transform 0.12s ease, box-shadow 0.15s ease; }
+button:not(:disabled):active { transform: scale(0.96); }
+[data-mode='light'] button.bg-brand-500:active,
+[data-mode='light'] button.bg-emerald-500:active {
+  transform: scale(0.96);
+}
+
 /* Dark mode keeps a calm ambient blue tint (no heavy glass) */
 :root:not([data-mode='light']) body {
   background-color: #070b13;
