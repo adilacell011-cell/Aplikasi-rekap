@@ -55,3 +55,12 @@ export function requireBos(req: Request, res: Response, next: NextFunction) {
   }
   next();
 }
+
+export function requireBosOrMandor(req: Request, res: Response, next: NextFunction) {
+  const user = (req as AuthedRequest).authUser;
+  if (user?.role !== "bos" && user?.role !== "mandor") {
+    res.status(403).json({ error: "Forbidden" });
+    return;
+  }
+  next();
+}

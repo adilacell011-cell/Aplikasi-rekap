@@ -28,11 +28,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      let errorMessage = 'Something went wrong.';
+      let errorMessage = 'Terjadi kesalahan pada aplikasi.';
       try {
         const parsed = JSON.parse(this.state.error?.message || '{}');
         if (parsed.error) {
-          errorMessage = `Firestore Error: ${parsed.error} (${parsed.operationType} on ${parsed.path})`;
+          errorMessage = `Error: ${parsed.error}`;
         }
       } catch (e) {
         errorMessage = this.state.error?.message || errorMessage;

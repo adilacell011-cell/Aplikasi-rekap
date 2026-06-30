@@ -1,5 +1,5 @@
 import path from "node:path";
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
@@ -31,6 +31,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+// Global error handler — catches any unhandled errors from async route handlers
+app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
+  const message = err instanceof Error ? err.message : String(err);
+  logger.error({ err, url: req.url, method: req.method }, "Unhandled route error");
+  if (!res.headersSent) {
+    res.status(500).json({ error: "Terjadi kesalahan pada server", details: message });
+  }
+});
 
 // In a self-hosted (single-container) deployment the API server also serves the
 // built frontend. Enabled only when STATIC_DIR is set, so local dev (Vite) is

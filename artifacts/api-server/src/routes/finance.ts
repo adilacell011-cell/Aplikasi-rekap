@@ -14,7 +14,7 @@ import {
   settings,
 } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
-import { requireBos } from "../middleware/auth";
+import { requireBos, requireBosOrMandor } from "../middleware/auth";
 
 const router: IRouter = Router();
 
@@ -167,7 +167,7 @@ router.patch("/branches/:id/deposits/:depId", async (req, res) => {
   return res.json(row ?? null);
 });
 
-router.delete("/branches/:id/deposits/:depId", async (req, res) => {
+router.delete("/branches/:id/deposits/:depId", requireBos, async (req, res) => {
   await db
     .delete(branchDeposits)
     .where(eq(branchDeposits.id, String(req.params.depId)));
@@ -181,7 +181,7 @@ router.get("/banks", async (_req, res) => {
   return res.json(await db.select().from(banks));
 });
 
-router.post("/banks", async (req, res) => {
+router.post("/banks", requireBos, async (req, res) => {
   const { bankName, balance, branchId } = req.body ?? {};
   const [created] = await db
     .insert(banks)
@@ -208,7 +208,7 @@ router.patch("/banks/:id", async (req, res) => {
   return res.json(row ?? null);
 });
 
-router.delete("/banks/:id", async (req, res) => {
+router.delete("/banks/:id", requireBos, async (req, res) => {
   await db.delete(banks).where(eq(banks.id, String(req.params.id)));
   return res.json({ ok: true });
 });
@@ -260,7 +260,7 @@ router.post("/debts", async (req, res) => {
   return res.status(201).json({ ...created, details: [] });
 });
 
-router.delete("/debts/:id", async (req, res) => {
+router.delete("/debts/:id", requireBos, async (req, res) => {
   await db
     .delete(customerTransactions)
     .where(eq(customerTransactions.customerId, String(req.params.id)));
@@ -342,7 +342,7 @@ router.post("/savings", async (req, res) => {
   return res.status(201).json({ ...created, transactions: [] });
 });
 
-router.delete("/savings/:id", async (req, res) => {
+router.delete("/savings/:id", requireBos, async (req, res) => {
   await db
     .delete(savingTransactions)
     .where(eq(savingTransactions.savingId, String(req.params.id)));
@@ -432,7 +432,7 @@ router.patch("/voucher-recaps/:id", async (req, res) => {
   return res.json(row ?? null);
 });
 
-router.delete("/voucher-recaps/:id", async (req, res) => {
+router.delete("/voucher-recaps/:id", requireBos, async (req, res) => {
   await db.delete(voucherRecaps).where(eq(voucherRecaps.id, String(req.params.id)));
   return res.json({ ok: true });
 });
@@ -527,7 +527,7 @@ router.get("/attendance", async (req, res) => {
   return res.json(rows);
 });
 
-router.post("/attendance", async (req, res) => {
+router.post("/attendance", requireBosOrMandor, async (req, res) => {
   const b = req.body ?? {};
   if (!b.userId || !b.date) return res.status(400).json({ error: "userId and date required" });
   const [created] = await db
@@ -547,7 +547,7 @@ router.post("/attendance", async (req, res) => {
   return res.status(201).json(created);
 });
 
-router.patch("/attendance/:id", async (req, res) => {
+router.patch("/attendance/:id", requireBosOrMandor, async (req, res) => {
   const updates: Record<string, unknown> = {};
   for (const k of ["status", "notes"]) {
     if (req.body?.[k] !== undefined) updates[k] = req.body[k];
@@ -560,7 +560,7 @@ router.patch("/attendance/:id", async (req, res) => {
   return res.json(row ?? null);
 });
 
-router.delete("/attendance/:id", async (req, res) => {
+router.delete("/attendance/:id", requireBosOrMandor, async (req, res) => {
   await db.delete(attendance).where(eq(attendance.id, String(req.params.id)));
   return res.json({ ok: true });
 });

@@ -66,14 +66,16 @@ router.patch("/:id", requireBos, async (req, res) => {
   if (password) updates.passwordHash = hashPassword(String(password));
   if (Object.keys(updates).length === 0) {
     const [u] = await db.select().from(users).where(eq(users.id, id));
-    return res.json(u ? toProfile(u) : null);
+    if (!u) return res.status(404).json({ error: "User tidak ditemukan" });
+    return res.json(toProfile(u));
   }
   const [updated] = await db
     .update(users)
     .set(updates)
     .where(eq(users.id, id))
     .returning();
-  return res.json(updated ? toProfile(updated) : null);
+  if (!updated) return res.status(404).json({ error: "User tidak ditemukan" });
+  return res.json(toProfile(updated));
 });
 
 // Delete a user (bos only)
