@@ -805,7 +805,6 @@ function SlipDocument({
           {/* Earnings & deductions */}
           <div className="mx-6 rounded-2xl bg-asphalt-900/40 border border-asphalt-700 shadow-inner overflow-hidden">
             <SectionHead title="Pendapatan" />
-            <SlipRow label="Gaji / Hari" value={formatRupiah(daily)} />
             <SlipRow label={`Jumlah Hari (${getMonthName(slip.month)})`} value={`${dim} hari`} />
             <SlipRow label="Gaji Pokok" value={formatRupiah(slip.baseSalary)} bold />
             <SlipRow label="Bonus / Tunjangan" value={`+ ${formatRupiah(slip.bonus)}`} valueClass="text-emerald-500" />

@@ -564,7 +564,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               <div className="bg-brand-500 p-4 rounded-[2rem] shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
                 <div className="flex items-center gap-2 text-white/80">
                   <PiggyBank className="w-5 h-5 text-white" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Karyawan</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Nasabah</span>
                 </div>
                 <p className="text-base font-black text-white leading-none mt-1">{formatRupiah(totalSavings)}</p>
               </div>
