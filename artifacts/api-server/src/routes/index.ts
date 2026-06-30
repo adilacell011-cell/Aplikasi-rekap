@@ -9,7 +9,7 @@ import { requireAuth } from "../middleware/auth";
 const router: IRouter = Router();
 
 router.use(healthRouter);
-router.use(requireAuth, whatsappRouter);
+router.use(whatsappRouter);
 router.use("/auth", authRouter);
 router.use("/users", requireAuth, usersRouter);
 router.use(requireAuth, financeRouter);

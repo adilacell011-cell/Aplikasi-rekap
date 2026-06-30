@@ -1,9 +1,10 @@
 import { Router, type IRouter } from "express";
+import { requireAuth } from "../middleware/auth";
 
 const router: IRouter = Router();
 
 // Fonnte WhatsApp API proxy
-router.post("/whatsapp/send", async (req, res) => {
+router.post("/whatsapp/send", requireAuth, async (req, res) => {
   const { target, message } = req.body ?? {};
   const apiKey = process.env.FONNTE_API_KEY;
 
