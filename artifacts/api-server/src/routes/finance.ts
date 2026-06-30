@@ -181,7 +181,7 @@ router.get("/banks", async (_req, res) => {
   return res.json(await db.select().from(banks));
 });
 
-router.post("/banks", requireBos, async (req, res) => {
+router.post("/banks", async (req, res) => {
   const { bankName, balance, branchId } = req.body ?? {};
   const [created] = await db
     .insert(banks)
@@ -208,7 +208,14 @@ router.patch("/banks/:id", async (req, res) => {
   return res.json(row ?? null);
 });
 
-router.delete("/banks/:id", requireBos, async (req, res) => {
+router.delete("/banks/:id", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
+  const [record] = await db.select().from(banks).where(eq(banks.id, String(req.params.id)));
+  if (!record) return res.status(404).json({ error: "Data tidak ditemukan" });
+  const isBosGlobal = authUser?.role === "bos" && !authUser?.branchId;
+  if (!isBosGlobal && record.branchId && authUser?.branchId !== record.branchId) {
+    return res.status(403).json({ error: "Hanya bisa hapus rekening cabang sendiri" });
+  }
   await db.delete(banks).where(eq(banks.id, String(req.params.id)));
   return res.json({ ok: true });
 });
