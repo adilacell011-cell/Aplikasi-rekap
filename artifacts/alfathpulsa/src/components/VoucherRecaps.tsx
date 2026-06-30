@@ -7,6 +7,7 @@ import { Plus, Trash2, Calendar, Calculator, FileText, TrendingUp, Wallet, Arrow
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 import { BlockChoice } from './BlockChoice';
+import { ScrollPicker } from './ScrollPicker';
 
 export function VoucherRecaps() {
   const { voucherRecaps, addVoucherRecap, updateVoucherRecap, reportVoucherRecaps, deleteVoucherRecap, isLoaded, branches } = useFinanceStore();
@@ -372,17 +373,13 @@ export function VoucherRecaps() {
                 </div>
 
                 {/* Filter Controls for Global View */}
-                <div className="space-y-2 pt-2">
-                  <BlockChoice
-                    columns={3}
-                    size="sm"
+                <div className="space-y-1 pt-2">
+                  <ScrollPicker
                     value={String(selectedMonth)}
                     onChange={(v) => setSelectedMonth(parseInt(v))}
                     options={months.map((m, i) => ({ value: String(i), label: m }))}
                   />
-                  <BlockChoice
-                    columns={3}
-                    size="sm"
+                  <ScrollPicker
                     value={String(selectedYear)}
                     onChange={(v) => setSelectedYear(parseInt(v))}
                     options={years.map(y => ({ value: String(y), label: String(y) }))}
@@ -567,17 +564,13 @@ export function VoucherRecaps() {
           </div>
 
           {/* Month/Year Filter */}
-          <div className="space-y-3 pt-6 border-t border-white/5">
-            <BlockChoice
-              columns={3}
-              size="sm"
+          <div className="space-y-1 pt-6 border-t border-white/5">
+            <ScrollPicker
               value={String(selectedMonth)}
               onChange={(v) => setSelectedMonth(parseInt(v))}
               options={months.map((m, i) => ({ value: String(i), label: m }))}
             />
-            <BlockChoice
-              columns={3}
-              size="sm"
+            <ScrollPicker
               value={String(selectedYear)}
               onChange={(v) => setSelectedYear(parseInt(v))}
               options={years.map(y => ({ value: String(y), label: String(y) }))}

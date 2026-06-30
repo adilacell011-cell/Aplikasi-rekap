@@ -10,6 +10,7 @@ import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 import { iosAlert } from '../store/dialogStore';
 import { BlockChoice } from './BlockChoice';
+import { ScrollPicker } from './ScrollPicker';
 
 export function SalarySlips() {
   const [slips, setSlips] = useState<SalarySlip[]>([]);
@@ -357,9 +358,7 @@ export function SalarySlips() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bulan</label>
-                  <BlockChoice
-                    columns={3}
-                    size="sm"
+                  <ScrollPicker
                     value={String(month)}
                     onChange={(v) => setMonth(parseInt(v))}
                     options={Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
@@ -370,9 +369,7 @@ export function SalarySlips() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tahun</label>
-                  <BlockChoice
-                    columns={3}
-                    size="sm"
+                  <ScrollPicker
                     value={String(year)}
                     onChange={(v) => setYear(parseInt(v))}
                     options={[year - 1, year, year + 1].map(y => ({
@@ -569,9 +566,7 @@ export function SalarySlips() {
              <div className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700 space-y-4 animate-in fade-in slide-in-from-top-1">
               <div className="space-y-1">
                 <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bulan</span>
-                <BlockChoice
-                  columns={3}
-                  size="sm"
+                <ScrollPicker
                   value={String(filterMonth)}
                   onChange={(v) => setFilterMonth(parseInt(v))}
                   options={Array.from({ length: 12 }, (_, i) => i + 1).map(m => ({
@@ -582,9 +577,7 @@ export function SalarySlips() {
               </div>
               <div className="space-y-1">
                 <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tahun</span>
-                <BlockChoice
-                  columns={3}
-                  size="sm"
+                <ScrollPicker
                   value={String(filterYear)}
                   onChange={(v) => setFilterYear(parseInt(v))}
                   options={[filterYear - 1, filterYear, filterYear + 1].map(y => ({
