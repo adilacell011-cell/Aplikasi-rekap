@@ -1,4 +1,4 @@
-modules = ["nodejs-24", "python-3.11"]
+modules = ["nodejs-20", "web", "bash"]
 
 [deployment]
 router = "application"
@@ -23,3 +23,6 @@ timeoutMs = 20000
 
 [userenv.shared]
 AUTH_SECRET = "97588ced69e74bf0a16472e46a288966f30bcd712ff756f5d65a3a6a34b51866"
+
+[nix]
+channel = "stable-25_05"
