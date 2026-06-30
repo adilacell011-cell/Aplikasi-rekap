@@ -417,28 +417,6 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
         </div>
       )}
 
-      {/* Karyawan own savings & bon summary */}
-      {role === 'karyawan' && user?.uid && (
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-asphalt-800 p-4 rounded-3xl border border-asphalt-700/50 shadow-xl flex flex-col justify-center space-y-2 group hover:border-rose-500/30 transition-all">
-            <div className="flex items-center gap-2 text-rose-500">
-              <div className="p-1.5 bg-rose-500/10 rounded-lg">
-                <Receipt className="w-4 h-4" />
-              </div>
-              <span className="text-[9px] font-black uppercase tracking-[0.2em]">Bon / Kasbon Saya</span>
-            </div>
-            <p className="text-base font-black text-white">{formatRupiah(store.getEmployeeDebtBalance(user.uid))}</p>
-          </div>
-          <div className="bg-brand-500 p-4 rounded-[2rem] shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
-            <div className="flex items-center gap-2 text-white/80">
-              <PiggyBank className="w-5 h-5 text-white" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Saya</span>
-            </div>
-            <p className="text-base font-black text-white leading-none mt-1">{formatRupiah(store.getEmployeeSavingBalance(user.uid))}</p>
-          </div>
-        </div>
-      )}
-
       {/* Grid Services - colorful gradient tiles, clean & fresh */}
       <div className="bg-asphalt-800 rounded-[1.75rem] p-5 border border-asphalt-700/40 shadow-xl shadow-black/10">
         <div className="flex items-center gap-2 mb-5 px-1">
