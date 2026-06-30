@@ -14,7 +14,7 @@ import {
   settings,
 } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
-import { requireBos, requireBosOrMandor } from "../middleware/auth";
+import { requireBos, requireBosOrMandor, type AuthedRequest } from "../middleware/auth";
 
 const router: IRouter = Router();
 
@@ -260,7 +260,16 @@ router.post("/debts", async (req, res) => {
   return res.status(201).json({ ...created, details: [] });
 });
 
-router.delete("/debts/:id", requireBos, async (req, res) => {
+router.delete("/debts/:id", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
+  if (authUser?.role === "bos") {
+    return res.status(403).json({ error: "Bos tidak bisa hapus data hutang nasabah" });
+  }
+  const [record] = await db.select().from(customers).where(eq(customers.id, String(req.params.id)));
+  if (!record) return res.status(404).json({ error: "Data tidak ditemukan" });
+  if (record.branchId && authUser?.branchId !== record.branchId) {
+    return res.status(403).json({ error: "Hanya bisa hapus data cabang sendiri" });
+  }
   await db
     .delete(customerTransactions)
     .where(eq(customerTransactions.customerId, String(req.params.id)));
@@ -342,7 +351,16 @@ router.post("/savings", async (req, res) => {
   return res.status(201).json({ ...created, transactions: [] });
 });
 
-router.delete("/savings/:id", requireBos, async (req, res) => {
+router.delete("/savings/:id", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
+  if (authUser?.role === "bos") {
+    return res.status(403).json({ error: "Bos tidak bisa hapus data tabungan nasabah" });
+  }
+  const [record] = await db.select().from(savings).where(eq(savings.id, String(req.params.id)));
+  if (!record) return res.status(404).json({ error: "Data tidak ditemukan" });
+  if (record.branchId && authUser?.branchId !== record.branchId) {
+    return res.status(403).json({ error: "Hanya bisa hapus data cabang sendiri" });
+  }
   await db
     .delete(savingTransactions)
     .where(eq(savingTransactions.savingId, String(req.params.id)));
