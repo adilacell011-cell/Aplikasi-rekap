@@ -10,9 +10,10 @@ import {
   savingTransactions,
   voucherRecaps,
   salarySlips,
+  attendance,
   settings,
 } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { requireBos } from "../middleware/auth";
 
 const router: IRouter = Router();
@@ -507,6 +508,60 @@ router.patch("/salary-slips/:id", requireBos, async (req, res) => {
 
 router.delete("/salary-slips/:id", requireBos, async (req, res) => {
   await db.delete(salarySlips).where(eq(salarySlips.id, String(req.params.id)));
+  return res.json({ ok: true });
+});
+
+// --------------------------------------------------------------------------
+// Attendance (absensi hari libur karyawan)
+// --------------------------------------------------------------------------
+router.get("/attendance", async (req, res) => {
+  const { userId, month, year } = req.query as Record<string, string>;
+  let rows = await db.select().from(attendance);
+  if (userId) rows = rows.filter((r) => r.userId === userId);
+  if (month && year) {
+    const prefix = `${year}-${String(Number(month)).padStart(2, "0")}`;
+    rows = rows.filter((r) => String(r.date).startsWith(prefix));
+  } else if (year) {
+    rows = rows.filter((r) => String(r.date).startsWith(year));
+  }
+  return res.json(rows);
+});
+
+router.post("/attendance", async (req, res) => {
+  const b = req.body ?? {};
+  if (!b.userId || !b.date) return res.status(400).json({ error: "userId and date required" });
+  const [created] = await db
+    .insert(attendance)
+    .values({
+      userId: b.userId,
+      userName: b.userName ?? null,
+      branchId: b.branchId ?? null,
+      date: b.date,
+      status: b.status ?? "libur",
+      notes: b.notes ?? null,
+      createdAt: now(),
+      createdBy: b.createdBy ?? null,
+      createdByName: b.createdByName ?? null,
+    })
+    .returning();
+  return res.status(201).json(created);
+});
+
+router.patch("/attendance/:id", async (req, res) => {
+  const updates: Record<string, unknown> = {};
+  for (const k of ["status", "notes"]) {
+    if (req.body?.[k] !== undefined) updates[k] = req.body[k];
+  }
+  const [row] = await db
+    .update(attendance)
+    .set(updates)
+    .where(eq(attendance.id, String(req.params.id)))
+    .returning();
+  return res.json(row ?? null);
+});
+
+router.delete("/attendance/:id", async (req, res) => {
+  await db.delete(attendance).where(eq(attendance.id, String(req.params.id)));
   return res.json({ ok: true });
 });
 

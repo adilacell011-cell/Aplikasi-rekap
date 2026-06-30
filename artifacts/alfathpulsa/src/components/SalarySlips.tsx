@@ -128,6 +128,17 @@ export function SalarySlips() {
     return () => clearInterval(interval);
   }, [isBos, isGlobalBos, currentUserBranchId, uid, isAuthLoaded, filterMonth, filterYear, showAllHistory]);
 
+  // Auto-fetch attendance (hari libur) when employee + month + year is selected
+  useEffect(() => {
+    if (!selectedUserId) return;
+    api.get(`/attendance?userId=${selectedUserId}&month=${month}&year=${year}`)
+      .then((records: { status: string }[]) => {
+        const offCount = records.filter(r => r.status === 'libur' || r.status === 'izin').length;
+        setDaysOff(offCount > 0 ? String(offCount) : '0');
+      })
+      .catch(() => {});
+  }, [selectedUserId, month, year]);
+
   // Auto-calculate potongan from hari libur (= hari libur x gaji per hari); still editable manually.
   // When hari libur is 0/empty, reset to 0 so no stale deduction lingers (bos can still type a manual amount after).
   useEffect(() => {

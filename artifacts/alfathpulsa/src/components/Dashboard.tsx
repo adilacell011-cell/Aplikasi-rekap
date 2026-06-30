@@ -3,7 +3,7 @@ import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { checkIsBos } from '../utils/authUtils';
 import { formatRupiah, formatNumberInput, formatDate } from '../utils/formatters';
-import { Building2, Plus, Trash2, Landmark, Receipt, Coins, Edit3, Check, Send, PiggyBank, Users, Ticket, Store, BookOpen, MoreHorizontal, History as HistoryIcon, UserCog, X, FileText, ArrowLeftRight, Wallet } from 'lucide-react';
+import { Building2, Plus, Trash2, Landmark, Receipt, Coins, Edit3, Check, Send, PiggyBank, Users, Ticket, Store, BookOpen, MoreHorizontal, History as HistoryIcon, UserCog, X, FileText, ArrowLeftRight, Wallet, CalendarDays } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 
@@ -486,6 +486,14 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               icon={<Wallet />} 
               label="Kasbon Karyawan" 
               onClick={() => onNavigate?.('employee-finance')}
+            />
+          )}
+          {role !== 'karyawan' && (
+            <ServiceIcon 
+              index={9}
+              icon={<CalendarDays />} 
+              label="Absensi" 
+              onClick={() => onNavigate?.('absensi')}
             />
           )}
         </div>

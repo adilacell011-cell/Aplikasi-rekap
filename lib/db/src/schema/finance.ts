@@ -166,6 +166,19 @@ export const salarySlips = pgTable("salary_slips", {
   createdByName: text("created_by_name"),
 });
 
+export const attendance = pgTable("attendance", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull(),
+  userName: text("user_name"),
+  branchId: uuid("branch_id"),
+  date: text("date").notNull(),
+  status: text("status").notNull().default("libur"),
+  notes: text("notes"),
+  createdAt: text("created_at").notNull(),
+  createdBy: text("created_by"),
+  createdByName: text("created_by_name"),
+});
+
 export const settings = pgTable("settings", {
   id: text("id").primaryKey().default("general"),
   fixedBalance: doublePrecision("fixed_balance").default(0),

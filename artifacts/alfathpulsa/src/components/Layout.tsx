@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
 
@@ -10,8 +10,8 @@ import { checkIsBos, checkIsMandor } from '../utils/authUtils';
 
 interface LayoutProps {
   children: React.ReactNode;
-  activeTab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance';
-  setActiveTab: (tab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance') => void;
+  activeTab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi';
+  setActiveTab: (tab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi') => void;
   role?: 'bos' | 'mandor' | 'karyawan' | null;
 }
 
@@ -333,6 +333,25 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                 </div>
                 <span className={`text-[9px] font-black tracking-widest uppercase`}>
                   Keuangan
+                </span>
+              </button>
+            )}
+
+            {/* Absensi (Bos & Mandor) */}
+            {(checkIsBos(user, role) || checkIsMandor(role)) && (
+              <button
+                onClick={() => setActiveTab('absensi')}
+                className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
+                  activeTab === 'absensi' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                }`}
+              >
+                <div className="relative">
+                  <CalendarDays 
+                    className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'absensi' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
+                  />
+                </div>
+                <span className="text-[9px] font-black tracking-widest uppercase">
+                  Absensi
                 </span>
               </button>
             )}
