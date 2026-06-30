@@ -64,10 +64,12 @@ export function DropdownPicker({
   const dropdownStyle: React.CSSProperties = rect
     ? {
         position: 'fixed',
-        top: rect.bottom + 6,
+        top: rect.bottom,
         left: rect.left,
         width: rect.width,
         zIndex: 9999,
+        maxHeight: 220,
+        overflowY: 'auto',
       }
     : { display: 'none' };
 
@@ -80,10 +82,10 @@ export function DropdownPicker({
         onClick={() => {
           if (!disabled) setOpen((v) => !v);
         }}
-        className={`w-full flex items-center justify-between gap-3 px-5 py-3 rounded-2xl border font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 ${
+        className={`w-full flex items-center justify-between gap-3 px-5 py-3 border font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 ${
           open
-            ? 'border-brand-500 bg-brand-500/10 text-brand-400'
-            : 'border-asphalt-700 bg-asphalt-900 text-asphalt-text-300 hover:border-asphalt-600'
+            ? 'rounded-t-2xl rounded-b-none border-b-0 border-brand-500 bg-brand-500/10 text-brand-400'
+            : 'rounded-2xl border-asphalt-700 bg-asphalt-900 text-asphalt-text-300 hover:border-asphalt-600'
         } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <span>{selectedLabel}</span>
@@ -96,7 +98,7 @@ export function DropdownPicker({
         <div
           ref={dropdownRef}
           style={dropdownStyle}
-          className="bg-asphalt-800 border border-asphalt-700 rounded-2xl shadow-[0_16px_40px_-8px_rgba(0,0,0,0.6)] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+          className="bg-asphalt-800 border border-t-0 border-brand-500 rounded-b-2xl shadow-[0_16px_32px_-8px_rgba(0,0,0,0.5)] overflow-y-auto no-scrollbar animate-in fade-in duration-150"
         >
           {options.map((opt, i) => {
             const selected = String(opt.value) === String(value);
@@ -113,7 +115,7 @@ export function DropdownPicker({
                   selected
                     ? 'text-brand-400 bg-brand-500/10'
                     : 'text-asphalt-text-300 hover:bg-asphalt-700/50'
-                } ${i > 0 ? 'border-t border-asphalt-700/50' : ''}`}
+                } ${i > 0 ? 'border-t border-asphalt-700/40' : ''}`}
               >
                 <span>{opt.label}</span>
                 {selected && <Check className="w-4 h-4 text-brand-400 shrink-0" />}
