@@ -173,8 +173,9 @@ export function Team() {
 
   const handleAddBranch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newBranchName.trim()) {
-      addBranch(newBranchName);
+    const trimmed = newBranchName.trim().toUpperCase();
+    if (trimmed) {
+      addBranch(trimmed);
       setNewBranchName('');
     }
   };
@@ -281,9 +282,13 @@ export function Team() {
             <form onSubmit={handleAddBranch} className="flex items-center gap-2">
                <input 
                  type="text" 
-                 placeholder="NAMA CABANG BARU" 
+                 placeholder="Nama cabang baru" 
                  value={newBranchName}
-                 onChange={(e) => setNewBranchName(e.target.value.toUpperCase())}
+                 onChange={(e) => setNewBranchName(e.target.value)}
+                 autoCorrect="off"
+                 autoComplete="off"
+                 spellCheck={false}
+                 autoCapitalize="characters"
                  className="bg-asphalt-800 border border-asphalt-700/50 rounded-xl px-3 py-2 text-[10px] font-black text-white uppercase tracking-widest placeholder:text-asphalt-text-400 focus:outline-none focus:border-brand-500 transition-all shadow-inner w-40 md:w-48"
                />
                <button 
