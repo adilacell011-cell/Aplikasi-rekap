@@ -1,5 +1,16 @@
 # AlfathPulsa — pakai PostgreSQL yang SUDAH ADA
 # Untuk server dengan container alfathpulsaapp-db-1
+#
+# ── STB / low-RAM notes ──────────────────────────────────────────────────────
+# mem_limit default 384m untuk 2 GB STB. Sesuaikan dengan RAM perangkat:
+#   1 GB STB  →  NODE_MAX_OLD_SPACE_MB=128  mem_limit=256m
+#   2 GB STB  →  NODE_MAX_OLD_SPACE_MB=192  mem_limit=384m  (default)
+#   4 GB STB  →  NODE_MAX_OLD_SPACE_MB=384  mem_limit=512m
+#
+# Migration schema otomatis jalan di boot PERTAMA saja.
+# Setelah upgrade: set MIGRATE=true sekali lalu restart, atau:
+#   docker compose exec app rm /data/.migrated
+# ─────────────────────────────────────────────────────────────────────────────
 
 services:
   app:
@@ -11,11 +22,22 @@ services:
       DATABASE_URL: postgres://alfath:alfath@alfathpulsaapp-db-1:5432/alfathpulsa
       AUTH_SECRET: GANTI_DENGAN_HASIL_openssl_rand_-hex_32
       FONNTE_API_KEY: ""
+      LOG_LEVEL: warn
+      NODE_MAX_OLD_SPACE_MB: "192"
+      MIGRATE: "false"
     ports:
       - "8090:8080"
+    volumes:
+      - alfath_data:/data
+    mem_limit: 384m
+    memswap_limit: 384m
+    cpus: "1.0"
     networks:
       - alfathpulsaapp_default
       - default
+
+volumes:
+  alfath_data:
 
 networks:
   alfathpulsaapp_default:

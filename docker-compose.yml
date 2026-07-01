@@ -1,4 +1,4 @@
-# AlfathPulsa - self-hosted deployment (CasaOS / Docker Compose)
+# AlfathPulsa - self-hosted deployment (CasaOS / Docker Compose / Dockge)
 #
 # Quick start on your server:
 #   1. Copy .env.example to .env and fill in the values (especially AUTH_SECRET).
@@ -9,6 +9,17 @@
 # To use a prebuilt image from GitHub instead of building locally, set
 # APP_IMAGE in .env (e.g. ghcr.io/your-username/alfathpulsa:latest) and run
 # `docker compose pull` before `up -d`.
+#
+# ── STB / low-RAM notes ──────────────────────────────────────────────────────
+# mem_limit caps the container's RAM. Adjust to match your device:
+#   1 GB STB  →  app: 256m  db: 128m  NODE_MAX_OLD_SPACE_MB: 128
+#   2 GB STB  →  app: 384m  db: 192m  (defaults below)
+#   4 GB STB  →  app: 512m  db: 256m
+#
+# Database migration runs automatically on the FIRST boot only.
+# To force re-run after an upgrade:  set MIGRATE=true for one restart,
+# or delete the marker:  docker compose exec app rm /data/.migrated
+# ─────────────────────────────────────────────────────────────────────────────
 
 services:
   db:
@@ -20,6 +31,12 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-alfathpulsa}
     volumes:
       - alfath_db:/var/lib/postgresql/data
+    # Limit Postgres RAM – on a 2 GB STB, 192 MB is plenty for this workload.
+    mem_limit: ${DB_MEM_LIMIT:-192m}
+    memswap_limit: ${DB_MEM_LIMIT:-192m}
+    # Limit Postgres to 0.5 CPU so it doesn't starve the app or the OS on a
+    # slow STB quad-core.
+    cpus: "0.5"
     healthcheck:
       test:
         ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-alfath} -d ${POSTGRES_DB:-alfathpulsa}"]
@@ -42,8 +59,24 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-alfath}:${POSTGRES_PASSWORD:-alfathpulsa}@db:5432/${POSTGRES_DB:-alfathpulsa}
       AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET in your .env file (a long random string)}
       FONNTE_API_KEY: ${FONNTE_API_KEY:-}
+      # LOG_LEVEL=warn skips noisy per-request info logs (good for STB).
+      # Set to "info" temporarily if you need to debug requests.
+      LOG_LEVEL: ${LOG_LEVEL:-warn}
+      # V8 heap cap in MB. Raise if you see "Heap out of memory" errors.
+      NODE_MAX_OLD_SPACE_MB: ${NODE_MAX_OLD_SPACE_MB:-192}
+      # Set to "true" to force schema migration on next restart (e.g. after upgrade).
+      MIGRATE: ${MIGRATE:-false}
     ports:
       - "${APP_PORT:-8080}:8080"
+    volumes:
+      # Stores the migration marker (.migrated) so drizzle push only runs once.
+      - alfath_data:/data
+    # Limit app RAM. On a 2 GB STB: 384 MB leaves room for OS + DB + other services.
+    mem_limit: ${APP_MEM_LIMIT:-384m}
+    memswap_limit: ${APP_MEM_LIMIT:-384m}
+    # Allow up to 1 full CPU core (burst), but yield to other processes under load.
+    cpus: "1.0"
 
 volumes:
   alfath_db:
+  alfath_data:

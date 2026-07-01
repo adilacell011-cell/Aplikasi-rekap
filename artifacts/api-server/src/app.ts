@@ -1,11 +1,15 @@
 import path from "node:path";
 import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
+import compression from "compression";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
+
+// Gzip/deflate all responses – cuts bandwidth significantly on slow STB networks.
+app.use(compression());
 
 app.use(
   pinoHttp({
@@ -46,11 +50,33 @@ app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
 // unaffected.
 const staticDir = process.env.STATIC_DIR;
 if (staticDir) {
-  app.use(express.static(staticDir));
+  // Vite builds JS/CSS with content-hashed filenames → safe to cache for 1 year.
+  app.use(
+    "/assets",
+    express.static(path.join(staticDir, "assets"), {
+      maxAge: "1y",
+      immutable: true,
+    }),
+  );
+
+  // Root-level files (index.html, manifest, icons) must always be re-validated.
+  app.use(
+    express.static(staticDir, {
+      maxAge: 0,
+      setHeaders(res, filePath) {
+        if (filePath.endsWith(".html")) {
+          res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        }
+      },
+    }),
+  );
+
   // SPA fallback: serve index.html for any non-API GET so client-side routing works.
   app.use((req, res, next) => {
     if (req.method !== "GET" || req.path.startsWith("/api")) return next();
-    res.sendFile(path.join(staticDir, "index.html"));
+    res
+      .setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
+      .sendFile(path.join(staticDir, "index.html"));
   });
 }
 
