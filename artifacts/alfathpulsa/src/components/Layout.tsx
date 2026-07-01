@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
@@ -55,22 +56,29 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
     <div className="min-h-[100dvh] bg-asphalt-900 flex justify-center selection:bg-brand-500/30" data-theme={theme} data-mode={themeMode}>
       <div className="w-full md:max-w-3xl lg:max-w-5xl xl:max-w-7xl bg-asphalt-900 h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100 md:border-x md:border-asphalt-800/30">
         {/* Global Error Display */}
-        {error && (
-          <div
-            className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0.5rem)+5rem)] left-4 right-4 z-[60] ios-card ios-font flex items-center gap-3 px-4 py-3 animate-in fade-in slide-in-from-bottom-4 duration-300"
-          >
-            <div className="w-9 h-9 rounded-full bg-[#ff3b30] flex items-center justify-center shrink-0">
-              <AlertCircle className="w-5 h-5 ios-on-color" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="ios-card-title text-[15px] font-semibold leading-tight tracking-[-0.01em]">Terjadi Kesalahan</p>
-              <p className="ios-card-sub text-[13px] leading-tight truncate mt-0.5">{error}</p>
-            </div>
-            <button onClick={() => setError(null)} className="ios-card-sub p-1.5 -mr-1 rounded-full active:bg-black/5">
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              key="global-error"
+              initial={{ opacity: 0, y: -16, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 36, mass: 0.8 }}
+              className="fixed top-[calc(env(safe-area-inset-top,0px)+0.75rem)] left-4 right-4 z-[60] ios-card ios-font flex items-center gap-3 px-4 py-3"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#ff3b30] flex items-center justify-center shrink-0">
+                <AlertCircle className="w-5 h-5 ios-on-color" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="ios-card-title text-[15px] font-semibold leading-tight tracking-[-0.01em]">Terjadi Kesalahan</p>
+                <p className="ios-card-sub text-[13px] leading-tight truncate mt-0.5">{error}</p>
+              </div>
+              <button onClick={() => setError(null)} className="ios-card-sub p-1.5 -mr-1 rounded-full active:bg-black/5">
+                <X className="w-4 h-4" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Top Header */}
         <header className="bg-asphalt-900 text-white sticky top-0 z-20 px-5 pt-[env(safe-area-inset-top,1.5rem)] pb-4 flex items-center justify-between border-b border-asphalt-800/10">

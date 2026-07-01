@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -19,33 +20,45 @@ export function ConfirmModal({
   confirmText = 'Hapus',
   confirmVariant = 'danger',
 }: ConfirmModalProps) {
-  if (!isOpen) return null;
-
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-6 ios-backdrop animate-in fade-in duration-200"
-      onClick={onCancel}
-    >
-      <div
-        className="ios-alert ios-font animate-in zoom-in-95 fade-in duration-200"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="ios-alert-body">
-          <h3 className="ios-alert-title">{title}</h3>
-          {message && <div className="ios-alert-message">{message}</div>}
-        </div>
-        <div className="ios-alert-actions">
-          <button onClick={onCancel} className="ios-alert-btn is-default">
-            Batal
-          </button>
-          <button
-            onClick={onConfirm}
-            className={`ios-alert-btn ${confirmVariant === 'danger' ? 'is-destructive' : ''}`}
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="confirm-modal-backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center ios-backdrop ios-font"
+          onClick={onCancel}
+        >
+          <motion.div
+            key="confirm-modal-panel"
+            initial={{ opacity: 0, scale: 0.82, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 4 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 38, mass: 0.7 }}
+            className="ios-alert"
+            onClick={(e) => e.stopPropagation()}
           >
-            {confirmText}
-          </button>
-        </div>
-      </div>
-    </div>
+            <div className="ios-alert-body">
+              <h3 className="ios-alert-title">{title}</h3>
+              {message && <div className="ios-alert-message">{message}</div>}
+            </div>
+            <div className="ios-alert-actions">
+              <button onClick={onCancel} className="ios-alert-btn is-default">
+                Batal
+              </button>
+              <button
+                onClick={onConfirm}
+                className={`ios-alert-btn ${confirmVariant === 'danger' ? 'is-destructive' : ''}`}
+              >
+                {confirmText}
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
