@@ -25,7 +25,7 @@ import { initFinanceStoreListeners } from './hooks/useFinanceStore';
 import { checkIsBos } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
 import { logout } from './store/authStore';
-import { AppLogoIcon } from './components/AppLogo';
+import { AppLogoIcon, AppLogoWordmark } from './components/AppLogo';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
