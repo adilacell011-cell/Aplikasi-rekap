@@ -23,11 +23,11 @@ export function SuccessToast({ show, message, onClose }: SuccessToastProps) {
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ opacity: 0, y: -24, scale: 0.96 }}
+          initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -16, scale: 0.96 }}
+          exit={{ opacity: 0, y: 16, scale: 0.96 }}
           transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-          className="fixed top-[calc(env(safe-area-inset-top,1rem)+0.75rem)] left-1/2 -translate-x-1/2 z-[110] w-[90%] max-w-sm ios-font"
+          className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0.5rem)+0.75rem)] left-1/2 -translate-x-1/2 z-[110] w-[90%] max-w-sm ios-font"
         >
           <div className="ios-card flex items-center gap-3 px-4 py-3">
             <div className="w-9 h-9 rounded-full bg-[#34c759] flex items-center justify-center shrink-0">
