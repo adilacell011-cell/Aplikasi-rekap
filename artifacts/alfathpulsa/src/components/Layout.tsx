@@ -318,8 +318,8 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               </button>
             )}
 
-            {/* Keuangan Saya (Karyawan only) */}
-            {role === 'karyawan' && (
+            {/* Keuangan Saya (Karyawan & Mandor) */}
+            {(role === 'karyawan' || role === 'mandor') && (
               <button
                 onClick={() => setActiveTab('my-finance')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
@@ -337,8 +337,8 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               </button>
             )}
 
-            {/* Absensi (Bos & Mandor) */}
-            {(checkIsBos(user, role) || checkIsMandor(role)) && (
+            {/* Absensi (Bos only) */}
+            {checkIsBos(user, role) && (
               <button
                 onClick={() => setActiveTab('absensi')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${

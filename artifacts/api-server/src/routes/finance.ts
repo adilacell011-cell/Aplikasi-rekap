@@ -552,7 +552,7 @@ router.get("/attendance", async (req, res) => {
   return res.json(rows);
 });
 
-router.post("/attendance", requireBosOrMandor, async (req, res) => {
+router.post("/attendance", requireBos, async (req, res) => {
   const b = req.body ?? {};
   if (!b.userId || !b.date) return res.status(400).json({ error: "userId and date required" });
   const [created] = await db
@@ -572,7 +572,7 @@ router.post("/attendance", requireBosOrMandor, async (req, res) => {
   return res.status(201).json(created);
 });
 
-router.patch("/attendance/:id", requireBosOrMandor, async (req, res) => {
+router.patch("/attendance/:id", requireBos, async (req, res) => {
   const updates: Record<string, unknown> = {};
   for (const k of ["status", "notes"]) {
     if (req.body?.[k] !== undefined) updates[k] = req.body[k];
@@ -585,7 +585,7 @@ router.patch("/attendance/:id", requireBosOrMandor, async (req, res) => {
   return res.json(row ?? null);
 });
 
-router.delete("/attendance/:id", requireBosOrMandor, async (req, res) => {
+router.delete("/attendance/:id", requireBos, async (req, res) => {
   await db.delete(attendance).where(eq(attendance.id, String(req.params.id)));
   return res.json({ ok: true });
 });

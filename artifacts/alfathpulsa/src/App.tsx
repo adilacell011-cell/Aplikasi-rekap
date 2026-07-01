@@ -21,7 +21,7 @@ import { NotificationManager } from './components/NotificationManager';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 import { initFinanceStoreListeners } from './hooks/useFinanceStore';
-import { checkIsBos, checkIsMandor } from './utils/authUtils';
+import { checkIsBos } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
 import { logout } from './store/authStore';
 
@@ -80,7 +80,6 @@ export default function App() {
   }
 
   const isBos = checkIsBos(user, role);
-  const isMandor = checkIsMandor(role);
 
   // If user is logged in but has no role assigned yet (and it's not the initial load)
   if (isAuthLoaded && user && !role) {
@@ -125,9 +124,9 @@ export default function App() {
       {activeTab === 'team' && isBos && <Team />}
       {activeTab === 'sop' && <SOPPage />}
       {activeTab === 'salary-slips' && <SalarySlips />}
-      {activeTab === 'employee-finance' && (isBos || isMandor) && <EmployeeFinance />}
-      {activeTab === 'my-finance' && role === 'karyawan' && <EmployeeSelf />}
-      {activeTab === 'absensi' && (isBos || isMandor) && <Absensi />}
+      {activeTab === 'employee-finance' && isBos && <EmployeeFinance />}
+      {activeTab === 'my-finance' && (role === 'karyawan' || role === 'mandor') && <EmployeeSelf />}
+      {activeTab === 'absensi' && isBos && <Absensi />}
     </Layout>
   );
 }

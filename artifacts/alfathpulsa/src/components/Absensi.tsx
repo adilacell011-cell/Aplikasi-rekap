@@ -35,7 +35,7 @@ export function Absensi() {
   const { user, role, branchId: currentBranchId, isAuthLoaded } = useAuthStore();
   const uid = user?.uid;
   const isBos = checkIsBos(user, role);
-  const canManage = isBos || role === 'mandor';
+  const canManage = isBos;
   const isGlobalBos = isBos && !currentBranchId;
 
   const today = new Date();
