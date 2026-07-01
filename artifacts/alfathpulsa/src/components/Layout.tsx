@@ -57,7 +57,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         {/* Global Error Display */}
         {error && (
           <div
-            className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0.5rem)+0.75rem)] left-4 right-4 z-[60] ios-card ios-font flex items-center gap-3 px-4 py-3 animate-in fade-in slide-in-from-bottom-4 duration-300"
+            className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0.5rem)+5rem)] left-4 right-4 z-[60] ios-card ios-font flex items-center gap-3 px-4 py-3 animate-in fade-in slide-in-from-bottom-4 duration-300"
           >
             <div className="w-9 h-9 rounded-full bg-[#ff3b30] flex items-center justify-center shrink-0">
               <AlertCircle className="w-5 h-5 ios-on-color" />
