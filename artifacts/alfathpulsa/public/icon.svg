@@ -1,4 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#1d4ed8" rx="100" />
-  <text x="256" y="256" font-family="Arial" font-size="200" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="central">A</text>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="110" fill="url(#shine)"/>
+
+  <!-- Letter A -->
+  <!-- Left leg -->
+  <rect x="92" y="152" width="52" height="228" rx="20" fill="white"/>
+  <!-- Right leg -->
+  <rect x="224" y="152" width="52" height="228" rx="20" fill="white"/>
+  <!-- Top cap -->
+  <rect x="92" y="152" width="184" height="52" rx="20" fill="white"/>
+  <!-- Crossbar (lightning bolt shape) -->
+  <path d="M104 295 L215 295 L195 255 L255 255 L230 315 L144 315 Z" fill="#1d4ed8"/>
+  <rect x="104" y="275" width="184" height="40" rx="8" fill="white"/>
+
+  <!-- Letter P -->
+  <!-- Stem -->
+  <rect x="310" y="152" width="52" height="228" rx="20" fill="white"/>
+  <!-- Top bar -->
+  <rect x="310" y="152" width="100" height="52" rx="20" fill="white"/>
+  <!-- Bottom of bowl -->
+  <rect x="310" y="264" width="100" height="52" rx="20" fill="white"/>
+  <!-- Right side of bowl -->
+  <rect x="362" y="152" width="52" height="164" rx="20" fill="white"/>
+
+  <!-- Small lightning accent bottom right -->
+  <path d="M390 395 L415 345 L400 345 L420 305 L370 365 L388 365 Z" fill="#60a5fa" opacity="0.7"/>
 </svg>

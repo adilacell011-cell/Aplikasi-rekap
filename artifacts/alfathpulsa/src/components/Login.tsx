@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Zap } from 'lucide-react';
+import { AppLogoWordmark } from './AppLogo';
 import { useAuthStore } from '../store/authStore';
 
 export function Login() {
@@ -30,10 +30,7 @@ export function Login() {
           <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 to-transparent pointer-events-none"></div>
 
           <div className="relative z-10 flex items-center gap-3">
-            <div className="menu-tile w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
-              <Zap className="menu-tile-icon w-6 h-6" strokeWidth={2.5} />
-            </div>
-            <span className="text-white font-black tracking-tighter text-3xl">AlfathPulsa</span>
+            <AppLogoWordmark iconSize={48} />
           </div>
 
           <div className="relative z-10 w-full mt-4 pt-4 border-t border-asphalt-700/60 flex flex-col items-center gap-1">

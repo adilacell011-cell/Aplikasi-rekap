@@ -25,6 +25,7 @@ import { initFinanceStoreListeners } from './hooks/useFinanceStore';
 import { checkIsBos } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
 import { logout } from './store/authStore';
+import { AppLogoIcon } from './components/AppLogo';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
@@ -52,10 +53,12 @@ export default function App() {
         <div className="relative">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-brand-500"></div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-8 h-8 bg-brand-500/20 rounded-full animate-pulse"></div>
+            <AppLogoIcon size={36} />
           </div>
         </div>
-        <h2 className="mt-8 text-xl font-black text-white uppercase tracking-widest">AlfathPulsa</h2>
+        <div className="mt-8">
+          <AppLogoWordmark iconSize={36} />
+        </div>
         <div className="mt-4 flex flex-col items-center gap-2">
           <span className="text-[10px] text-asphalt-text-400 font-black uppercase tracking-[0.3em] animate-pulse">
             Menghubungkan ke Server...
