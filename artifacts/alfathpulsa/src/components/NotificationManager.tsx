@@ -73,6 +73,7 @@ export const NotificationManager: React.FC = () => {
         processedDepositsRef.current.add(key);
       }
     });
+    return;
   }, [branches, isLoaded, role, branchId]);
 
   return null; // This component doesn't render anything

@@ -94,7 +94,7 @@ export function VoucherRecaps() {
   
   // Filter and Group Recaps
   const { groupedRecaps, currentMonthStats } = useMemo(() => {
-    if (!selectedBranchId) return { groupedRecaps: [], currentMonthStats: null };
+    if (!selectedBranchId) return { groupedRecaps: [] as Array<{ id: number; label: string; items: VoucherRecap[]; totalAdm: number; totalVou: number; totalExp: number; isReported: boolean; allDraft: boolean; }>, currentMonthStats: null };
     
     const branchRecaps = voucherRecaps.filter(r => r.branchId === selectedBranchId);
     

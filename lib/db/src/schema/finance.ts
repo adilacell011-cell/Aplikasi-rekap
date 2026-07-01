@@ -5,6 +5,7 @@ import {
   doublePrecision,
   integer,
   jsonb,
+  index,
 } from "drizzle-orm/pg-core";
 
 // ---------------------------------------------------------------------------
@@ -67,7 +68,10 @@ export const branchDeposits = pgTable("branch_deposits", {
       editedByName: string;
     }[]
   >(),
-});
+}, (t) => [
+  index("branch_deposits_branch_id_idx").on(t.branchId),
+  index("branch_deposits_date_idx").on(t.date),
+]);
 
 export const banks = pgTable("banks", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -87,7 +91,10 @@ export const customers = pgTable("customers", {
   // links a karyawan bon record to a users.id (null for nasabah)
   userId: uuid("user_id"),
   createdAt: text("created_at").notNull(),
-});
+}, (t) => [
+  index("customers_branch_id_idx").on(t.branchId),
+  index("customers_user_id_idx").on(t.userId),
+]);
 
 export const customerTransactions = pgTable("customer_transactions", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -97,7 +104,9 @@ export const customerTransactions = pgTable("customer_transactions", {
   type: text("type").notNull(),
   date: text("date").notNull(),
   createdBy: text("created_by"),
-});
+}, (t) => [
+  index("customer_transactions_customer_id_idx").on(t.customerId),
+]);
 
 export const savings = pgTable("savings", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -109,7 +118,10 @@ export const savings = pgTable("savings", {
   // links a karyawan savings record to a users.id (null for nasabah)
   userId: uuid("user_id"),
   createdAt: text("created_at").notNull(),
-});
+}, (t) => [
+  index("savings_branch_id_idx").on(t.branchId),
+  index("savings_user_id_idx").on(t.userId),
+]);
 
 export const savingTransactions = pgTable("saving_transactions", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -120,7 +132,9 @@ export const savingTransactions = pgTable("saving_transactions", {
   date: text("date").notNull(),
   createdBy: text("created_by"),
   createdByName: text("created_by_name"),
-});
+}, (t) => [
+  index("saving_transactions_saving_id_idx").on(t.savingId),
+]);
 
 export const voucherRecaps = pgTable("voucher_recaps", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -138,7 +152,10 @@ export const voucherRecaps = pgTable("voucher_recaps", {
   createdAt: text("created_at"),
   createdBy: text("created_by"),
   createdByName: text("created_by_name"),
-});
+}, (t) => [
+  index("voucher_recaps_branch_id_idx").on(t.branchId),
+  index("voucher_recaps_date_idx").on(t.date),
+]);
 
 export const salarySlips = pgTable("salary_slips", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -164,7 +181,11 @@ export const salarySlips = pgTable("salary_slips", {
   paidAt: text("paid_at"),
   createdBy: text("created_by"),
   createdByName: text("created_by_name"),
-});
+}, (t) => [
+  index("salary_slips_user_id_idx").on(t.userId),
+  index("salary_slips_branch_id_idx").on(t.branchId),
+  index("salary_slips_year_month_idx").on(t.year, t.month),
+]);
 
 export const attendance = pgTable("attendance", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -177,7 +198,12 @@ export const attendance = pgTable("attendance", {
   createdAt: text("created_at").notNull(),
   createdBy: text("created_by"),
   createdByName: text("created_by_name"),
-});
+}, (t) => [
+  index("attendance_user_id_idx").on(t.userId),
+  index("attendance_branch_id_idx").on(t.branchId),
+  index("attendance_date_idx").on(t.date),
+  index("attendance_user_date_idx").on(t.userId, t.date),
+]);
 
 export const settings = pgTable("settings", {
   id: text("id").primaryKey().default("general"),

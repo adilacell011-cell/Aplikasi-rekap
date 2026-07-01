@@ -146,7 +146,7 @@ export function Absensi() {
 
   return (
     <div className="p-5 space-y-5 bg-asphalt-900 min-h-screen pb-40">
-      <SuccessToast show={showSuccess} message={successMsg} onHide={() => setShowSuccess(false)} />
+      <SuccessToast show={showSuccess} message={successMsg} onClose={() => setShowSuccess(false)} />
 
       {/* Header */}
       <div className="flex items-center gap-3 px-1">
