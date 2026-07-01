@@ -1,57 +1,22 @@
-# AlfathPulsa — pakai PostgreSQL yang SUDAH ADA (tanpa bikin DB baru)
-#
-# Cara pakai di Dockge:
-#   1. Copy isi file ini ke Dockge (bukan docker-compose.yml yang standar)
-#   2. Isi DATABASE_URL sesuai PostgreSQL yang sudah berjalan (lihat keterangan di bawah)
-#   3. Isi AUTH_SECRET dengan string acak panjang (minimal 32 karakter)
-#   4. Klik Deploy / Up
-#
-# ─── DATABASE_URL — sesuaikan situasi Anda ────────────────────────────────────
-#
-#  A) PostgreSQL ada di container Docker lain (jaringan yang sama / stack yang sama):
-#       postgres://USER:PASSWORD@NAMA_CONTAINER:5432/NAMA_DB
-#     Contoh:
-#       postgres://postgres:rahasia@postgres:5432/alfathpulsa
-#
-#  B) PostgreSQL ada di container Docker lain (jaringan BERBEDA / stack berbeda):
-#     Tambahkan AlfathPulsa ke network PostgreSQL tersebut (lihat bagian networks di bawah)
-#     atau gunip IP internal container Postgres dari: docker inspect <container>
-#
-#  C) PostgreSQL berjalan langsung di HOST (bukan Docker):
-#       postgres://USER:PASSWORD@host.docker.internal:5432/NAMA_DB
-#     (host.docker.internal = IP host dari dalam container)
-#
-# ─────────────────────────────────────────────────────────────────────────────
+# AlfathPulsa — pakai PostgreSQL yang SUDAH ADA
+# Untuk server dengan container alfathpulsaapp-db-1
 
 services:
   app:
-    image: ghcr.io/username/alfathpulsa:latest   # ← ganti dengan image Anda
+    image: ghcr.io/adilacell011-cell/aplikasi-rekap:latest
     restart: unless-stopped
     environment:
       PORT: 8080
       NODE_ENV: production
-
-      # ← WAJIB: sesuaikan dengan PostgreSQL Anda (lihat keterangan di atas)
-      DATABASE_URL: postgres://USER:PASSWORD@HOST:5432/NAMA_DB
-
-      # ← WAJIB: string acak panjang, contoh generate: openssl rand -hex 32
-      AUTH_SECRET: GANTI_DENGAN_STRING_ACAK_PANJANG
-
-      # ← Opsional: API key Fonnte untuk notif WhatsApp
+      DATABASE_URL: postgres://alfath:alfath@alfathpulsaapp-db-1:5432/alfathpulsa
+      AUTH_SECRET: GANTI_DENGAN_HASIL_openssl_rand_-hex_32
       FONNTE_API_KEY: ""
-
     ports:
-      - "8090:8080"   # ← ganti 8090 jika port sudah dipakai
+      - "8090:8080"
+    networks:
+      - alfathpulsaapp_default
+      - default
 
-    # ── Jika PostgreSQL ada di Docker network LAIN, tambahkan di sini ─────────
-    # networks:
-    #   - nama_network_postgres_anda
-    #   - default
-
-    extra_hosts:
-      - "host.docker.internal:host-gateway"   # agar bisa akses host (skenario C)
-
-# ── Jika pakai network eksternal (skenario B) ─────────────────────────────────
-# networks:
-#   nama_network_postgres_anda:
-#     external: true
+networks:
+  alfathpulsaapp_default:
+    external: true
