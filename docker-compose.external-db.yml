@@ -1,37 +1,17 @@
-# AlfathPulsa — pakai PostgreSQL yang SUDAH ADA (CasaOS / Dockge)
+# AlfathPulsa — pakai PostgreSQL container yang sudah ada (CasaOS / Dockge)
+#
+# PostgreSQL ada di container: alfathpulsaapp-db-1
+# Network Docker:              alfathpulsaapp_default
 #
 # ── Cara pakai di Dockge ─────────────────────────────────────────────────────
-# 1. Salin file ini ke Dockge (paste isi di "Compose" editor)
-# 2. Isi DATABASE_URL sesuai PostgreSQL kamu (lihat opsi di bawah)
-# 3. Ganti AUTH_SECRET dengan string acak panjang:
-#       openssl rand -hex 32
-# 4. Jalankan → buka http://<ip-stb>:8090
-# 5. Login: admin / admin123 — langsung ganti password!
+# 1. Paste isi file ini ke Dockge
+# 2. Pastikan container postgres (alfathpulsaapp-db-1) sudah jalan
+# 3. Deploy → buka http://<ip-stb>:8090
+# 4. Login: admin / admin123 — langsung ganti password!
 #
-# ── DATABASE_URL — pilih salah satu ─────────────────────────────────────────
-#
-#  A) PostgreSQL NATIVE di Armbian (bukan container):
-#     DATABASE_URL: postgres://USER:PASS@host.docker.internal:5432/DBNAME
-#
-#  B) PostgreSQL sebagai container CasaOS/Docker (beda stack):
-#     Cari nama container-nya dulu:  docker ps | grep postgres
-#     Cari nama network-nya:         docker inspect <nama_container> | grep NetworkMode
-#     Lalu:
-#     DATABASE_URL: postgres://USER:PASS@<nama_container>:5432/DBNAME
-#     Dan uncomment bagian networks di bawah, isi nama network PostgreSQL-nya.
-#
-#  C) PostgreSQL di IP/host lain di LAN:
-#     DATABASE_URL: postgres://USER:PASS@192.168.x.x:5432/DBNAME
-#
-# ── STB / low-RAM notes ──────────────────────────────────────────────────────
-#  1 GB STB → NODE_MAX_OLD_SPACE_MB: "128"  mem_limit: 256m
-#  2 GB STB → NODE_MAX_OLD_SPACE_MB: "192"  mem_limit: 384m  (default)
-#  4 GB STB → NODE_MAX_OLD_SPACE_MB: "384"  mem_limit: 512m
-#
-# ── Schema migration ─────────────────────────────────────────────────────────
-# MIGRATE: "true"  → wajib pertama kali agar tabel terbuat di DB
-# MIGRATE: "false" → setelah pertama kali (atau jika marker /data/.migrated ada)
-# Setelah upgrade: ganti ke "true" sekali lalu restart, lalu balik ke "false".
+# ── Setelah pertama kali berhasil jalan ──────────────────────────────────────
+# Ubah MIGRATE dari "true" ke "false" agar restart lebih cepat.
+# (Schema sudah ada, tidak perlu push ulang setiap restart)
 # ─────────────────────────────────────────────────────────────────────────────
 
 services:
@@ -41,45 +21,28 @@ services:
     environment:
       PORT: "8080"
       NODE_ENV: production
-
-      # ── WAJIB DIISI ────────────────────────────────────────────────────────
-      # Ganti sesuai koneksi PostgreSQL kamu (lihat opsi di atas)
-      DATABASE_URL: postgres://USER:PASS@host.docker.internal:5432/DBNAME
-
-      # Generate dengan: openssl rand -hex 32
-      # PENTING: jangan pernah diganti setelah app jalan — logout semua user!
-      AUTH_SECRET: GANTI_DENGAN_HASIL_openssl_rand_-hex_32
-
-      # ── OPSIONAL ───────────────────────────────────────────────────────────
+      DATABASE_URL: postgres://alfath:alfath@alfathpulsaapp-db-1:5432/alfathpulsa
+      AUTH_SECRET: 61c2599ba8bedc27c82b3284be5d037aa760299b44dbf43b17ba337ce0cac56f
       FONNTE_API_KEY: ""
       LOG_LEVEL: warn
       NODE_MAX_OLD_SPACE_MB: "192"
-
-      # "true" = jalankan drizzle-kit push (buat tabel). Wajib pertama kali!
-      # Setelah berhasil → ganti ke "false" agar restart lebih cepat.
+      # "true" = buat tabel di DB (wajib pertama kali!)
+      # Ganti ke "false" setelah berhasil deploy pertama kali.
       MIGRATE: "true"
-
     ports:
-      - "8090:8080"   # Ubah 8090 jika port sudah dipakai
-
+      - "8090:8080"
     volumes:
-      - alfath_data:/data   # Menyimpan marker .migrated
-
+      - alfath_data:/data
     mem_limit: 384m
     memswap_limit: 384m
     cpus: "1.0"
-
-    # ── Uncomment jika PostgreSQL ada di container Docker lain ────────────────
-    # Ganti "nama_network_postgres" dengan hasil:
-    #   docker inspect <nama_container_postgres> | grep -A5 Networks
-    # networks:
-    #   - default
-    #   - nama_network_postgres
+    networks:
+      - alfathpulsaapp_default
+      - default
 
 volumes:
   alfath_data:
 
-# ── Uncomment dan isi jika memakai opsi network di atas ──────────────────────
-# networks:
-#   nama_network_postgres:
-#     external: true
+networks:
+  alfathpulsaapp_default:
+    external: true
