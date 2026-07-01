@@ -231,11 +231,8 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         )}
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto pb-24 scroll-smooth no-scrollbar relative">
+        <main className="flex-1 overflow-hidden relative min-h-0">
           {children}
-          <div className="px-5 py-6 text-center">
-            <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-[0.4em] opacity-30">AlfathPulsa v2.0</p>
-          </div>
         </main>
 
         {/* Bottom Navigation */}

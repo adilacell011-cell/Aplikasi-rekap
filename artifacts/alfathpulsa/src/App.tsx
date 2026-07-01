@@ -18,6 +18,7 @@ import { EmployeeFinance } from './components/EmployeeFinance';
 import { EmployeeSelf } from './components/EmployeeSelf';
 import { Absensi } from './components/Absensi';
 import { NotificationManager } from './components/NotificationManager';
+import { PageTransition } from './components/PageTransition';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 import { initFinanceStoreListeners } from './hooks/useFinanceStore';
@@ -112,21 +113,23 @@ export default function App() {
   return (
     <Layout activeTab={activeTab} setActiveTab={setActiveTab} role={role}>
       <NotificationManager />
-      {activeTab === 'dashboard' && (
-        <Dashboard 
-          onNavigate={(tab) => setActiveTab(tab as any)} 
-        />
-      )}
-      {activeTab === 'debts' && role !== 'mandor' && <Debts />}
-      {activeTab === 'savings' && role !== 'mandor' && <Savings />}
-      {activeTab === 'deposits' && <Deposits />}
-      {activeTab === 'vouchers' && <VoucherRecaps />}
-      {activeTab === 'team' && isBos && <Team />}
-      {activeTab === 'sop' && <SOPPage />}
-      {activeTab === 'salary-slips' && <SalarySlips />}
-      {activeTab === 'employee-finance' && isBos && <EmployeeFinance />}
-      {activeTab === 'my-finance' && (role === 'karyawan' || role === 'mandor') && <EmployeeSelf />}
-      {activeTab === 'absensi' && isBos && <Absensi />}
+      <PageTransition activeTab={activeTab}>
+        {activeTab === 'dashboard' && (
+          <Dashboard 
+            onNavigate={(tab) => setActiveTab(tab as any)} 
+          />
+        )}
+        {activeTab === 'debts' && role !== 'mandor' && <Debts />}
+        {activeTab === 'savings' && role !== 'mandor' && <Savings />}
+        {activeTab === 'deposits' && <Deposits />}
+        {activeTab === 'vouchers' && <VoucherRecaps />}
+        {activeTab === 'team' && isBos && <Team />}
+        {activeTab === 'sop' && <SOPPage />}
+        {activeTab === 'salary-slips' && <SalarySlips />}
+        {activeTab === 'employee-finance' && isBos && <EmployeeFinance />}
+        {activeTab === 'my-finance' && (role === 'karyawan' || role === 'mandor') && <EmployeeSelf />}
+        {activeTab === 'absensi' && isBos && <Absensi />}
+      </PageTransition>
     </Layout>
   );
 }
