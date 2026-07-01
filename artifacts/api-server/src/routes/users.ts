@@ -2,7 +2,7 @@ import { Router, type IRouter } from "express";
 import { db, users } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "../lib/auth";
-import { requireBos, toProfile } from "../middleware/auth";
+import { requireBos, toProfile, type AuthedRequest } from "../middleware/auth";
 
 const router: IRouter = Router();
 
@@ -50,6 +50,26 @@ router.post("/", requireBos, async (req, res) => {
     })
     .returning();
   return res.status(201).json(toProfile(created));
+});
+
+// Change own password (any authenticated user)
+router.patch("/me/password", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
+  if (!authUser) return res.status(401).json({ error: "Unauthorized" });
+  const { oldPassword, newPassword } = req.body ?? {};
+  if (!oldPassword || !newPassword) {
+    return res.status(400).json({ error: "Password lama dan baru wajib diisi" });
+  }
+  if (String(newPassword).length < 4) {
+    return res.status(400).json({ error: "Password baru minimal 4 karakter" });
+  }
+  const [u] = await db.select().from(users).where(eq(users.id, authUser.id));
+  if (!u) return res.status(404).json({ error: "User tidak ditemukan" });
+  if (u.passwordHash !== hashPassword(String(oldPassword))) {
+    return res.status(401).json({ error: "Password lama salah" });
+  }
+  await db.update(users).set({ passwordHash: hashPassword(String(newPassword)) }).where(eq(users.id, authUser.id));
+  return res.json({ ok: true });
 });
 
 // Update a user (bos only)

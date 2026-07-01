@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
+import { api } from '../api';
 
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
@@ -25,6 +27,40 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
   const branchName = branchId ? branches.find(b => b.id === branchId)?.name : null;
   const [time, setTime] = useState('');
   const [dateStr, setDateStr] = useState('');
+
+  const [showChangePw, setShowChangePw] = useState(false);
+  const [changePwForm, setChangePwForm] = useState({ old: '', new: '', confirm: '' });
+  const [changePwLoading, setChangePwLoading] = useState(false);
+  const [changePwError, setChangePwError] = useState<string | null>(null);
+  const [changePwOldVisible, setChangePwOldVisible] = useState(false);
+  const [changePwNewVisible, setChangePwNewVisible] = useState(false);
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setChangePwError(null);
+    if (!changePwForm.old || !changePwForm.new || !changePwForm.confirm) {
+      setChangePwError('Semua kolom wajib diisi.');
+      return;
+    }
+    if (changePwForm.new !== changePwForm.confirm) {
+      setChangePwError('Password baru dan konfirmasi tidak sama.');
+      return;
+    }
+    if (changePwForm.new.length < 4) {
+      setChangePwError('Password baru minimal 4 karakter.');
+      return;
+    }
+    setChangePwLoading(true);
+    try {
+      await api.patch('/users/me/password', { oldPassword: changePwForm.old, newPassword: changePwForm.new });
+      setShowChangePw(false);
+      setChangePwForm({ old: '', new: '', confirm: '' });
+    } catch (err) {
+      setChangePwError(err instanceof Error ? err.message : 'Gagal mengubah password');
+    } finally {
+      setChangePwLoading(false);
+    }
+  };
 
   React.useEffect(() => {
     const updateTime = () => {
@@ -123,6 +159,13 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               title="Pilih Tema"
             >
               <Palette className="w-4.5 h-4.5 text-brand-500" />
+            </button>
+            <button
+              onClick={() => { setShowChangePw(true); setChangePwError(null); setChangePwForm({ old: '', new: '', confirm: '' }); }}
+              className="w-10 h-10 flex items-center justify-center bg-asphalt-800/50 hover:bg-asphalt-700 rounded-xl transition-all border border-asphalt-700/50 active:scale-90"
+              title="Ubah Password"
+            >
+              <KeyRound className="w-4.5 h-4.5 text-amber-400" />
             </button>
             <button
               onClick={logout}
@@ -384,6 +427,116 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         </nav>
       </div>
     </div>
+
+    {/* Change Password Modal — portal to escape stacking contexts */}
+    {createPortal(
+      <AnimatePresence>
+        {showChangePw && (
+          <motion.div
+            key="changepw-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-[500] flex items-end justify-center ios-backdrop ios-font pb-[env(safe-area-inset-bottom,0px)]"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            onClick={() => !changePwLoading && setShowChangePw(false)}
+          >
+            <motion.div
+              key="changepw-panel"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.8 }}
+              className="w-full max-w-md ios-card rounded-b-none rounded-t-[2rem] p-6 pb-8 space-y-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <KeyRound className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-white uppercase tracking-tight leading-none">Ubah Password</h3>
+                    <p className="text-[9px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Akun saya</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowChangePw(false)}
+                  disabled={changePwLoading}
+                  className="w-9 h-9 flex items-center justify-center text-asphalt-text-400 hover:text-white rounded-xl border border-asphalt-700 transition-all"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleChangePassword} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Password Lama</label>
+                  <div className="relative">
+                    <input
+                      type={changePwOldVisible ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      value={changePwForm.old}
+                      onChange={(e) => setChangePwForm(f => ({ ...f, old: e.target.value }))}
+                      placeholder="••••••••"
+                      className="w-full px-4 pr-12 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-white font-semibold shadow-inner"
+                    />
+                    <button type="button" onClick={() => setChangePwOldVisible(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-asphalt-text-400 hover:text-white transition-colors">
+                      {changePwOldVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Password Baru</label>
+                  <div className="relative">
+                    <input
+                      type={changePwNewVisible ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      value={changePwForm.new}
+                      onChange={(e) => setChangePwForm(f => ({ ...f, new: e.target.value }))}
+                      placeholder="Min. 4 karakter"
+                      className="w-full px-4 pr-12 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-white font-semibold shadow-inner"
+                    />
+                    <button type="button" onClick={() => setChangePwNewVisible(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-asphalt-text-400 hover:text-white transition-colors">
+                      {changePwNewVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Konfirmasi Password Baru</label>
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    value={changePwForm.confirm}
+                    onChange={(e) => setChangePwForm(f => ({ ...f, confirm: e.target.value }))}
+                    placeholder="Ulangi password baru"
+                    className="w-full px-4 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-white font-semibold shadow-inner"
+                  />
+                </div>
+
+                {changePwError && (
+                  <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3">
+                    <p className="text-[11px] text-rose-400 font-bold text-center">{changePwError}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={changePwLoading}
+                  className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all active:scale-[0.98] disabled:opacity-60 shadow-lg shadow-amber-500/20"
+                >
+                  {changePwLoading ? 'MENYIMPAN...' : 'SIMPAN PASSWORD BARU'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>,
+      document.body
+    )}
   );
 }
 

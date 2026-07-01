@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface ConfirmModalProps {
@@ -20,7 +21,7 @@ export function ConfirmModal({
   confirmText = 'Hapus',
   confirmVariant = 'danger',
 }: ConfirmModalProps) {
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -29,7 +30,8 @@ export function ConfirmModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.18 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center ios-backdrop ios-font"
+          className="fixed inset-0 z-[500] flex items-center justify-center ios-backdrop ios-font"
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
           onClick={onCancel}
         >
           <motion.div
@@ -59,6 +61,7 @@ export function ConfirmModal({
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

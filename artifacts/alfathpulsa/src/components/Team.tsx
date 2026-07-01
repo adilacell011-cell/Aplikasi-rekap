@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { api } from '../api';
-import { Shield, UserCog, User as UserIcon, Trash2, Store, Plus, Check, Phone, Send, X, UserPlus } from 'lucide-react';
+import { Shield, UserCog, User as UserIcon, Trash2, Store, Plus, Check, Phone, Send, X, UserPlus, KeyRound } from 'lucide-react';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { UserProfile } from '../types';
@@ -9,6 +10,7 @@ import { ConfirmModal } from './ConfirmModal';
 import { sendWhatsAppMessage } from '../services/whatsappService';
 import { iosAlert } from '../store/dialogStore';
 import { BlockChoice } from './BlockChoice';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function Team() {
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -30,6 +32,32 @@ export function Team() {
     id: '',
     name: ''
   });
+
+  const [resetPassModal, setResetPassModal] = useState<{ userId: string; userName: string } | null>(null);
+  const [resetPassVal, setResetPassVal] = useState('');
+  const [resetPassLoading, setResetPassLoading] = useState(false);
+  const [resetPassError, setResetPassError] = useState<string | null>(null);
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetPassModal || !resetPassVal.trim()) return;
+    if (resetPassVal.length < 4) {
+      setResetPassError('Password minimal 4 karakter');
+      return;
+    }
+    setResetPassLoading(true);
+    setResetPassError(null);
+    try {
+      await api.patch(`/users/${resetPassModal.userId}`, { password: resetPassVal });
+      setResetPassModal(null);
+      setResetPassVal('');
+      iosAlert('Berhasil', `Password ${resetPassModal.userName} berhasil direset.`);
+    } catch (err) {
+      setResetPassError(err instanceof Error ? err.message : 'Gagal mereset password');
+    } finally {
+      setResetPassLoading(false);
+    }
+  };
 
   const [showAddUser, setShowAddUser] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -528,7 +556,16 @@ export function Team() {
                     <p className="text-[10px] text-asphalt-text-400 font-bold tracking-widest uppercase truncate mt-0.5">{user.email}</p>
                   </div>
 
-                  <div className="shrink-0 flex items-center gap-3">
+                  <div className="shrink-0 flex items-center gap-2">
+                    {isBos && (
+                      <button
+                        onClick={() => { setResetPassModal({ userId: user.uid, userName: user.name }); setResetPassVal(''); setResetPassError(null); }}
+                        className="w-11 h-11 flex items-center justify-center text-asphalt-text-400 hover:text-amber-400 hover:bg-amber-400/10 rounded-xl transition-all border border-asphalt-700"
+                        title="Reset Password"
+                      >
+                        <KeyRound className="w-4.5 h-4.5" />
+                      </button>
+                    )}
                     {isBos && user.email !== 'alfathpulsa27@gmail.com' && (
                       <button
                         onClick={() => setDeleteConfirm({ isOpen: true, type: 'user', id: user.uid, name: user.name })}
@@ -621,5 +658,85 @@ export function Team() {
         onCancel={() => setDeleteConfirm({ isOpen: false, type: 'user', id: '', name: '' })}
       />
     </div>
+
+    {/* Reset Password Modal — portal to escape will-change:transform container */}
+    {createPortal(
+      <AnimatePresence>
+        {resetPassModal && (
+          <motion.div
+            key="resetpw-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-[500] flex items-end justify-center ios-backdrop ios-font pb-[env(safe-area-inset-bottom,0px)]"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            onClick={() => !resetPassLoading && setResetPassModal(null)}
+          >
+            <motion.div
+              key="resetpw-panel"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.8 }}
+              className="w-full max-w-md ios-card rounded-b-none rounded-t-[2rem] p-6 pb-8 space-y-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <KeyRound className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-black text-white uppercase tracking-tight leading-none">Reset Password</h3>
+                    <p className="text-[9px] text-amber-400 font-bold uppercase tracking-widest mt-0.5 truncate max-w-[160px]">{resetPassModal?.userName}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setResetPassModal(null)}
+                  disabled={resetPassLoading}
+                  className="w-9 h-9 flex items-center justify-center text-asphalt-text-400 hover:text-white rounded-xl border border-asphalt-700 transition-all"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <p className="text-[10px] text-asphalt-text-400 font-medium uppercase tracking-widest leading-relaxed px-1">
+                Set password baru untuk karyawan ini. Password lama akan langsung diganti.
+              </p>
+
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Password Baru</label>
+                  <input
+                    type="text"
+                    value={resetPassVal}
+                    onChange={(e) => setResetPassVal(e.target.value)}
+                    placeholder="Min. 4 karakter"
+                    autoFocus
+                    className="w-full px-4 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-white font-semibold shadow-inner"
+                  />
+                </div>
+
+                {resetPassError && (
+                  <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3">
+                    <p className="text-[11px] text-rose-400 font-bold text-center">{resetPassError}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={resetPassLoading || !resetPassVal.trim()}
+                  className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-amber-500/20"
+                >
+                  {resetPassLoading ? 'MENYIMPAN...' : 'RESET PASSWORD'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>,
+      document.body
+    )}
   );
 }
