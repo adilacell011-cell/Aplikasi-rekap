@@ -84,24 +84,46 @@ setUnauthorizedHandler(() => {
 });
 
 // Restore session on app boot using the stored token.
+async function tryRestoreSession() {
+  const user = await fetchMe();
+  applyUser(user);
+  const role = useAuthStore.getState().role;
+  if (role === 'bos' || role === 'mandor') {
+    await useAuthStore.getState().refreshUsers();
+  }
+}
+
 async function initAuth() {
   if (!getToken()) {
     useAuthStore.setState({ isAuthLoaded: true });
     return;
   }
+
   try {
-    const user = await fetchMe();
-    applyUser(user);
-    const role = useAuthStore.getState().role;
-    if (role === 'bos' || role === 'mandor') {
-      await useAuthStore.getState().refreshUsers();
+    await tryRestoreSession();
+  } catch {
+    // If the token was cleared (401 response), apiFetch already handled it.
+    // If the token is still present, it was a network/server error (e.g. STB
+    // API not ready yet) — DO NOT delete the token; retry after 3 seconds so
+    // that a reboot doesn't force a re-login.
+    if (!getToken()) {
+      // 401 path: token already cleared by apiFetch, user already reset by
+      // onUnauthorized handler — just ensure isAuthLoaded is set.
+      useAuthStore.setState({ isAuthLoaded: true });
+      return;
     }
-  } catch (error) {
-    console.warn('Session restore failed:', error);
-    setToken(null);
+
+    // Network error: show login screen but preserve the token, then retry.
     useAuthStore.setState({ isAuthLoaded: true });
-  } finally {
-    useAuthStore.setState({ isAuthLoaded: true });
+
+    setTimeout(async () => {
+      if (!getToken()) return;
+      try {
+        await tryRestoreSession();
+      } catch {
+        // Still failing after retry — keep token for next boot, stay on login.
+      }
+    }, 3000);
   }
 }
 
