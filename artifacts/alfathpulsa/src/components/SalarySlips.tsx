@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { api } from '../api';
 import { FileText, Plus, Trash2, Check, Clock, User, Calendar, CreditCard, ArrowLeft, Download, Zap, Printer, X, BadgeCheck } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
@@ -777,7 +778,7 @@ function SlipDocument({
   const fmtDate = (iso?: string) =>
     iso ? new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(iso)) : '-';
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[110] ios-backdrop flex flex-col" onClick={onClose}>
       <div className="flex-1 overflow-y-auto px-4 py-6 flex items-start justify-center">
         <div
@@ -911,6 +912,7 @@ function SlipDocument({
           </button>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
