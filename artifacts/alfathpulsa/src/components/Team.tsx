@@ -657,10 +657,9 @@ export function Team() {
         onConfirm={handleDelete}
         onCancel={() => setDeleteConfirm({ isOpen: false, type: 'user', id: '', name: '' })}
       />
-    </div>
 
-    {/* Reset Password Modal — portal to escape will-change:transform container */}
-    {createPortal(
+      {/* Reset Password Modal — portal to escape will-change:transform container */}
+      {createPortal(
       <AnimatePresence>
         {resetPassModal && (
           <motion.div
@@ -738,5 +737,6 @@ export function Team() {
       </AnimatePresence>,
       document.body
     )}
+    </div>
   );
 }

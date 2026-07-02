@@ -426,10 +426,9 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
           </div>
         </nav>
       </div>
-    </div>
 
-    {/* Change Password Modal — portal to escape stacking contexts */}
-    {createPortal(
+      {/* Change Password Modal — portal to escape stacking contexts */}
+      {createPortal(
       <AnimatePresence>
         {showChangePw && (
           <motion.div
@@ -537,6 +536,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
       </AnimatePresence>,
       document.body
     )}
+    </div>
   );
 }
 
