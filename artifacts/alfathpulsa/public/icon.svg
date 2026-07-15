@@ -1,15 +1,12 @@
 <svg width="512" height="512" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="0%" stop-color="#1d40b0"/>
       <stop offset="100%" stop-color="#1e3a8a"/>
     </linearGradient>
   </defs>
   <rect width="44" height="44" rx="10" fill="url(#bg)"/>
-  <!-- A left leg -->
-  <polygon points="22,3 26,7 11,41 3,37" fill="white"/>
-  <!-- A right leg (symmetric) -->
+  <polygon points="22,3 26,7 11,41 3,37"  fill="white"/>
   <polygon points="22,3 18,7 33,41 41,37" fill="white"/>
-  <!-- Orange swoosh diagonal accent -->
-  <polygon points="6,31 26,19 30,25 10,37" fill="#f97316"/>
+  <polygon points="12,28 29,16 37,22 34,33 15,35" fill="#f97316"/>
 </svg>
