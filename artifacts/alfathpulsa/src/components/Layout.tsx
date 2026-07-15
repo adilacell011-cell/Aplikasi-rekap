@@ -90,7 +90,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
 
   return (
     <div className="min-h-[100dvh] bg-asphalt-900 flex justify-center selection:bg-brand-500/30" data-theme={theme} data-mode={themeMode}>
-      <div className="w-full md:max-w-3xl lg:max-w-5xl xl:max-w-7xl bg-asphalt-900 h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100 md:border-x md:border-asphalt-800/30">
+      <div className="w-full bg-asphalt-900 h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100">
         {/* Global Error Display */}
         <AnimatePresence>
           {error && (
@@ -281,18 +281,56 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
           </div>
         )}
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-hidden relative min-h-0">
-          {children}
-        </main>
+        {/* Body: sidebar (tablet+) alongside main content */}
+        <div className="flex-1 flex overflow-hidden min-h-0">
 
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 md:relative max-w-md md:max-w-full w-full bg-asphalt-900/80 backdrop-blur-2xl border-t border-asphalt-800/30 z-30 pb-safe shadow-[0_-15px_50px_rgba(0,0,0,0.4)]">
+          {/* ── Sidebar Navigation — tablet & desktop only ── */}
+          <nav className="hidden md:flex flex-col w-[4.5rem] lg:w-56 bg-asphalt-900 border-r border-asphalt-800/30 py-3 gap-0.5 shrink-0 overflow-y-auto">
+
+            {/* helper to build each nav item */}
+            {(
+              [
+                { tab: 'dashboard', icon: <LayoutDashboard className={`w-5 h-5 shrink-0 ${activeTab === 'dashboard' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Beranda', show: true },
+                { tab: 'deposits',  icon: <Download       className={`w-5 h-5 shrink-0 ${activeTab === 'deposits'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Setoran',  show: true },
+                { tab: 'savings',   icon: <PiggyBank      className={`w-5 h-5 shrink-0 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Tabungan', show: role !== 'mandor' },
+                { tab: 'vouchers',  icon: <Ticket         className={`w-5 h-5 shrink-0 ${activeTab === 'vouchers'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Rekapan',  show: true },
+                { tab: 'salary-slips', icon: <FileText    className={`w-5 h-5 shrink-0 ${activeTab === 'salary-slips' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Slip Gaji', show: !checkIsBos(user, role) },
+                { tab: 'my-finance',   icon: <Wallet      className={`w-5 h-5 shrink-0 ${activeTab === 'my-finance'   ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Keuangan',  show: role === 'karyawan' || role === 'mandor' },
+                { tab: 'absensi',  icon: <CalendarDays    className={`w-5 h-5 shrink-0 ${activeTab === 'absensi'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Absensi',  show: checkIsBos(user, role) },
+                { tab: 'employee-finance', icon: <UserCog className={`w-5 h-5 shrink-0 ${activeTab === 'employee-finance' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Keu. Tim', show: checkIsBos(user, role) },
+                { tab: 'team',     icon: <Users           className={`w-5 h-5 shrink-0 ${activeTab === 'team' || activeTab === 'sop' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Akun',     show: checkIsBos(user, role) },
+                { tab: 'sop',      icon: <BookOpen        className={`w-5 h-5 shrink-0 ${activeTab === 'sop'      ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'SOP',      show: checkIsBos(user, role) },
+              ] as { tab: Parameters<typeof setActiveTab>[0]; icon: React.ReactNode; label: string; show: boolean | null | undefined }[]
+            ).filter(item => item.show).map(item => {
+              const isActive = activeTab === item.tab || (item.tab === 'savings' && activeTab === 'debts') || (item.tab === 'team' && activeTab === 'sop');
+              return (
+                <button
+                  key={item.tab}
+                  onClick={() => setActiveTab(item.tab)}
+                  className={`mx-2 flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-1 lg:gap-3 px-2 lg:px-4 py-3 rounded-2xl transition-all active:scale-95 ${
+                    isActive
+                      ? 'bg-brand-500/10 text-brand-500'
+                      : 'text-asphalt-text-400 hover:bg-asphalt-800/60 hover:text-white'
+                  }`}
+                >
+                  {item.icon}
+                  <span className="hidden lg:block text-[10px] font-black uppercase tracking-widest leading-none">{item.label}</span>
+                  {/* Icon-only mode: tiny label under icon */}
+                  <span className="lg:hidden text-[7px] font-black uppercase tracking-widest leading-none mt-0.5">{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* ── Main Content ── */}
+          <main className="flex-1 overflow-hidden relative min-h-0">
+            {children}
+          </main>
+        </div>
+
+        {/* ── Bottom Navigation — mobile only ── */}
+        <nav className="md:hidden fixed bottom-0 max-w-md w-full bg-asphalt-900/80 backdrop-blur-2xl border-t border-asphalt-800/30 z-30 pb-safe shadow-[0_-15px_50px_rgba(0,0,0,0.4)]">
           <div className="flex justify-around items-center h-[4.5rem] px-3 relative">
-            
-            {/* Nav background indicator */}
-            {/* We'll use layoutId for smooth sliding effect if we wanted a shared background, 
-                but here we'll animate individual items for a more "clickable" feel */}
 
             {/* Beranda */}
             <button
@@ -301,17 +339,11 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                 activeTab === 'dashboard' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
               }`}
             >
-              <div className="relative">
-                <LayoutDashboard 
-                  className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'dashboard' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
-                />
-              </div>
-              <span className={`text-[9px] font-black tracking-widest uppercase`}>
-                Beranda
-              </span>
+              <LayoutDashboard className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'dashboard' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+              <span className="text-[9px] font-black tracking-widest uppercase">Beranda</span>
             </button>
-            
-            {/* Dompet / Tabungan */}
+
+            {/* Tabungan */}
             {role !== 'mandor' && (
               <button
                 onClick={() => setActiveTab('savings')}
@@ -319,14 +351,8 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   activeTab === 'savings' || activeTab === 'debts' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
                 }`}
               >
-                <div className="relative">
-                  <PiggyBank 
-                    className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
-                  />
-                </div>
-                <span className={`text-[9px] font-black tracking-widest uppercase`}>
-                  Tabungan
-                </span>
+                <PiggyBank className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                <span className="text-[9px] font-black tracking-widest uppercase">Tabungan</span>
               </button>
             )}
 
@@ -337,17 +363,11 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                 activeTab === 'vouchers' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
               }`}
             >
-              <div className="relative">
-                <Ticket 
-                  className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'vouchers' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
-                />
-              </div>
-              <span className={`text-[9px] font-black tracking-widest uppercase`}>
-                Rekapan
-              </span>
+              <Ticket className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'vouchers' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+              <span className="text-[9px] font-black tracking-widest uppercase">Rekapan</span>
             </button>
 
-            {/* Slip Gaji (For Karyawan/Mandor only) */}
+            {/* Slip Gaji (karyawan/mandor) */}
             {!checkIsBos(user, role) && (
               <button
                 onClick={() => setActiveTab('salary-slips')}
@@ -355,18 +375,12 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   activeTab === 'salary-slips' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
                 }`}
               >
-                <div className="relative">
-                  <FileText 
-                    className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'salary-slips' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
-                  />
-                </div>
-                <span className={`text-[9px] font-black tracking-widest uppercase`}>
-                  Gaji
-                </span>
+                <FileText className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'salary-slips' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                <span className="text-[9px] font-black tracking-widest uppercase">Gaji</span>
               </button>
             )}
 
-            {/* Keuangan Saya (Karyawan & Mandor) */}
+            {/* Keuangan Saya */}
             {(role === 'karyawan' || role === 'mandor') && (
               <button
                 onClick={() => setActiveTab('my-finance')}
@@ -374,18 +388,12 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   activeTab === 'my-finance' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
                 }`}
               >
-                <div className="relative">
-                  <Wallet
-                    className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'my-finance' ? 'stroke-[2.5px]' : 'stroke-2'}`}
-                  />
-                </div>
-                <span className={`text-[9px] font-black tracking-widest uppercase`}>
-                  Keuangan
-                </span>
+                <Wallet className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'my-finance' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                <span className="text-[9px] font-black tracking-widest uppercase">Keuangan</span>
               </button>
             )}
 
-            {/* Absensi (Bos only) */}
+            {/* Absensi (bos) */}
             {checkIsBos(user, role) && (
               <button
                 onClick={() => setActiveTab('absensi')}
@@ -393,18 +401,12 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   activeTab === 'absensi' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
                 }`}
               >
-                <div className="relative">
-                  <CalendarDays 
-                    className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'absensi' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
-                  />
-                </div>
-                <span className="text-[9px] font-black tracking-widest uppercase">
-                  Absensi
-                </span>
+                <CalendarDays className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'absensi' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                <span className="text-[9px] font-black tracking-widest uppercase">Absensi</span>
               </button>
             )}
 
-            {/* Akun (For Bos) */}
+            {/* Akun (bos) */}
             {checkIsBos(user, role) && (
               <button
                 onClick={() => setActiveTab('team')}
@@ -412,17 +414,11 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   activeTab === 'team' || activeTab === 'sop' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
                 }`}
               >
-                <div className="relative">
-                  <Users 
-                    className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'team' || activeTab === 'sop' ? 'stroke-[2.5px]' : 'stroke-2'}`} 
-                  />
-                </div>
-                <span className={`text-[9px] font-black tracking-widest uppercase`}>
-                  Akun
-                </span>
+                <Users className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'team' || activeTab === 'sop' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                <span className="text-[9px] font-black tracking-widest uppercase">Akun</span>
               </button>
             )}
-            
+
           </div>
         </nav>
       </div>
