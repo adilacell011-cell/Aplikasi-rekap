@@ -135,7 +135,7 @@ export function Deposits() {
       {role === 'bos' && <DepositAnalytics />}
 
       {/* Summary Header */}
-      <div className={`bg-asphalt-800 rounded-[2.5rem] p-7 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group transition-all duration-500 ${role === 'mandor' && stats.sisaSetor > 0 ? 'ring-2 ring-emerald-500 ring-offset-4 ring-offset-asphalt-900' : ''}`}>
+      <div className={`bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group transition-all duration-500 ${role === 'mandor' && stats.sisaSetor > 0 ? 'ring-2 ring-emerald-500 ring-offset-4 ring-offset-asphalt-900' : ''}`}>
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-emerald-500/20 transition-all duration-1000"></div>
         
         <div className="relative z-10 space-y-6">
@@ -147,7 +147,7 @@ export function Deposits() {
               <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-asphalt-text-400">
                 {primaryLabel}
               </h3>
-              <p className={`text-3xl font-black tracking-tighter text-white mt-0.5 transition-all ${role === 'mandor' && stats.sisaSetor > 0 ? 'scale-105 origin-left' : ''}`}>
+              <p className={`text-xl font-black tracking-tighter text-white mt-0.5 transition-all ${role === 'mandor' && stats.sisaSetor > 0 ? 'scale-105 origin-left' : ''}`}>
                 {formatRupiah(primaryAmount)}
               </p>
             </div>
@@ -252,7 +252,7 @@ export function Deposits() {
                   window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
                 }
               }}
-              className="mt-4 w-full bg-asphalt-900 hover:bg-asphalt-700 backdrop-blur-md text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 border border-asphalt-700 transition-all active:scale-[0.98] shadow-lg"
+              className="mt-4 w-full bg-asphalt-900 hover:bg-asphalt-700 backdrop-blur-md text-white py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 border border-asphalt-700 transition-all active:scale-[0.98] shadow-lg"
             >
               <Share2 className="w-5 h-5 text-emerald-500" />
               Laporan Gabungan
@@ -263,7 +263,7 @@ export function Deposits() {
 
       {/* Input Form for Karyawan/Mandor */}
       {(role === 'karyawan' || role === 'mandor') && myBranch && (
-        <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
+        <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
           <div className="p-6 border-b border-asphalt-700/50 flex items-center gap-4 bg-asphalt-900/40">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shadow-inner">
               <Send className="w-6 h-6" />
@@ -273,7 +273,7 @@ export function Deposits() {
               <p className="text-[10px] text-asphalt-text-400 font-black uppercase tracking-widest leading-none mt-1">Lapor setoran ke Mandor</p>
             </div>
           </div>
-          <div className="p-7">
+          <div className="p-4">
             <form onSubmit={handleSetor} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Nominal Setoran</label>
@@ -283,7 +283,7 @@ export function Deposits() {
                     type="text"
                     placeholder="0"
                     inputMode="numeric"
-                    className="w-full pl-12 pr-5 py-4 text-xl bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black shadow-inner"
+                    className="w-full pl-12 pr-5 py-3 text-base bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black shadow-inner"
                     value={formatNumberInput(setorAmount)}
                     onChange={(e) => handleNumericInput(e, setSetorAmount)}
                     required
@@ -295,7 +295,7 @@ export function Deposits() {
                 <input
                   type="text"
                   placeholder="Contoh: Setoran Pagi"
-                  className="w-full px-5 py-4 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium shadow-inner placeholder:text-asphalt-text-400/30"
+                  className="w-full px-5 py-3 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium shadow-inner placeholder:text-asphalt-text-400/30"
                   value={setorDesc}
                   onChange={(e) => setSetorDesc(e.target.value)}
                   required
@@ -304,7 +304,7 @@ export function Deposits() {
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full py-4.5 bg-emerald-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-emerald-600 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+                className="w-full py-3.5 bg-emerald-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-emerald-600 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -349,7 +349,7 @@ export function Deposits() {
             <input
               type="text"
               placeholder="Cari cabang, karyawan, atau keterangan..."
-              className="w-full pl-12 pr-5 py-4 text-sm bg-asphalt-800 border border-asphalt-700 rounded-3xl focus:ring-2 focus:ring-emerald-500 outline-none text-white shadow-xl font-medium placeholder:text-asphalt-text-400/30"
+              className="w-full pl-12 pr-5 py-3 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white shadow-xl font-medium placeholder:text-asphalt-text-400/30"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -397,8 +397,8 @@ export function Deposits() {
       {/* Deposits Feed */}
       <div className="space-y-6 pb-20">
         {displayedDeposits.length === 0 ? (
-          <div className="bg-asphalt-800 rounded-[2.5rem] p-16 text-center border border-asphalt-700 shadow-xl">
-            <div className="w-20 h-20 bg-asphalt-900 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-asphalt-700/50 shadow-inner">
+          <div className="bg-asphalt-800 rounded-2xl py-10 px-4 text-center border border-asphalt-700 shadow-xl">
+            <div className="w-20 h-20 bg-asphalt-900 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-asphalt-700/50 shadow-inner">
               <Clock className="w-10 h-10 text-asphalt-700" />
             </div>
             <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">
@@ -413,13 +413,13 @@ export function Deposits() {
             const sisaSetor = deposit.sisaSetor ?? (totalSetor - berhasilDisetor);
 
             return (
-              <div key={deposit.id} className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 hover:border-asphalt-600 transition-all relative overflow-hidden group">
+              <div key={deposit.id} className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 hover:border-asphalt-600 transition-all relative overflow-hidden group">
                 <div className={`absolute top-0 left-0 w-2 h-full transition-colors ${
                   deposit.status === 'pending' ? 'bg-orange-500' : 
                   deposit.status === 'received' ? 'bg-brand-500' : 'bg-emerald-500'
                 }`}></div>
 
-                <div className="p-7">
+                <div className="p-4">
                   {/* Header: Branch & Status */}
                   <div className="flex justify-between items-start mb-6">
                     <div className="flex items-center gap-4">

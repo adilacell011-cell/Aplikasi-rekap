@@ -160,7 +160,7 @@ export function Absensi() {
       </div>
 
       {/* Pilih Karyawan */}
-      <div className="bg-asphalt-800 rounded-[2rem] p-5 border border-asphalt-700/40 shadow-xl space-y-3">
+      <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/40 shadow-xl space-y-3">
         <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Pilih Karyawan</label>
         {users.length === 0 ? (
           <p className="text-xs text-asphalt-text-400 px-1">Belum ada karyawan terdaftar.</p>
@@ -197,7 +197,7 @@ export function Absensi() {
       {selectedUserId && (
         <>
           {/* Bulan Navigator */}
-          <div className="bg-asphalt-800 rounded-[2rem] p-5 border border-asphalt-700/40 shadow-xl space-y-4">
+          <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/40 shadow-xl space-y-4">
             <div className="flex items-center justify-between">
               <button
                 onClick={prevMonth}
@@ -313,21 +313,21 @@ export function Absensi() {
           </div>
 
           {/* Ringkasan bulan ini */}
-          <div className="bg-asphalt-800 rounded-[2rem] p-5 border border-asphalt-700/40 shadow-xl">
+          <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/40 shadow-xl">
             <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mb-4 px-1">
               Ringkasan {MONTH_NAMES[month - 1]} {year}
             </p>
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-asphalt-900/60 rounded-2xl p-3 text-center border border-asphalt-700/30 shadow-inner">
-                <p className="text-xl font-black text-white">{dim - totalOff}</p>
+                <p className="text-lg font-black text-white">{dim - totalOff}</p>
                 <p className="text-[8px] font-black text-brand-500 uppercase tracking-widest mt-1">Hari Masuk</p>
               </div>
               <div className="bg-rose-500/5 rounded-2xl p-3 text-center border border-rose-500/20 shadow-inner">
-                <p className="text-xl font-black text-rose-500">{totalLibur}</p>
+                <p className="text-lg font-black text-rose-500">{totalLibur}</p>
                 <p className="text-[8px] font-black text-rose-500 uppercase tracking-widest mt-1">Hari Libur</p>
               </div>
               <div className="bg-amber-500/5 rounded-2xl p-3 text-center border border-amber-500/20 shadow-inner">
-                <p className="text-xl font-black text-amber-500">{totalIzin}</p>
+                <p className="text-lg font-black text-amber-500">{totalIzin}</p>
                 <p className="text-[8px] font-black text-amber-500 uppercase tracking-widest mt-1">Hari Izin</p>
               </div>
             </div>

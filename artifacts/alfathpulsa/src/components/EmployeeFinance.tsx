@@ -173,7 +173,7 @@ export function EmployeeFinance() {
       </p>
 
       {users.length === 0 ? (
-        <div className="bg-asphalt-800 rounded-[2rem] p-10 text-center border border-asphalt-700/50">
+        <div className="bg-asphalt-800 rounded-2xl py-10 px-4 text-center border border-asphalt-700/50">
           <Users className="w-12 h-12 text-asphalt-900 mx-auto mb-4" />
           <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Belum ada karyawan.</p>
         </div>
@@ -202,7 +202,7 @@ export function EmployeeFinance() {
             ].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
 
             return (
-              <div key={u.uid} className="bg-asphalt-800 rounded-[1.75rem] border border-asphalt-700/50 shadow-xl overflow-hidden">
+              <div key={u.uid} className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 shadow-xl overflow-hidden">
                 <button
                   onClick={() => setExpandedId(expanded ? null : u.uid)}
                   className="w-full p-5 flex items-center gap-3 text-left active:scale-[0.99] transition-all"

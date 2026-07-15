@@ -333,7 +333,7 @@ export function VoucherRecaps() {
 
         {/* Global Summary & Filter */}
         <div className="space-y-6">
-          <div className="bg-asphalt-800 rounded-[2.5rem] p-7 text-white shadow-2xl border border-asphalt-700 relative overflow-hidden group">
+          <div className="bg-asphalt-800 rounded-2xl p-5 text-white shadow-2xl border border-asphalt-700 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/5 rounded-full -mr-48 -mt-48 blur-[120px] group-hover:bg-brand-500/10 transition-all duration-1000"></div>
             <div className="relative z-10 space-y-6">
               <div className="flex items-center justify-between">
@@ -366,7 +366,7 @@ export function VoucherRecaps() {
               {/* Grand Total Area */}
               <div className="pt-6 border-t border-white/5 space-y-4">
                 <div>
-                  <h3 className="text-4xl font-black tracking-tighter text-white">
+                  <h3 className="text-2xl font-black tracking-tighter text-white">
                     {formatRupiah(globalNetProfit)}
                   </h3>
                   <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-[0.2em] mt-2">Total Bersih Semua Cabang</p>
@@ -422,7 +422,7 @@ export function VoucherRecaps() {
                 <button
                   key={branch.id}
                   onClick={() => setSelectedBranchId(branch.id)}
-                  className="group relative bg-asphalt-800 rounded-[2.5rem] p-5 flex items-center justify-between shadow-2xl border border-asphalt-700/50 hover:bg-asphalt-900/40 hover:border-brand-500/40 transition-all duration-300 active:scale-[0.98] overflow-hidden"
+                  className="group relative bg-asphalt-800 rounded-2xl p-5 flex items-center justify-between shadow-2xl border border-asphalt-700/50 hover:bg-asphalt-900/40 hover:border-brand-500/40 transition-all duration-300 active:scale-[0.98] overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="absolute -right-4 -bottom-4 text-asphalt-900 font-black text-6xl group-hover:text-asphalt-700/20 transition-colors pointer-events-none italic opacity-20">
@@ -457,7 +457,7 @@ export function VoucherRecaps() {
         </div>
 
         {/* Reporting Status / Quick Insights */}
-        <div className="bg-asphalt-800 rounded-[2.5rem] p-8 border border-asphalt-700 shadow-2xl relative overflow-hidden">
+        <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700 shadow-2xl relative overflow-hidden">
           <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 via-emerald-500 to-rose-500"></div>
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-2xl bg-asphalt-900 flex items-center justify-center text-asphalt-text-400 border border-asphalt-700 shadow-inner">
@@ -488,7 +488,7 @@ export function VoucherRecaps() {
   return (
     <div className="p-3.5 space-y-6 bg-asphalt-900 min-h-screen pb-32">
       {/* Header */}
-      <div className="bg-asphalt-800 rounded-[2.5rem] p-6 text-white shadow-2xl relative overflow-hidden border border-asphalt-700 group">
+      <div className="bg-asphalt-800 rounded-2xl p-5 text-white shadow-2xl relative overflow-hidden border border-asphalt-700 group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full -mr-24 -mt-24 blur-[100px] group-hover:bg-brand-500/20 transition-all duration-1000"></div>
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-8">
@@ -581,8 +581,8 @@ export function VoucherRecaps() {
 
       {/* Input Form */}
       {isFormOpen && (
-        <div className="bg-asphalt-800 rounded-[2.5rem] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-asphalt-700 overflow-hidden animate-in fade-in slide-in-from-top-6 duration-500">
-          <div className="p-7 border-b border-asphalt-700 flex items-center justify-between bg-asphalt-900/40">
+        <div className="bg-asphalt-800 rounded-2xl shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-asphalt-700 overflow-hidden animate-in fade-in slide-in-from-top-6 duration-500">
+          <div className="p-4 border-b border-asphalt-700 flex items-center justify-between bg-asphalt-900/40">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl bg-asphalt-900 border border-asphalt-700 flex items-center justify-center text-brand-500 shadow-inner">
                 <Calculator className="w-6 h-6 stroke-[1.5px]" />

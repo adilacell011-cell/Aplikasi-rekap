@@ -144,17 +144,17 @@ export function Debts() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
-          <div className="bg-asphalt-800 p-8 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 text-center relative overflow-hidden group h-full flex flex-col justify-center">
+          <div className="bg-asphalt-800 p-5 rounded-2xl shadow-2xl border border-asphalt-700/50 text-center relative overflow-hidden group h-full flex flex-col justify-center">
             <div className="absolute inset-0 bg-gradient-to-b from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
             <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.2em] mb-3 relative z-10">Total Hutang</p>
-            <p className={`text-4xl font-black tracking-tighter relative z-10 transition-transform duration-500 group-hover:scale-110 ${totalDebt > 0 ? 'text-rose-500' : 'text-emerald-500'}`}>
+            <p className={`text-2xl font-black tracking-tighter relative z-10 transition-transform duration-500 group-hover:scale-110 ${totalDebt > 0 ? 'text-rose-500' : 'text-emerald-500'}`}>
               {formatRupiah(totalDebt)}
             </p>
           </div>
 
           {canEdit && (
-            <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
-              <div className="p-7 bg-asphalt-900/40 h-full flex flex-col justify-center">
+            <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
+              <div className="p-4 bg-asphalt-900/40 h-full flex flex-col justify-center">
                 <h3 className="text-sm font-black text-white uppercase tracking-tight mb-4">Transaksi Baru</h3>
                 <form onSubmit={handleAddDetail} className="space-y-4">
                   <BlockChoice
@@ -206,7 +206,7 @@ export function Debts() {
         </div>
 
         <div className="p-4 space-y-6">
-          <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
+          <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
             <div className="divide-y divide-asphalt-700/50">
               {selectedPerson.details.length === 0 ? (
                 <div className="py-16 flex flex-col items-center justify-center opacity-20">
@@ -270,7 +270,7 @@ export function Debts() {
   return (
     <div className="p-4 space-y-7 bg-asphalt-900 min-h-full pb-40">
       {/* Summary Header */}
-      <div className="bg-asphalt-800 rounded-[2.5rem] p-7 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group">
+      <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-rose-500/20 transition-all duration-1000"></div>
         <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-rose-900/20 rounded-full blur-[100px]"></div>
         
@@ -293,7 +293,7 @@ export function Debts() {
             </h3>
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-black text-rose-500">Rp</span>
-              <p className="text-4xl font-black tracking-tighter text-white">
+              <p className="text-2xl font-black tracking-tighter text-white">
                 {totalDebtAll.toLocaleString('id-ID')}
               </p>
             </div>
@@ -339,7 +339,7 @@ export function Debts() {
           />
         </div>
 
-        <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
+        <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
           <div className="p-5 bg-asphalt-900/40 border-b border-asphalt-700/50 space-y-5">
             {canFilterBranches && (
               <div className="space-y-2">
@@ -406,7 +406,7 @@ export function Debts() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 divide-asphalt-700/50">
             {filteredDebts.length === 0 ? (
               <div className="col-span-full text-center py-16 bg-asphalt-800/50">
-                <div className="w-20 h-20 bg-asphalt-900 rounded-[2rem] flex items-center justify-center mx-auto mb-5 border border-asphalt-700/50">
+                <div className="w-20 h-20 bg-asphalt-900 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-asphalt-700/50">
                   <Users className="w-10 h-10 text-asphalt-700" />
                 </div>
                 <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Tidak ada data pelanggan</p>

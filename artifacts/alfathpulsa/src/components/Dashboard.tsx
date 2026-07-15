@@ -317,7 +317,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
 
       {/* Main Balance Card (Android Widget Style) */}
       <div 
-        className="bg-gradient-to-br from-[#181E2B] via-[#101520] to-[#0A0E17] rounded-[2.4rem] p-6 md:p-10 border border-[#262E3D]/30 shadow-2xl relative overflow-hidden group transition-all duration-300 hover:border-brand-500/20"
+        className="bg-gradient-to-br from-[#181E2B] via-[#101520] to-[#0A0E17] rounded-2xl p-5 border border-[#262E3D]/30 shadow-2xl relative overflow-hidden group transition-all duration-300 hover:border-brand-500/20"
       >
         <div className="absolute top-0 right-0 w-48 md:w-96 h-48 md:h-96 bg-brand-500/10 rounded-full -mr-24 -mt-24 blur-[80px] group-hover:bg-brand-500/20 transition-all duration-700"></div>
         <div className="relative z-10 space-y-6 md:space-y-8">
@@ -331,8 +331,8 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               </h3>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-xl md:text-3xl font-black text-brand-500">Rp</span>
-              <p className="text-4xl md:text-6xl font-black tracking-tighter text-white">
+              <span className="text-xl md:text-2xl font-black text-brand-500">Rp</span>
+              <p className="text-2xl md:text-3xl font-black tracking-tighter text-white">
                 {(isBosGlobal ? totalGlobalCapital : cashInHand).toLocaleString('id-ID')}
               </p>
             </div>
@@ -395,7 +395,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
 
       {/* Simplified Quick Transfer for Karyawan/Mandor */}
       {(role === 'karyawan' || role === 'mandor') && myBranch && (
-        <div className="bg-asphalt-800 rounded-[2rem] p-4 border border-asphalt-700/50 shadow-xl flex items-center justify-between group transition-all hover:border-brand-500/30">
+        <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/50 shadow-xl flex items-center justify-between group transition-all hover:border-brand-500/30">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20 shadow-inner">
               <ArrowLeftRight className={`w-6 h-6 transition-transform duration-500 ${myBranch.branchPhysicalCapital > 0 ? '' : 'rotate-180'}`} />
@@ -418,7 +418,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
       )}
 
       {/* Grid Services - colorful gradient tiles, clean & fresh */}
-      <div className="bg-asphalt-800 rounded-[1.75rem] p-5 border border-asphalt-700/40 shadow-xl shadow-black/10">
+      <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/40 shadow-xl shadow-black/10">
         <div className="flex items-center gap-2 mb-5 px-1">
           <div className="w-1.5 h-4 bg-brand-500 rounded-full"></div>
           <span className="text-[11px] font-black text-brand-500 tracking-wider uppercase">Menu Layanan Utama</span>
@@ -515,7 +515,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               if (!currentBranchData) return null;
 
               return (
-                <div key={branch.id} className="bg-asphalt-800 rounded-[2rem] p-4 border border-asphalt-700/50 shadow-xl space-y-4">
+                <div key={branch.id} className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/50 shadow-xl space-y-4">
                   <div className="flex justify-between items-center border-b border-asphalt-700/50 pb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-2xl bg-brand-500/10 flex items-center justify-center border border-brand-500/20">
@@ -573,7 +573,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                 </div>
                 <p className="text-base font-black text-white">{formatRupiah(currentDebtTotal)}</p>
               </div>
-              <div className="bg-brand-500 p-4 rounded-[2rem] shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
+              <div className="bg-brand-500 p-4 rounded-2xl shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
                 <div className="flex items-center gap-2 text-white/80">
                   <PiggyBank className="w-5 h-5 text-white" />
                   <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Nasabah</span>
@@ -595,7 +595,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             <h3 className="text-xs font-black text-asphalt-text-100 uppercase tracking-[0.2em]">Rekening Bank</h3>
           </div>
 
-          <div className="bg-asphalt-800 rounded-[2.5rem] border border-asphalt-700/50 shadow-2xl overflow-hidden">
+          <div className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 shadow-2xl overflow-hidden">
             {role !== 'bos' && (
               <div className="p-4 bg-asphalt-900/40 border-b border-asphalt-700/50">
                 <form onSubmit={handleAddBank} className="space-y-4">

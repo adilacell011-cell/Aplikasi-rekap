@@ -4,7 +4,7 @@ import { BookOpen, AlertCircle, CheckCircle, Shield, Clock } from 'lucide-react'
 export const SOPPage: React.FC = () => {
   return (
     <div className="p-5 pb-32 space-y-7 bg-asphalt-900 min-h-screen">
-      <div className="bg-asphalt-800 p-7 rounded-[2.5rem] shadow-2xl border border-asphalt-700 relative overflow-hidden group">
+      <div className="bg-asphalt-800 p-5 rounded-2xl shadow-2xl border border-asphalt-700 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-brand-500/20 transition-all duration-1000"></div>
         <div className="relative z-10">
           <h1 className="text-2xl font-black flex items-center gap-4 text-white uppercase tracking-tight">
@@ -18,7 +18,7 @@ export const SOPPage: React.FC = () => {
       </div>
 
       <div className="space-y-6">
-        <section className="bg-asphalt-800 p-6 rounded-[2rem] border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
               <CheckCircle className="w-4 h-4" />
@@ -41,7 +41,7 @@ export const SOPPage: React.FC = () => {
           </ul>
         </section>
 
-        <section className="bg-asphalt-800 p-6 rounded-[2rem] border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
               <Clock className="w-4 h-4" />
@@ -64,7 +64,7 @@ export const SOPPage: React.FC = () => {
           </ul>
         </section>
 
-        <section className="bg-asphalt-800 p-6 rounded-[2rem] border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-500">
               <AlertCircle className="w-4 h-4" />
@@ -109,7 +109,7 @@ export const SOPPage: React.FC = () => {
           </div>
         </section>
 
-        <section className="bg-asphalt-800 p-6 rounded-[2rem] border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center text-brand-500">
               <Shield className="w-4 h-4" />

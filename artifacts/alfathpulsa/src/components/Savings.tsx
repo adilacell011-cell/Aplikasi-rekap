@@ -153,19 +153,19 @@ export function Savings() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
-          <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-8 rounded-[2.5rem] shadow-2xl shadow-emerald-500/20 text-center text-white relative overflow-hidden group h-full flex flex-col justify-center">
+          <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-5 rounded-2xl shadow-2xl shadow-emerald-500/20 text-center text-white relative overflow-hidden group h-full flex flex-col justify-center">
             <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -mr-24 -mt-24 blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
             <div className="relative z-10">
               <p className="text-[10px] font-black text-emerald-100/80 uppercase tracking-[0.25em] mb-2">Total Tabungan</p>
-              <p className="text-4xl font-black tracking-tighter">
+              <p className="text-2xl font-black tracking-tighter">
                 {formatRupiah(totalSavings)}
               </p>
             </div>
           </div>
 
           {canEdit && (
-            <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
-              <div className="p-7 bg-asphalt-900/40 h-full flex flex-col justify-center">
+            <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
+              <div className="p-4 bg-asphalt-900/40 h-full flex flex-col justify-center">
                 <h3 className="text-sm font-black text-white uppercase tracking-tight mb-4">Transaksi Baru</h3>
                 <form onSubmit={handleAddTransaction} className="space-y-4">
                   <BlockChoice
@@ -217,7 +217,7 @@ export function Savings() {
         </div>
 
         <div className="p-4 space-y-6">
-          <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
+          <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
             <div className="overflow-x-auto">
               {selectedPerson.transactions.length === 0 ? (
                 <div className="py-16 flex flex-col items-center justify-center opacity-20">
@@ -309,7 +309,7 @@ export function Savings() {
   return (
     <div className="p-4 space-y-7 bg-asphalt-900 min-h-full pb-40">
       {/* Summary Header */}
-      <div className="bg-asphalt-800 rounded-[2.5rem] p-7 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group">
+      <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-emerald-500/20 transition-all duration-1000"></div>
         
         <div className="relative z-10 space-y-6">
@@ -331,7 +331,7 @@ export function Savings() {
             </h3>
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-black text-emerald-500">Rp</span>
-              <p className="text-4xl font-black tracking-tighter text-white">
+              <p className="text-2xl font-black tracking-tighter text-white">
                 {branchSpecificData.total.toLocaleString('id-ID')}
               </p>
             </div>
@@ -420,7 +420,7 @@ export function Savings() {
           </div>
         </div>
 
-        <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
+        <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
           {activeMainTab === 'savers' ? (
             <>
               {canEdit && (
@@ -452,7 +452,7 @@ export function Savings() {
                     <button 
                       type="submit" 
                       disabled={isAddingPerson}
-                      className="w-full py-4 bg-emerald-500 text-white rounded-2xl text-[10px] font-black hover:bg-emerald-600 active:scale-95 transition-all disabled:opacity-50 shadow-lg shadow-emerald-500/20 uppercase tracking-[0.2em] flex items-center justify-center gap-3"
+                      className="w-full py-3 bg-emerald-500 text-white rounded-2xl text-[10px] font-black hover:bg-emerald-600 active:scale-95 transition-all disabled:opacity-50 shadow-lg shadow-emerald-500/20 uppercase tracking-[0.2em] flex items-center justify-center gap-3"
                     >
                       {isAddingPerson ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -481,7 +481,7 @@ export function Savings() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 divide-asphalt-700/50">
                 {filteredSavings.length === 0 ? (
                   <div className="col-span-full text-center py-16 bg-asphalt-800/50">
-                    <div className="w-20 h-20 bg-asphalt-900 rounded-[2rem] flex items-center justify-center mx-auto mb-5 border border-asphalt-700/50">
+                    <div className="w-20 h-20 bg-asphalt-900 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-asphalt-700/50">
                       <PiggyBank className="w-10 h-10 text-asphalt-700" />
                     </div>
                     <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Tidak ada data nasabah</p>

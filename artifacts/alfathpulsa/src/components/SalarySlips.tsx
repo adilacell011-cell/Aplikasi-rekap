@@ -346,7 +346,7 @@ export function SalarySlips() {
       </div>
 
       {isAdding && (
-        <div className="bg-asphalt-800 rounded-[2.5rem] p-7 shadow-2xl border border-asphalt-700 animate-in slide-in-from-bottom duration-500">
+        <div className="bg-asphalt-800 rounded-2xl p-5 shadow-2xl border border-asphalt-700 animate-in slide-in-from-bottom duration-500">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-sm font-black text-white uppercase tracking-tight">Buat Slip Gaji</h3>
             <button onClick={() => setIsAdding(false)} className="text-asphalt-text-400 p-2"><ArrowLeft className="w-5 h-5" /></button>
@@ -402,7 +402,7 @@ export function SalarySlips() {
                     type="text"
                     inputMode="numeric"
                     placeholder="0"
-                    className="w-full pl-12 pr-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                    className="w-full pl-12 pr-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                     value={formatNumberInput(dailyRate)}
                     onChange={(e) => handleNumericInput(e, setDailyRate)}
                     required
@@ -418,7 +418,7 @@ export function SalarySlips() {
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full pl-5 pr-14 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                      className="w-full pl-5 pr-14 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
                       value={daysOff}
                       onChange={(e) => handleNumericInput(e, setDaysOff)}
                     />
@@ -430,7 +430,7 @@ export function SalarySlips() {
                   <input
                     type="text"
                     inputMode="numeric"
-                    className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-emerald-500 font-black outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
+                    className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-emerald-500 font-black outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
                     value={formatNumberInput(bonus)}
                     onChange={(e) => handleNumericInput(e, setBonus)}
                   />
@@ -442,7 +442,7 @@ export function SalarySlips() {
                 <input
                   type="text"
                   inputMode="numeric"
-                  className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                  className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
                   value={formatNumberInput(deductions)}
                   onChange={(e) => handleNumericInput(e, setDeductions)}
                 />
@@ -468,7 +468,7 @@ export function SalarySlips() {
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                      className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
                       value={formatNumberInput(debtPayment)}
                       onChange={(e) => handleNumericInput(e, setDebtPayment)}
                     />
@@ -479,7 +479,7 @@ export function SalarySlips() {
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                      className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                       value={formatNumberInput(savingDeposit)}
                       onChange={(e) => handleNumericInput(e, setSavingDeposit)}
                     />
@@ -490,7 +490,7 @@ export function SalarySlips() {
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full px-5 py-4 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                      className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                       value={formatNumberInput(savingWithdraw)}
                       onChange={(e) => handleNumericInput(e, setSavingWithdraw)}
                     />
@@ -549,7 +549,7 @@ export function SalarySlips() {
             <div className="md:col-span-2 pt-2">
               <button
                 type="submit"
-                className="w-full py-4.5 bg-brand-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-brand-600 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg shadow-brand-500/20"
+                className="w-full py-3.5 bg-brand-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-brand-600 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg shadow-brand-500/20"
               >
                 SIMPAN SLIP GAJI
               </button>
@@ -604,7 +604,7 @@ export function SalarySlips() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {slips.length === 0 ? (
-            <div className="col-span-full bg-asphalt-800 rounded-[2.5rem] p-10 text-center border border-asphalt-700/50">
+            <div className="col-span-full bg-asphalt-800 rounded-2xl py-8 px-4 text-center border border-asphalt-700/50">
               <FileText className="w-12 h-12 text-asphalt-900 mx-auto mb-4" />
               <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Belum ada slip gaji tersedia.</p>
             </div>
