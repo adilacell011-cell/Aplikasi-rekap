@@ -5,7 +5,10 @@ interface AppLogoIconProps {
   className?: string;
 }
 
-/** Logo mark "A" dengan aksen oranye — dipakai sebagai ikon di mana saja */
+/**
+ * Logo mark "A" dengan aksen oranye.
+ * Geometri dihitung dengan vektor normal agar presisi dan bersih.
+ */
 export function AppLogoIcon({ size = 44, className = '' }: AppLogoIconProps) {
   return (
     <svg
@@ -24,17 +27,25 @@ export function AppLogoIcon({ size = 44, className = '' }: AppLogoIconProps) {
         </linearGradient>
       </defs>
 
-      {/* Blue rounded background */}
+      {/* Blue rounded square background */}
       <rect width="44" height="44" rx="10" fill="url(#ap-bg)" />
 
-      {/* White A — left diagonal leg */}
-      <polygon points="3,41 12,41 25,5 16,5" fill="white" />
+      {/*
+        Letter A — both legs share the apex at (22, 3).
+        Left leg:  apex (22,3) → inner shoulder (26,7) → bottom-inner (11,41) → bottom-outer (3,37)
+        Right leg: apex (22,3) → inner shoulder (18,7) → bottom-inner (33,41) → bottom-outer (41,37)
+        Legs are symmetric around x=22.
+      */}
+      <polygon points="22,3 26,7 11,41 3,37" fill="white" />
+      <polygon points="22,3 18,7 33,41 41,37" fill="white" />
 
-      {/* White A — right diagonal leg */}
-      <polygon points="19,5 28,5 41,41 32,41" fill="white" />
-
-      {/* Orange diagonal swoosh accent (replaces crossbar, cutting through lower-left leg) */}
-      <polygon points="5,36 27,21 31,26 9,41" fill="#f97316" />
+      {/*
+        Orange swoosh — a clean diagonal parallelogram replacing the crossbar.
+        Goes from lower-left to upper-right, overlapping the left leg's inner third
+        and the open space between the legs.
+        Points: top-left (6,31) → top-right (26,19) → bottom-right (30,25) → bottom-left (10,37)
+      */}
+      <polygon points="6,31 26,19 30,25 10,37" fill="#f97316" />
     </svg>
   );
 }
