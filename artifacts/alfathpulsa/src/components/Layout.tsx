@@ -117,7 +117,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         </AnimatePresence>
 
         {/* Top Header */}
-        <header className="bg-asphalt-900 text-white sticky top-0 z-20 px-5 pt-[env(safe-area-inset-top,1.5rem)] pb-4 flex items-center justify-between border-b border-asphalt-800/10">
+        <header className="bg-asphalt-900 text-white sticky top-0 z-20 px-5 pt-[calc(env(safe-area-inset-top,0px)+1rem)] pb-4 flex items-center justify-between border-b border-asphalt-800/10">
           <div className="flex items-center gap-3.5">
             <div className="relative group">
               <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-brand-500/20 ring-2 ring-brand-500/10 active:scale-95 transition-transform">
