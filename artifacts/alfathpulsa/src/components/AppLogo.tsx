@@ -6,84 +6,127 @@ interface AppLogoIconProps {
 }
 
 /**
- * AlfathPulsa logo mark — clean geometric "A" on dark navy background.
+ * AlfathPulsa logo mark — recreasi logo resmi Agen BRILink AlfathPulsa.
  *
- * - Two rounded-stroke legs converge at the apex.
- * - Sky-blue crossbar sits exactly where the legs are at that height,
- *   creating a flush connection without visual gaps.
- * - Subtle top-shine overlay gives depth without decoration.
+ * Struktur:
+ *  - "A" dua kaki solid (biru BRILink #1b3a8a)
+ *  - Speed-lines diagonal di dalam hollow A (oranye/gold)
+ *  - "P" D-shape (oranye vivid, even-odd hole) — ditampilkan hanya
+ *    pada ukuran ≥ 36px agar tidak terlalu padat di icon kecil
  */
 export function AppLogoIcon({ size = 44, className = '' }: AppLogoIconProps) {
+  const showP = size >= 36;
+
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 44 44"
+      viewBox="0 0 260 260"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-hidden="true"
     >
       <defs>
-        {/* Main background gradient — dark navy → brand blue */}
-        <linearGradient id="ap-bg" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+        {/* Background rounded square — dark navy for dark theme */}
+        <linearGradient id="ap-bg2" x1="0" y1="0" x2="260" y2="260" gradientUnits="userSpaceOnUse">
           <stop offset="0%"   stopColor="#0c1460" />
-          <stop offset="100%" stopColor="#1b3eb8" />
+          <stop offset="100%" stopColor="#1a2fa0" />
         </linearGradient>
 
-        {/* Subtle top-shine — gives depth without being heavy */}
-        <linearGradient id="ap-shine" x1="0" y1="0" x2="0" y2="44" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#ffffff" stopOpacity="0.13" />
-          <stop offset="55%"  stopColor="#ffffff" stopOpacity="0" />
+        {/* Subtle top-shine */}
+        <linearGradient id="ap-shine2" x1="0" y1="0" x2="0" y2="260" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"  stopColor="#ffffff" stopOpacity="0.12" />
+          <stop offset="50%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
 
-        {/* Crossbar gradient — left sky-blue → right white tint */}
-        <linearGradient id="ap-bar" x1="11" y1="0" x2="33" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%"   stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#7dd3fc" />
+        {/* P gradient — vivid amber-orange */}
+        <linearGradient id="p-grad2" x1="0.2" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0%"   stopColor="#ffaa00" />
+          <stop offset="55%"  stopColor="#f97316" />
+          <stop offset="100%" stopColor="#e55a00" />
         </linearGradient>
+
+        {/* Speed-line gradients */}
+        <linearGradient id="sl1-2" x1="0" y1="0" x2="260" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#fde68a" />
+          <stop offset="100%" stopColor="#fbbf24" />
+        </linearGradient>
+        <linearGradient id="sl2-2" x1="0" y1="0" x2="260" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#fbbf24" />
+          <stop offset="100%" stopColor="#f97316" />
+        </linearGradient>
+        <linearGradient id="sl3-2" x1="0" y1="0" x2="260" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#f97316" />
+          <stop offset="100%" stopColor="#ea580c" />
+        </linearGradient>
+
+        {/* Clip to A hollow */}
+        <clipPath id="a-clip2">
+          <polygon points="105,58 46,196 164,196" />
+        </clipPath>
       </defs>
 
-      {/* Background */}
-      <rect width="44" height="44" rx="11" fill="url(#ap-bg)" />
-      <rect width="44" height="44" rx="11" fill="url(#ap-shine)" />
+      {/* Rounded square background */}
+      <rect width="260" height="260" rx="54" fill="url(#ap-bg2)" />
+      <rect width="260" height="260" rx="54" fill="url(#ap-shine2)" />
 
       {/*
-        ── Letter A ────────────────────────────────────────────────────
-        Apex: (22, 7)
-        Left  leg → (5,  39)
-        Right leg → (39, 39)
-        Crossbar at y=27 connects flush with both legs.
-          Left  leg at y=27:  x ≈ 11.4
-          Right leg at y=27:  x ≈ 32.6
+        ── A mark ────────────────────────────────────────────────────
+        Apex: (105, 18)
+        Left outer:  (16, 196)
+        Left inner:  (46, 196)
+        Inner apex:  (105, 58)
+        Right inner: (164, 196)
+        Right outer: (194, 196)
       */}
 
-      {/* Left leg */}
-      <line
-        x1="22" y1="7"
-        x2="5"  y2="39"
-        stroke="white"
-        strokeWidth="5.5"
-        strokeLinecap="round"
+      {/* A — left leg (BRILink blue) */}
+      <polygon
+        points="105,18 16,196 46,196 105,58"
+        fill="#2554c7"
       />
 
-      {/* Right leg */}
-      <line
-        x1="22" y1="7"
-        x2="39" y2="39"
-        stroke="white"
-        strokeWidth="5.5"
-        strokeLinecap="round"
+      {/* A — right leg (BRILink blue) */}
+      <polygon
+        points="105,18 105,58 164,196 194,196"
+        fill="#2554c7"
       />
 
-      {/* Crossbar — sky-blue gradient, flush with legs */}
-      <line
-        x1="11.5" y1="27"
-        x2="32.5" y2="27"
-        stroke="url(#ap-bar)"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
+      {/* Speed lines clipped to A hollow */}
+      <g clipPath="url(#a-clip2)">
+        {/* Bottom strip — gold */}
+        <polygon points="0,230 260,115 260,135 0,250" fill="url(#sl1-2)" />
+        {/* Middle strip — amber */}
+        <polygon points="0,205 260,90  260,110 0,225" fill="url(#sl2-2)" />
+        {/* Top strip — orange */}
+        <polygon points="0,180 260,65  260,85  0,200" fill="url(#sl3-2)" />
+      </g>
+
+      {/*
+        ── P mark (only when size ≥ 36) ──────────────────────────────
+        Spine left: x=112, inner spine wall: x=130
+        Bowl: D-arc centred at (130, 108), r_outer=58, r_inner=38
+        P spans y=18 → y=198
+      */}
+      {showP && (
+        <path
+          fillRule="evenodd"
+          fill="url(#p-grad2)"
+          d="
+            M 112,18
+            L 130,18
+            A 58,58 0 0,1 188,76
+            A 58,58 0 0,1 130,134
+            L 112,134
+            Z
+            M 130,40
+            A 36,36 0 0,1 166,76
+            A 36,36 0 0,1 130,112
+            Z
+          "
+        />
+      )}
     </svg>
   );
 }
@@ -94,7 +137,7 @@ interface AppLogoWordmarkProps {
   layout?: 'horizontal' | 'stacked';
 }
 
-/** Logo lengkap: ikon + wordmark "AlfathPulsa" */
+/** Logo lengkap: ikon + wordmark */
 export function AppLogoWordmark({
   className = '',
   iconSize = 44,
@@ -121,7 +164,7 @@ function LogoText() {
     <div className="flex flex-col leading-none select-none">
       <span className="font-black tracking-tight text-[1.35rem] leading-none">
         <span className="text-white">Alfath</span>
-        <span className="text-sky-300">Pulsa</span>
+        <span className="text-orange-400">Pulsa</span>
       </span>
       <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/35 mt-0.5">
         Agen BRILink

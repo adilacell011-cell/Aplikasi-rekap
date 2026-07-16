@@ -1,0 +1,112 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- P orange gradient: vivid top-right → deeper bottom-left -->
+    <linearGradient id="p-grad" x1="0.2" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#ffaa00"/>
+      <stop offset="55%"  stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#e55a00"/>
+    </linearGradient>
+
+    <!-- Speed-line gradient: bottom strip warmest gold → top strip sharp orange -->
+    <linearGradient id="sl1-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="sl2-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="sl3-grad" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+
+    <!-- Clip to A's inner hollow triangle -->
+    <clipPath id="a-inner-clip">
+      <polygon points="175,88 72,268 278,268"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── A: Left leg (BRILink blue) ──────────────────────────────── -->
+  <polygon
+    points="175,12 15,268 72,268 175,88"
+    fill="#1b3a8a"
+  />
+
+  <!-- ── A: Right leg (BRILink blue) ─────────────────────────────── -->
+  <polygon
+    points="175,12 175,88 278,268 335,268"
+    fill="#1b3a8a"
+  />
+
+  <!-- ── Speed lines (clipped to hollow) ─────────────────────────── -->
+  <!--
+    Three diagonal parallelograms running lower-left → upper-right
+    at ≈ 27° above horizontal. Clipped to the A hollow triangle.
+    Drawn BOTTOM-to-TOP so the top (smallest) strip appears sharpest.
+  -->
+  <g clip-path="url(#a-inner-clip)">
+    <!-- Strip 1 — bottom, gold -->
+    <polygon
+      points="0,310 350,155 350,185 0,340"
+      fill="url(#sl1-grad)"
+    />
+    <!-- Strip 2 — middle, amber -->
+    <polygon
+      points="0,278 350,123 350,153 0,308"
+      fill="url(#sl2-grad)"
+    />
+    <!-- Strip 3 — top, orange -->
+    <polygon
+      points="0,246 350,91 350,121 0,276"
+      fill="url(#sl3-grad)"
+    />
+  </g>
+
+  <!-- ── P shape (orange, even-odd for hole) ──────────────────────── -->
+  <!--
+    Spine left: x=185, extends to x=220 (inner spine wall).
+    Bowl: D-arc centred at (220, 108), r_outer=96, r_inner=64.
+    P spans y=12 → y=204.
+  -->
+  <path
+    fill-rule="evenodd"
+    fill="url(#p-grad)"
+    d="
+      M 185,12
+      L 220,12
+      A 96,96 0 0,1 316,108
+      A 96,96 0 0,1 220,204
+      L 185,204
+      Z
+      M 220,44
+      A 64,64 0 0,1 284,108
+      A 64,64 0 0,1 220,172
+      Z
+    "
+  />
+
+  <!-- ── Wordmark ──────────────────────────────────────────────────── -->
+  <text
+    x="175"
+    y="330"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="700"
+    font-size="44"
+    letter-spacing="1"
+  >
+    <tspan fill="#1b3a8a">Agen </tspan><tspan fill="#1b3a8a" font-weight="900">BRI</tspan><tspan fill="#f97316" font-weight="700">Link</tspan>
+  </text>
+
+  <text
+    x="175"
+    y="390"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="900"
+    font-size="52"
+    letter-spacing="0.5"
+    fill="#1b3a8a"
+  >Alfath Pulsa</text>
+</svg>

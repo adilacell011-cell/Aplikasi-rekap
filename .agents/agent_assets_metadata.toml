@@ -1,0 +1,20 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "XDRwYp0XwmIkDLcBFGHke"
+uri = "file://artifacts/alfathpulsa/public/logo-alfathpulsa-1024.png"
+type = "image"
+title = "Logo AlfathPulsa — 1024×1024 PNG"
+
+[[outputs]]
+id = "l6aKGxlimnc0O2FyZSGw4"
+uri = "file://artifacts/alfathpulsa/public/alfathpulsa-logo-white.png"
+type = "image"
+title = "Logo AlfathPulsa — 1024px background putih"
+
+[[outputs]]
+id = "ZN2GiZpOLcLkLy8Aaghz7"
+uri = "file://artifacts/alfathpulsa/public/alfathpulsa-logo-transparent.png"
+type = "image"
+title = "Logo AlfathPulsa — 1024px transparan"
