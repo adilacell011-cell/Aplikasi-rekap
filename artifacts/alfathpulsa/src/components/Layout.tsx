@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays, KeyRound, Eye, EyeOff } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
 import { api } from '../api';
 
-import { useFinanceStore } from '../hooks/useFinanceStore';
+import { useFinanceStore, reloadFinanceData } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore, ThemeColor } from '../store/themeStore';
 import { checkIsBos, checkIsMandor } from '../utils/authUtils';
@@ -28,6 +28,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
   const [time, setTime] = useState('');
   const [dateStr, setDateStr] = useState('');
 
+  const [showBranchPicker, setShowBranchPicker] = useState(false);
   const [showChangePw, setShowChangePw] = useState(false);
   const [changePwForm, setChangePwForm] = useState({ old: '', new: '', confirm: '' });
   const [changePwLoading, setChangePwLoading] = useState(false);
@@ -130,11 +131,21 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
             <div>
               <h1 className="text-base font-black tracking-tight leading-none text-white/95 uppercase">{user?.displayName || 'AlfathPulsa'}</h1>
               <div className="flex items-center gap-1.5 mt-1.5">
-                <p className="text-[9px] text-asphalt-text-400 font-extrabold uppercase tracking-[0.1em]">
-                  {checkIsBos(user, role) ? (branchId ? `BOS • ${branchName}` : 'BOS PUSAT') : 
-                   checkIsMandor(role) ? `MANDOR • ${branchName || 'SEMUA'}` : 
-                   branchId ? `KARYAWAN • ${branchName}` : 'KARYAWAN'}
-                </p>
+                {checkIsMandor(role) ? (
+                  <button
+                    onClick={() => setShowBranchPicker(true)}
+                    className="flex items-center gap-1 text-[9px] text-brand-500 font-extrabold uppercase tracking-[0.1em] bg-brand-500/10 border border-brand-500/20 px-2 py-1 rounded-lg active:scale-95 transition-all"
+                  >
+                    <Building2 className="w-2.5 h-2.5 shrink-0" />
+                    <span>MANDOR • {branchName || 'PILIH CABANG'}</span>
+                    <ChevronDown className="w-2.5 h-2.5 shrink-0" />
+                  </button>
+                ) : (
+                  <p className="text-[9px] text-asphalt-text-400 font-extrabold uppercase tracking-[0.1em]">
+                    {checkIsBos(user, role) ? (branchId ? `BOS • ${branchName}` : 'BOS PUSAT') :
+                     branchId ? `KARYAWAN • ${branchName}` : 'KARYAWAN'}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -276,6 +287,67 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                     </span>
                   </button>
                 ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Branch Picker Overlay — mandor only */}
+        {showBranchPicker && checkIsMandor(role) && (
+          <div
+            className="absolute inset-0 z-40 ios-backdrop flex flex-col justify-end animate-in fade-in duration-200"
+            onClick={() => setShowBranchPicker(false)}
+          >
+            <div
+              className="ios-sheet ios-font px-6 pt-3 pb-14 animate-in slide-in-from-bottom duration-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-center mb-5"><div className="ios-grabber" /></div>
+              <div className="flex items-center justify-between mb-6 text-white">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20">
+                    <Building2 className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black uppercase tracking-tight">Pilih Cabang</h3>
+                    <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Data akan otomatis sinkron</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowBranchPicker(false)} className="p-3 bg-asphalt-900 rounded-2xl border border-asphalt-700 hover:bg-asphalt-700 transition-all">
+                  <X className="w-5 h-5 text-asphalt-text-400" />
+                </button>
+              </div>
+
+              <div className="space-y-2 max-h-72 overflow-y-auto">
+                {branches.map((branch) => {
+                  const isSelected = branchId === branch.id;
+                  return (
+                    <button
+                      key={branch.id}
+                      onClick={() => {
+                        useAuthStore.getState().setBranchId(branch.id);
+                        reloadFinanceData();
+                        setShowBranchPicker(false);
+                      }}
+                      className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${
+                        isSelected
+                          ? 'border-brand-500 bg-brand-500/10 text-brand-500'
+                          : 'border-asphalt-700 bg-asphalt-900 text-white hover:border-asphalt-600'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? 'bg-brand-500/20' : 'bg-asphalt-800'}`}>
+                        <Building2 className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="text-sm font-black uppercase tracking-tight">{branch.name}</p>
+                        <p className="text-[9px] font-bold uppercase tracking-widest mt-0.5 opacity-60">
+                          Modal: {(branch.capital || 0).toLocaleString('id-ID')}
+                        </p>
+                      </div>
+                      {isSelected && <Check className="w-5 h-5 text-brand-500 stroke-[2.5px] shrink-0" />}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
