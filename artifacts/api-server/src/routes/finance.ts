@@ -111,6 +111,24 @@ router.patch("/branches/:id", requireBosOrMandor, async (req, res) => {
   return res.json(row ?? null);
 });
 
+// Capital transfer (fisik ↔ digital) — boleh diakses semua role yang sudah login,
+// termasuk karyawan. Hanya boleh mengubah field modal, bukan nama/setting cabang.
+router.patch("/branches/:id/capital-transfer", async (req, res) => {
+  const updates: Record<string, unknown> = {};
+  for (const k of ["capital", "physicalCapital", "shiftedCapital"]) {
+    if (req.body?.[k] !== undefined) updates[k] = req.body[k];
+  }
+  if (Object.keys(updates).length === 0) {
+    return res.status(400).json({ error: "Tidak ada field modal yang dikirim" });
+  }
+  const [row] = await db
+    .update(branches)
+    .set(updates)
+    .where(eq(branches.id, String(req.params.id)))
+    .returning();
+  return res.json(row ?? null);
+});
+
 router.delete("/branches/:id", requireBos, async (req, res) => {
   await db
     .delete(branchDeposits)

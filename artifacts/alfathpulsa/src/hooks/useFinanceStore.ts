@@ -558,33 +558,30 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
   },
 
   transferBranchCapital: async (branchId, amount, direction) => {
-    try {
-      const branch = get().branches.find(b => b.id === branchId);
-      if (!branch) throw new Error('Branch not found');
+    const branch = get().branches.find(b => b.id === branchId);
+    if (!branch) throw new Error('Branch not found');
 
-      const currentCapital = branch.capital || 0;
-      const currentPhysical = branch.physicalCapital || 0;
-      const currentShifted = branch.shiftedCapital || 0;
+    const currentCapital = branch.capital || 0;
+    const currentPhysical = branch.physicalCapital || 0;
+    const currentShifted = branch.shiftedCapital || 0;
 
-      if (direction === 'to_non_physical') {
-        if (currentPhysical < amount) throw new Error('Saldo Fisik tidak mencukupi');
-        await api.patch(`/branches/${branchId}`, {
-          capital: currentCapital + amount,
-          physicalCapital: currentPhysical - amount,
-          shiftedCapital: currentShifted + amount,
-        });
-      } else {
-        if (currentCapital < amount) throw new Error('Saldo Non-Fisik tidak mencukupi');
-        await api.patch(`/branches/${branchId}`, {
-          capital: currentCapital - amount,
-          physicalCapital: currentPhysical + amount,
-          shiftedCapital: Math.max(0, currentShifted - amount),
-        });
-      }
-      await loadAll();
-    } catch (error) {
-      setStoreError(error);
+    // Gunakan endpoint khusus capital-transfer yang bisa diakses semua role (termasuk karyawan)
+    if (direction === 'to_non_physical') {
+      if (currentPhysical < amount) throw new Error('Saldo Fisik tidak mencukupi');
+      await api.patch(`/branches/${branchId}/capital-transfer`, {
+        capital: currentCapital + amount,
+        physicalCapital: currentPhysical - amount,
+        shiftedCapital: currentShifted + amount,
+      });
+    } else {
+      if (currentCapital < amount) throw new Error('Saldo Non-Fisik tidak mencukupi');
+      await api.patch(`/branches/${branchId}/capital-transfer`, {
+        capital: currentCapital - amount,
+        physicalCapital: currentPhysical + amount,
+        shiftedCapital: Math.max(0, currentShifted - amount),
+      });
     }
+    await loadAll();
   },
 
   getTotalBankBalance: () => {
