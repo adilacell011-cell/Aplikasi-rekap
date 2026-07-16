@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Palette, Check, BookOpen, FileText, Sun, Moon, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Check, BookOpen, FileText, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
 import { api } from '../api';
@@ -10,7 +10,6 @@ import { toast } from 'sonner';
 
 import { useFinanceStore, reloadFinanceData } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
-import { useThemeStore, ThemeColor } from '../store/themeStore';
 import { checkIsBos, checkIsMandor } from '../utils/authUtils';
 
 interface LayoutProps {
@@ -22,8 +21,6 @@ interface LayoutProps {
 
 export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps) {
   const { isInstallable, installApp } = usePWAInstall();
-  const { theme, setTheme, themeMode, setThemeMode } = useThemeStore();
-  const [showThemePicker, setShowThemePicker] = useState(false);
   const { branchId, user } = useAuthStore();
   const { branches, error, setError, announcement } = useFinanceStore();
   const branchName = branchId ? branches.find(b => b.id === branchId)?.name : null;
@@ -77,23 +74,13 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
     return () => clearInterval(interval);
   }, []);
 
-  // Apply theme and themeMode to document element
+  // Lock to Glassmorphism Twilight dark mode permanently
   React.useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-mode', themeMode);
-  }, [theme, themeMode]);
-
-  const themes: { id: ThemeColor; color: string; label: string }[] = [
-    { id: 'blue', color: 'bg-blue-500', label: 'Biru' },
-    { id: 'emerald', color: 'bg-emerald-500', label: 'Hijau' },
-    { id: 'rose', color: 'bg-rose-500', label: 'Merah' },
-    { id: 'amber', color: 'bg-amber-500', label: 'Oranye' },
-    { id: 'indigo', color: 'bg-indigo-500', label: 'Ungu' },
-    { id: 'slate', color: 'bg-slate-500', label: 'Abu-abu' },
-  ];
+    document.documentElement.setAttribute('data-mode', 'dark');
+  }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-transparent flex justify-center selection:bg-brand-500/30" data-theme={theme} data-mode={themeMode}>
+    <div className="min-h-[100dvh] bg-transparent flex justify-center selection:bg-brand-500/30" data-mode="dark">
       <div className="w-full bg-transparent h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100">
         {/* Global Error Display */}
         <AnimatePresence>
@@ -168,13 +155,6 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               </div>
             )}
             <button
-              onClick={() => setShowThemePicker(true)}
-              className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
-              title="Pilih Tema"
-            >
-              <Palette className="w-4.5 h-4.5 text-brand-500" />
-            </button>
-            <button
               onClick={() => { setShowChangePw(true); setChangePwError(null); setChangePwForm({ old: '', new: '', confirm: '' }); }}
               className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
               title="Ubah Password"
@@ -215,86 +195,6 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
           </div>
         )}
       
-        {/* Theme Picker Overlay */}
-        {showThemePicker && (
-          <div
-            className="absolute inset-0 z-40 ios-backdrop flex flex-col justify-end animate-in fade-in duration-200"
-            onClick={() => setShowThemePicker(false)}
-          >
-            <div
-              className="ios-sheet ios-font px-8 pt-3 pb-14 animate-in slide-in-from-bottom duration-300"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-center mb-5"><div className="ios-grabber" /></div>
-              <div className="flex items-center justify-between mb-8 text-white">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20">
-                    <Palette className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-black uppercase tracking-tight">Kustomisasi Tampilan</h3>
-                    <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Personalisasi tema & kenyamanan mata</p>
-                  </div>
-                </div>
-                <button onClick={() => setShowThemePicker(false)} className="p-3 bg-asphalt-900 rounded-2xl border border-asphalt-700 hover:bg-asphalt-700 transition-all">
-                  <X className="w-5 h-5 text-asphalt-text-400" />
-                </button>
-              </div>
-
-              {/* Theme Mode Toggle (Dark vs Light Premium) */}
-              <div className="mb-8">
-                <h4 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mb-4">Pilih Mode Tampilan</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    onClick={() => setThemeMode('dark')}
-                    className={`flex items-center justify-center gap-3 p-4 rounded-[2rem] border-2 transition-all ${
-                      themeMode === 'dark' ? 'border-brand-500 bg-brand-500/10 shadow-lg shadow-brand-500/10 text-brand-500 font-black' : 'border-asphalt-700 bg-asphalt-900 text-asphalt-text-400 hover:border-asphalt-600'
-                    }`}
-                  >
-                    <Moon className="w-5 h-5" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Mode Gelap</span>
-                  </button>
-                  <button
-                    onClick={() => setThemeMode('light')}
-                    className={`flex items-center justify-center gap-3 p-4 rounded-[2rem] border-2 transition-all ${
-                      themeMode === 'light' ? 'border-brand-500 bg-brand-500/10 shadow-lg shadow-brand-500/10 text-brand-500 font-black' : 'border-asphalt-700 bg-asphalt-900 text-asphalt-text-400 hover:border-asphalt-600'
-                    }`}
-                  >
-                    <div className="relative">
-                      <Sun className="w-5 h-5 text-amber-500" />
-                      <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-500 rounded-full animate-ping"></span>
-                    </div>
-                    <div className="flex flex-col items-start leading-none text-left">
-                      <span className="text-[10px] font-black uppercase tracking-widest">Terang Premium</span>
-                      <span className="text-[7.5px] text-emerald-500 font-extrabold uppercase tracking-tight mt-0.5">Nyaman di Mata</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-              
-              <h4 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mb-4">Pilih Aksen Warna</h4>
-              <div className="grid grid-cols-3 gap-4">
-                {themes.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => { setTheme(t.id); setShowThemePicker(false); }}
-                    className={`flex flex-col items-center gap-3 p-4 rounded-[2rem] border-2 transition-all ${
-                      theme === t.id ? 'border-brand-500 bg-brand-500/10 shadow-lg shadow-brand-500/10' : 'border-asphalt-700 bg-asphalt-900 hover:border-asphalt-600'
-                    }`}
-                  >
-                    <div className={`w-12 h-12 rounded-full ${t.color} flex items-center justify-center shadow-inner relative`}>
-                      {theme === t.id && <Check className="w-6 h-6 text-white stroke-[4px]" />}
-                    </div>
-                    <span className={`text-[10px] font-black uppercase tracking-widest ${theme === t.id ? 'text-brand-500' : 'text-asphalt-text-400'}`}>
-                      {t.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Branch Picker Overlay — mandor only */}
         {showBranchPicker && checkIsMandor(role) && (
           <div

@@ -19,7 +19,6 @@ import { EmployeeSelf } from './components/EmployeeSelf';
 import { NotificationManager } from './components/NotificationManager';
 import { PageTransition } from './components/PageTransition';
 import { useAuthStore } from './store/authStore';
-import { useThemeStore } from './store/themeStore';
 import { initFinanceStoreListeners } from './hooks/useFinanceStore';
 import { checkIsBos } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
@@ -29,14 +28,12 @@ import { Toaster } from 'sonner';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
-  const { theme, themeMode } = useThemeStore();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi'>('dashboard');
 
-  // Apply theme globally (also on login / loading screens, before Layout mounts)
+  // Lock Glassmorphism Twilight dark mode permanently
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-mode', themeMode);
-  }, [theme, themeMode]);
+    document.documentElement.setAttribute('data-mode', 'dark');
+  }, []);
 
   useEffect(() => {
     if (user && role) {
