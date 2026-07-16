@@ -25,15 +25,22 @@ import { AlertCircle } from 'lucide-react';
 import { logout } from './store/authStore';
 import { AppLogoIcon, AppLogoWordmark } from './components/AppLogo';
 import { Toaster } from 'sonner';
+import { useBgThemeStore } from './store/bgThemeStore';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi'>('dashboard');
+  const { bg } = useBgThemeStore();
 
   // Lock Glassmorphism Twilight dark mode permanently
   useEffect(() => {
     document.documentElement.setAttribute('data-mode', 'dark');
   }, []);
+
+  // Apply background theme preset to <body>
+  useEffect(() => {
+    document.body.setAttribute('data-bg', bg);
+  }, [bg]);
 
   useEffect(() => {
     if (user && role) {

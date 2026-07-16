@@ -664,19 +664,78 @@ body {
   min-height: 100vh;
 }
 
-/* Fixed twilight background — separate from scroll so it never ripples/flickers
-   on mobile browsers (background-attachment:fixed is broken on iOS/Android) */
+/* Fixed background — separate from scroll so it never ripples/flickers
+   on mobile browsers (background-attachment:fixed is broken on iOS/Android).
+   Presets switched via data-bg attribute on <body>. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
+  will-change: transform;
+  transition: background 0.55s cubic-bezier(0.4,0,0.2,1);
+  /* Default: Twilight */
   background:
     radial-gradient(ellipse 110% 70% at 15% 0%,   #6B7FFF 0%,   transparent 55%),
     radial-gradient(ellipse 90%  80% at 85% 10%,  #8B55D4 0%,   transparent 50%),
     radial-gradient(ellipse 100% 60% at 5%  90%,  #3A58E8 0%,   transparent 45%),
     radial-gradient(ellipse 120% 100% at 50% 50%, #2E1F6B 0%,   #130F2A 100%);
-  will-change: transform;
+}
+
+/* ── Background Theme Presets ─────────────────────────────────── */
+
+/* Windows 11 Bloom — warm magenta/rose bloom on deep navy */
+body[data-bg="win11"]::before {
+  background:
+    radial-gradient(ellipse 130% 80% at 40% 10%,  #E040FB 0%,   transparent 55%),
+    radial-gradient(ellipse 80%  70% at 85% 30%,  #FF80CB 0%,   transparent 50%),
+    radial-gradient(ellipse 90%  60% at 5%  80%,  #7C4DFF 0%,   transparent 50%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #1A0A4F 0%,   #07031A 100%);
+}
+
+/* macOS Sonoma — warm canyon sunset: orange/terracotta/deep crimson */
+body[data-bg="sonoma"]::before {
+  background:
+    radial-gradient(ellipse 120% 70% at 20% 0%,   #FF7043 0%,   transparent 55%),
+    radial-gradient(ellipse 80%  80% at 80% 15%,  #E91E63 0%,   transparent 50%),
+    radial-gradient(ellipse 90%  60% at 10% 85%,  #9C27B0 0%,   transparent 50%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #3B0A2A 0%,   #15060E 100%);
+}
+
+/* macOS Ventura — deep cosmic violet/magenta */
+body[data-bg="ventura"]::before {
+  background:
+    radial-gradient(ellipse 110% 75% at 25% 5%,   #D500F9 0%,   transparent 52%),
+    radial-gradient(ellipse 90%  70% at 80% 20%,  #AA00FF 0%,   transparent 48%),
+    radial-gradient(ellipse 80%  55% at 10% 80%,  #6200EA 0%,   transparent 48%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #210040 0%,   #0C0015 100%);
+}
+
+/* Aurora — cyan/teal northern lights */
+body[data-bg="aurora"]::before {
+  background:
+    radial-gradient(ellipse 120% 70% at 15% 5%,   #00E5FF 0%,   transparent 52%),
+    radial-gradient(ellipse 90%  75% at 82% 10%,  #00BCD4 0%,   transparent 48%),
+    radial-gradient(ellipse 85%  55% at 5%  85%,  #0288D1 0%,   transparent 48%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #012A3F 0%,   #000D14 100%);
+}
+
+/* Forest — deep emerald/teal */
+body[data-bg="forest"]::before {
+  background:
+    radial-gradient(ellipse 120% 65% at 20% 5%,   #1DE9B6 0%,   transparent 52%),
+    radial-gradient(ellipse 90%  70% at 80% 15%,  #00BFA5 0%,   transparent 48%),
+    radial-gradient(ellipse 85%  55% at 8%  80%,  #00695C 0%,   transparent 48%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #00302A 0%,   #00100D 100%);
+}
+
+/* Galaxy — deep space violet/electric blue */
+body[data-bg="galaxy"]::before {
+  background:
+    radial-gradient(ellipse 110% 70% at 20% 5%,   #7C4DFF 0%,   transparent 52%),
+    radial-gradient(ellipse 90%  75% at 78% 15%,  #3D5AFE 0%,   transparent 48%),
+    radial-gradient(ellipse 80%  55% at 10% 80%,  #304FFE 0%,   transparent 45%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #0A0020 0%,   #000008 100%);
 }
 
 /* Sembunyikan indikator loading sisa jika ada */

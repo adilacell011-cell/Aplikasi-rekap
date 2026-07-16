@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Check, BookOpen, FileText, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Check, BookOpen, FileText, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown, Palette } from 'lucide-react';
+import { BgThemePicker } from './BgThemePicker';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
 import { api } from '../api';
@@ -28,6 +29,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
   const [dateStr, setDateStr] = useState('');
 
   const [showBranchPicker, setShowBranchPicker] = useState(false);
+  const [showBgPicker, setShowBgPicker] = useState(false);
   const [showChangePw, setShowChangePw] = useState(false);
   const [changePwForm, setChangePwForm] = useState({ old: '', new: '', confirm: '' });
   const [changePwLoading, setChangePwLoading] = useState(false);
@@ -154,6 +156,13 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                 )}
               </div>
             )}
+            <button
+              onClick={() => setShowBgPicker(true)}
+              className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
+              title="Tema Latar"
+            >
+              <Palette className="w-4.5 h-4.5 text-brand-500" />
+            </button>
             <button
               onClick={() => { setShowChangePw(true); setChangePwError(null); setChangePwForm({ old: '', new: '', confirm: '' }); }}
               className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
@@ -506,6 +515,9 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
       </AnimatePresence>,
       document.body
     )}
+
+    {/* Background Theme Picker */}
+    <BgThemePicker isOpen={showBgPicker} onClose={() => setShowBgPicker(false)} />
     </div>
   );
 }
