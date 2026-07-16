@@ -6,10 +6,12 @@ interface AppLogoIconProps {
 }
 
 /**
- * Logo mark AlfathPulsa.
+ * AlfathPulsa logo mark — clean geometric "A" on dark navy background.
  *
- * Huruf A hollow: dua kaki diagonal yang berbagi apex — sisi atas solid,
- * bagian tengah terbuka. Aksen blade oranye menggantikan crossbar.
+ * - Two rounded-stroke legs converge at the apex.
+ * - Sky-blue crossbar sits exactly where the legs are at that height,
+ *   creating a flush connection without visual gaps.
+ * - Subtle top-shine overlay gives depth without decoration.
  */
 export function AppLogoIcon({ size = 44, className = '' }: AppLogoIconProps) {
   return (
@@ -23,39 +25,65 @@ export function AppLogoIcon({ size = 44, className = '' }: AppLogoIconProps) {
       aria-hidden="true"
     >
       <defs>
+        {/* Main background gradient — dark navy → brand blue */}
         <linearGradient id="ap-bg" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#1d40b0" />
-          <stop offset="100%" stopColor="#1e3a8a" />
+          <stop offset="0%"   stopColor="#0c1460" />
+          <stop offset="100%" stopColor="#1b3eb8" />
+        </linearGradient>
+
+        {/* Subtle top-shine — gives depth without being heavy */}
+        <linearGradient id="ap-shine" x1="0" y1="0" x2="0" y2="44" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#ffffff" stopOpacity="0.13" />
+          <stop offset="55%"  stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+
+        {/* Crossbar gradient — left sky-blue → right white tint */}
+        <linearGradient id="ap-bar" x1="11" y1="0" x2="33" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#7dd3fc" />
         </linearGradient>
       </defs>
 
-      {/* Blue rounded square background */}
-      <rect width="44" height="44" rx="10" fill="url(#ap-bg)" />
+      {/* Background */}
+      <rect width="44" height="44" rx="11" fill="url(#ap-bg)" />
+      <rect width="44" height="44" rx="11" fill="url(#ap-shine)" />
 
       {/*
-        ── Letter A (hollow) ──────────────────────────────────────────
-        Both legs share the sharp apex at (22, 3).
-        At the apex the legs overlap, creating the solid peak.
-        Below the shoulder they diverge to form the open hollow.
-
-        Left leg  : apex(22,3) → inner-shoulder(26,7) → bottom-inner(11,41) → bottom-outer(3,37)
-        Right leg : apex(22,3) → inner-shoulder(18,7) → bottom-inner(33,41) → bottom-outer(41,37)
+        ── Letter A ────────────────────────────────────────────────────
+        Apex: (22, 7)
+        Left  leg → (5,  39)
+        Right leg → (39, 39)
+        Crossbar at y=27 connects flush with both legs.
+          Left  leg at y=27:  x ≈ 11.4
+          Right leg at y=27:  x ≈ 32.6
       */}
-      <polygon points="22,3 26,7 11,41 3,37"  fill="white" />
-      <polygon points="22,3 18,7 33,41 41,37" fill="white" />
 
-      {/*
-        ── Orange wing / blade ────────────────────────────────────────
-        Pengganti crossbar yang dinamis: runcing di kiri, melebar ke kanan.
-        Tip kiri menembus bagian dalam kaki kiri, ujung kanan masuk ke kaki kanan.
+      {/* Left leg */}
+      <line
+        x1="22" y1="7"
+        x2="5"  y2="39"
+        stroke="white"
+        strokeWidth="5.5"
+        strokeLinecap="round"
+      />
 
-        (12,28) = left sharp tip
-        (29,16) = top-right edge rises up
-        (37,22) = rightmost point
-        (34,33) = bottom-right
-        (15,35) = bottom-left body
-      */}
-      <polygon points="12,28 29,16 37,22 34,33 15,35" fill="#f97316" />
+      {/* Right leg */}
+      <line
+        x1="22" y1="7"
+        x2="39" y2="39"
+        stroke="white"
+        strokeWidth="5.5"
+        strokeLinecap="round"
+      />
+
+      {/* Crossbar — sky-blue gradient, flush with legs */}
+      <line
+        x1="11.5" y1="27"
+        x2="32.5" y2="27"
+        stroke="url(#ap-bar)"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -74,7 +102,7 @@ export function AppLogoWordmark({
 }: AppLogoWordmarkProps) {
   if (layout === 'stacked') {
     return (
-      <div className={`flex flex-col items-center gap-2 ${className}`}>
+      <div className={`flex flex-col items-center gap-3 ${className}`}>
         <AppLogoIcon size={iconSize} />
         <LogoText />
       </div>
@@ -90,9 +118,14 @@ export function AppLogoWordmark({
 
 function LogoText() {
   return (
-    <span className="font-black tracking-tighter text-2xl leading-none select-none">
-      <span className="text-white">Alfath</span>
-      <span className="text-blue-400">Pulsa</span>
-    </span>
+    <div className="flex flex-col leading-none select-none">
+      <span className="font-black tracking-tight text-[1.35rem] leading-none">
+        <span className="text-white">Alfath</span>
+        <span className="text-sky-300">Pulsa</span>
+      </span>
+      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/35 mt-0.5">
+        Agen BRILink
+      </span>
+    </div>
   );
 }

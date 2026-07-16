@@ -43,17 +43,13 @@ export function Login() {
         <div className="glass-card px-7 py-6 relative overflow-hidden flex flex-col items-center text-center group transition-all duration-500 hover:border-brand-500/30">
           <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 to-transparent pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          <div className="relative z-10 flex items-center gap-3 transition-transform duration-500 group-hover:scale-105">
-            <AppLogoWordmark iconSize={48} />
-          </div>
-
-          <div className="relative z-10 w-full mt-4 pt-4 border-t border-white/10 flex flex-col items-center gap-1">
-            <span className="text-[10px] font-black text-white/50 uppercase tracking-[0.3em]">
-              Manajemen Keuangan
-            </span>
-            <span className="text-xs text-white/70 font-medium">
-              Sistem Manajemen Keuangan Agen BRILink
-            </span>
+          <div className="relative z-10 flex flex-col items-center gap-4 transition-transform duration-500 group-hover:scale-[1.02] py-2">
+            <AppLogoWordmark iconSize={64} layout="stacked" />
+            <div className="w-full border-t border-white/10 pt-4 text-center">
+              <span className="text-[9px] font-black text-white/35 uppercase tracking-[0.35em]">
+                Sistem Manajemen Keuangan
+              </span>
+            </div>
           </div>
         </div>
       </div>
