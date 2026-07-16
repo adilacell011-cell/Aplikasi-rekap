@@ -467,7 +467,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             label="Slip Gaji" 
             onClick={() => onNavigate?.('salary-slips')}
           />
-          {isBos && (
+          {(isBos || role === 'mandor') && (
             <ServiceIcon 
               emoji="👛"
               label="Kasbon Karyawan" 
@@ -548,26 +548,22 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             <p className="text-base font-black text-white">{formatRupiah(currentBankTotal)}</p>
           </div>
           
-          {role !== 'mandor' && (
-            <>
-              <div className="glass-card p-4 flex flex-col justify-center space-y-2 group hover:border-rose-500/30 transition-all">
-                <div className="flex items-center gap-2 text-rose-500">
-                  <div className="p-1.5 bg-rose-500/10 rounded-lg">
-                    <Receipt className="w-4 h-4" />
-                  </div>
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em]">Total Bon</span>
-                </div>
-                <p className="text-base font-black text-white">{formatRupiah(currentDebtTotal)}</p>
+          <div className="glass-card p-4 flex flex-col justify-center space-y-2 group hover:border-rose-500/30 transition-all">
+            <div className="flex items-center gap-2 text-rose-500">
+              <div className="p-1.5 bg-rose-500/10 rounded-lg">
+                <Receipt className="w-4 h-4" />
               </div>
-              <div className="bg-brand-500 p-4 rounded-[24px] shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
-                <div className="flex items-center gap-2 text-white/80">
-                  <PiggyBank className="w-5 h-5 text-white" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Nasabah</span>
-                </div>
-                <p className="text-base font-black text-white leading-none mt-1">{formatRupiah(totalSavings)}</p>
-              </div>
-            </>
-          )}
+              <span className="text-[9px] font-black uppercase tracking-[0.2em]">Total Bon</span>
+            </div>
+            <p className="text-base font-black text-white">{formatRupiah(currentDebtTotal)}</p>
+          </div>
+          <div className="bg-brand-500 p-4 rounded-[24px] shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
+            <div className="flex items-center gap-2 text-white/80">
+              <PiggyBank className="w-5 h-5 text-white" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Nasabah</span>
+            </div>
+            <p className="text-base font-black text-white leading-none mt-1">{formatRupiah(totalSavings)}</p>
+          </div>
         </div>
       )}
 
