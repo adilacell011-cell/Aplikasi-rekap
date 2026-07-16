@@ -121,8 +121,8 @@ export default function App() {
             onNavigate={(tab) => setActiveTab(tab as any)} 
           />
         )}
-        {activeTab === 'debts' && role !== 'mandor' && <Debts />}
-        {activeTab === 'savings' && role !== 'mandor' && <Savings />}
+        {activeTab === 'debts' && <Debts />}
+        {activeTab === 'savings' && <Savings />}
         {activeTab === 'deposits' && <Deposits />}
         {activeTab === 'vouchers' && <VoucherRecaps />}
         {activeTab === 'team' && isBos && <Team />}

@@ -694,10 +694,11 @@ async function loadAll() {
     };
     const isKaryawanOwned = (x: any) => (x.ownerType ?? 'nasabah') === 'karyawan';
 
-    // Debts (customers): nasabah-only for the existing Hutang/Bon page (excludes mandor & karyawan rows).
+    // Debts (customers): nasabah-only for the Hutang/Bon page (excludes karyawan rows).
+    // Mandor now also accesses Hutang/Bon for their selected branch.
     const debtsScoped = (debts as any[]).filter(inScope);
     let debtList: Debt[] = [];
-    if (role && role !== 'mandor') {
+    if (role) {
       debtList = debtsScoped.filter((d: any) => !isKaryawanOwned(d));
     }
     debtList = sortByCreatedAtDesc(debtList as any) as Debt[];
@@ -707,10 +708,10 @@ async function loadAll() {
       debtsScoped.filter((d: any) => isKaryawanOwned(d)) as any,
     ) as Debt[];
 
-    // Savings — same rule as debts.
+    // Savings — same rule as debts. Mandor also accesses Tabungan for their selected branch.
     const savingsScoped = (savings as any[]).filter(inScope);
     let savingList: SavingCustomer[] = [];
-    if (role && role !== 'mandor') {
+    if (role) {
       savingList = savingsScoped.filter((s: any) => !isKaryawanOwned(s));
     }
     savingList = sortByCreatedAtDesc(savingList as any) as SavingCustomer[];

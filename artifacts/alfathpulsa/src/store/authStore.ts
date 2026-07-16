@@ -31,7 +31,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isAuthLoaded: false,
   setUser: (user) => set({ user }),
   setRole: (role) => set({ role }),
-  setBranchId: (branchId) => set({ branchId }),
+  setBranchId: (branchId) => {
+    // Persist mandor's branch choice so it survives page refresh
+    const role = useAuthStore.getState().role;
+    if (role === 'mandor') {
+      if (branchId) localStorage.setItem('mandor-branch-sel', branchId);
+      else localStorage.removeItem('mandor-branch-sel');
+    }
+    set({ branchId });
+  },
 
   login: async (username: string, password: string) => {
     const user = await loginRequest(username, password);
@@ -53,16 +61,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 }));
 
 function applyUser(user: AppUser) {
+  let branchId = user.branchId;
+  // Restore mandor's last manually-selected branch (survives refresh)
+  if (user.role === 'mandor') {
+    const saved = localStorage.getItem('mandor-branch-sel');
+    if (saved) branchId = saved;
+  }
   useAuthStore.setState({
     user,
     role: user.role,
-    branchId: user.branchId,
+    branchId,
     isAuthLoaded: true,
   });
 }
 
 export function logout() {
   setToken(null);
+  localStorage.removeItem('mandor-branch-sel');
   useAuthStore.setState({
     user: null,
     role: null,
