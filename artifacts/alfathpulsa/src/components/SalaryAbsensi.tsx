@@ -671,20 +671,14 @@ function SalaryTab() {
               )}
             </div>
 
-            {/* Spacer for sticky button */}
-            <div className="h-20" />
-          </form>
-
-          {/* Sticky Save Button */}
-          <div className="fixed bottom-16 md:bottom-4 left-0 right-0 px-5 z-50">
+            {/* Submit button — inside form, full-width at bottom of card */}
             <button
-              type="button"
-              onClick={handleAddSlip}
-              className="w-full py-4 bg-[#7C8CFF] hover:bg-[#6070F0] text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.25em] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl shadow-[#7C8CFF]/40"
+              type="submit"
+              className="w-full py-4 bg-[#7C8CFF] hover:bg-[#6070F0] text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.25em] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#7C8CFF]/30"
             >
               SIMPAN SLIP GAJI
             </button>
-          </div>
+          </form>
         </div>
       )}
 
