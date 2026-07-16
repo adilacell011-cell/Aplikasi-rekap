@@ -31,4 +31,16 @@ router.get("/me", requireAuth, (req, res) => {
   return res.json({ user: toProfile(user) });
 });
 
+// Verify current user's password (used before destructive actions)
+router.post("/verify-password", requireAuth, async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser!;
+  const { password } = req.body ?? {};
+  if (!password) return res.status(400).json({ error: "Password wajib diisi" });
+  const [user] = await db.select().from(users).where(eq(users.id, authUser.id));
+  if (!user || !verifyPassword(String(password), user.passwordHash)) {
+    return res.status(401).json({ error: "Password salah" });
+  }
+  return res.json({ ok: true });
+});
+
 export default router;

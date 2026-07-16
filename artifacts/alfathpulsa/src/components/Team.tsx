@@ -3,13 +3,13 @@ import { createPortal } from 'react-dom';
 import { api } from '../api';
 import {
   Shield, UserCog, User as UserIcon, Trash2, Store, Plus, Check,
-  Phone, Send, X, UserPlus, KeyRound, ChevronDown, ChevronUp, Pencil
+  Phone, Send, X, UserPlus, KeyRound, ChevronDown, ChevronUp, Pencil,
+  Eye, EyeOff
 } from 'lucide-react';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { UserProfile } from '../types';
 import { checkIsBos } from '../utils/authUtils';
-import { ConfirmModal } from './ConfirmModal';
 import { sendWhatsAppMessage } from '../services/whatsappService';
 import { iosAlert } from '../store/dialogStore';
 import { BlockChoice } from './BlockChoice';
@@ -36,9 +36,12 @@ export function Team() {
   const [broadcastStatus, setBroadcastStatus] = useState<{ total: number; success: number; failed: number } | null>(null);
   const isBos = checkIsBos(user, currentUserRole);
 
-  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; type: 'user' | 'branch'; id: string; name: string }>({
-    isOpen: false, type: 'user', id: '', name: ''
-  });
+  // Password-gated delete state
+  const [deletePassModal, setDeletePassModal] = useState<{ type: 'user' | 'branch'; id: string; name: string } | null>(null);
+  const [deletePassVal, setDeletePassVal] = useState('');
+  const [deletePassError, setDeletePassError] = useState<string | null>(null);
+  const [deletePassLoading, setDeletePassLoading] = useState(false);
+  const [deletePassVisible, setDeletePassVisible] = useState(false);
 
   const [resetPassModal, setResetPassModal] = useState<{ userId: string; userName: string } | null>(null);
   const [resetPassVal, setResetPassVal] = useState('');
@@ -135,13 +138,35 @@ export function Team() {
     catch (e) { console.error(e); }
   };
 
-  const handleDelete = async () => {
-    if (!deleteConfirm.id) return;
+  const handleDeleteWithPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!deletePassModal || !deletePassVal.trim()) return;
+    setDeletePassLoading(true);
+    setDeletePassError(null);
     try {
-      if (deleteConfirm.type === 'user') { await api.delete(`/users/${deleteConfirm.id}`); await loadUsers(); }
-      else { await deleteBranch(deleteConfirm.id); }
-      setDeleteConfirm({ isOpen: false, type: 'user', id: '', name: '' });
-    } catch (e) { console.error(e); }
+      // Verify password first
+      await api.post('/auth/verify-password', { password: deletePassVal });
+      // Password OK — execute deletion
+      if (deletePassModal.type === 'user') {
+        await api.delete(`/users/${deletePassModal.id}`);
+        await loadUsers();
+      } else {
+        await deleteBranch(deletePassModal.id);
+      }
+      setDeletePassModal(null);
+      setDeletePassVal('');
+    } catch (err) {
+      setDeletePassError(err instanceof Error ? err.message : 'Password salah atau terjadi kesalahan');
+    } finally {
+      setDeletePassLoading(false);
+    }
+  };
+
+  const openDeleteModal = (type: 'user' | 'branch', id: string, name: string) => {
+    setDeletePassModal({ type, id, name });
+    setDeletePassVal('');
+    setDeletePassError(null);
+    setDeletePassVisible(false);
   };
 
   const handleAddBranch = async (e: React.FormEvent) => {
@@ -324,7 +349,7 @@ export function Team() {
                     )}
                     {isBos && (
                       <button
-                        onClick={() => setDeleteConfirm({ isOpen: true, type: 'branch', id: branch.id, name: branch.name })}
+                        onClick={() => openDeleteModal('branch', branch.id, branch.name)}
                         className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-rose-500 rounded-lg transition-all"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -434,7 +459,7 @@ export function Team() {
                     )}
                     {isBos && !isAdmin && (
                       <button
-                        onClick={() => setDeleteConfirm({ isOpen: true, type: 'user', id: u.uid, name: u.name })}
+                        onClick={() => openDeleteModal('user', u.uid, u.name)}
                         className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-rose-500 rounded-lg transition-all"
                         title="Hapus"
                       >
@@ -581,13 +606,96 @@ export function Team() {
       </div>
 
       {/* ── Modals ─────────────────────────────────────── */}
-      <ConfirmModal
-        isOpen={deleteConfirm.isOpen}
-        title={deleteConfirm.type === 'user' ? 'Hapus Anggota' : 'Hapus Cabang'}
-        message={`Yakin ingin menghapus ${deleteConfirm.type === 'user' ? 'anggota' : 'cabang'} ${deleteConfirm.name}? Data tidak dapat dikembalikan.`}
-        onConfirm={handleDelete}
-        onCancel={() => setDeleteConfirm({ isOpen: false, type: 'user', id: '', name: '' })}
-      />
+      {/* Password-gated Delete Sheet */}
+      {createPortal(
+        <AnimatePresence>
+          {deletePassModal && (
+            <motion.div
+              key="delete-pass-backdrop"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="fixed inset-0 z-[500] flex items-end justify-center ios-backdrop ios-font pb-[env(safe-area-inset-bottom,0px)]"
+              onClick={() => !deletePassLoading && (setDeletePassModal(null), setDeletePassVal(''))}
+            >
+              <motion.div
+                key="delete-pass-panel"
+                initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.8 }}
+                className="w-full max-w-md glass-card-strong rounded-b-none rounded-t-[2rem] p-6 pb-8 space-y-5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center">
+                      <Trash2 className="w-5 h-5 text-rose-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-white uppercase tracking-tight leading-none">
+                        {deletePassModal.type === 'user' ? 'Hapus Anggota' : 'Hapus Cabang'}
+                      </h3>
+                      <p className="text-[9px] text-rose-400 font-bold uppercase tracking-widest mt-0.5 truncate max-w-[200px]">
+                        {deletePassModal.name}
+                      </p>
+                    </div>
+                  </div>
+                  <button onClick={() => { setDeletePassModal(null); setDeletePassVal(''); }} disabled={deletePassLoading}
+                    className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white rounded-xl border border-white/10 transition-all">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Warning */}
+                <div className="bg-rose-500/10 border border-rose-500/25 rounded-2xl px-4 py-3 flex items-start gap-3">
+                  <span className="text-rose-400 text-base leading-none mt-0.5">⚠️</span>
+                  <p className="text-[11px] text-rose-300 font-semibold leading-relaxed">
+                    Tindakan ini <span className="font-black text-rose-400">tidak dapat dibatalkan</span>. Masukkan password Anda untuk konfirmasi penghapusan.
+                  </p>
+                </div>
+
+                {/* Password form */}
+                <form onSubmit={handleDeleteWithPassword} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[9px] font-black text-white/60 uppercase tracking-widest ml-1">Password Anda</label>
+                    <div className="relative">
+                      <input
+                        type={deletePassVisible ? 'text' : 'password'}
+                        value={deletePassVal}
+                        onChange={(e) => { setDeletePassVal(e.target.value); setDeletePassError(null); }}
+                        placeholder="Masukkan password"
+                        autoFocus
+                        className="w-full px-4 py-3.5 pr-12 text-sm glass-input rounded-2xl outline-none focus:ring-2 focus:ring-rose-500/40 text-white font-semibold"
+                      />
+                      <button type="button" onClick={() => setDeletePassVisible(v => !v)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors">
+                        {deletePassVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {deletePassError && (
+                    <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3">
+                      <p className="text-[11px] text-rose-400 font-bold text-center">🔒 {deletePassError}</p>
+                    </div>
+                  )}
+
+                  <button type="submit"
+                    disabled={deletePassLoading || !deletePassVal.trim()}
+                    className="w-full py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2"
+                  >
+                    {deletePassLoading ? (
+                      <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Memverifikasi...</>
+                    ) : (
+                      <><Trash2 className="w-4 h-4" /> Hapus Permanen</>
+                    )}
+                  </button>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {createPortal(
         <AnimatePresence>
