@@ -251,9 +251,13 @@ export function Debts() {
             if (deleteConfirm.type === 'person') {
               store.deleteDebtPerson(deleteConfirm.personId);
               if (selectedPersonId === deleteConfirm.personId) setSelectedPersonId(null);
+              setSuccessMsg("Pelanggan berhasil dihapus");
             } else if (deleteConfirm.detailId) {
               store.deleteDebtDetail(deleteConfirm.personId, deleteConfirm.detailId);
+              setSuccessMsg("Transaksi berhasil dihapus");
             }
+            setShowSuccess(true);
+            setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' });
           }}
           onCancel={() => setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' })}
         />

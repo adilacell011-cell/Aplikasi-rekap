@@ -290,9 +290,13 @@ export function Savings() {
             if (deleteConfirm.type === 'person') {
               store.deleteSavingCustomer(deleteConfirm.personId);
               if (selectedPersonId === deleteConfirm.personId) setSelectedPersonId(null);
+              setSuccessMsg("Penabung berhasil dihapus");
             } else if (deleteConfirm.transactionId) {
               store.deleteSavingTransaction(deleteConfirm.personId, deleteConfirm.transactionId);
+              setSuccessMsg("Transaksi berhasil dihapus");
             }
+            setShowSuccess(true);
+            setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' });
           }}
           onCancel={() => setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' })}
         />
