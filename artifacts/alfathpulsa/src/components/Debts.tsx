@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { formatRupiah, formatDate, formatNumberInput } from '../utils/formatters';
-import { Users, Plus, Trash2, ArrowDownToLine, ArrowUpFromLine, ArrowLeft, Search, CheckCircle2, History as HistoryIcon } from 'lucide-react';
+import { Users, Plus, Trash2, ArrowDownToLine, ArrowUpFromLine, ArrowLeft, Search, History as HistoryIcon } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 import { BlockChoice } from './BlockChoice';

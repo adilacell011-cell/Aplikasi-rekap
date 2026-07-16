@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { formatRupiah, formatDate, formatNumberInput } from '../utils/formatters';
-import { Send, Trash2, CheckCircle2, Clock, Search, Filter, AlertCircle, Share2, Check } from 'lucide-react';
+import { Send, Trash2, CheckCircle2, Clock, Search, Share2, Check } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { DepositAnalytics } from './DepositAnalytics';
 import { SuccessToast } from './SuccessToast';

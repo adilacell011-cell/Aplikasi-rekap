@@ -75,8 +75,6 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
     message: ''
   });
 
-  const totalBank = store.getTotalBankBalance();
-  const totalDebt = store.getTotalDebt();
   const totalSavings = store.getTotalSavings();
   
   // Logic for Bos: Show overall stats

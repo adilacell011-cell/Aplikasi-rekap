@@ -76,11 +76,6 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
     return () => clearInterval(interval);
   }, []);
 
-  // Lock to Glassmorphism Twilight dark mode permanently
-  React.useEffect(() => {
-    document.documentElement.setAttribute('data-mode', 'dark');
-  }, []);
-
   return (
     <div className="min-h-[100dvh] bg-transparent flex justify-center selection:bg-brand-500/30" data-mode="dark">
       <div className="w-full bg-transparent h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100">

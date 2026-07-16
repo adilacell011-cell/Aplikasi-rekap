@@ -3,7 +3,7 @@ import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { formatRupiah, formatNumberInput } from '../utils/formatters';
 import { VoucherRecap } from '../types';
-import { Plus, Trash2, Calendar, Calculator, FileText, TrendingUp, Wallet, ArrowDownCircle, ChevronRight, ArrowLeft, TrendingDown, AlertCircle, Edit2, CheckCircle2, Send } from 'lucide-react';
+import { Plus, Trash2, Calendar, Calculator, FileText, TrendingUp, Wallet, ArrowDownCircle, ArrowLeft, TrendingDown, AlertCircle, Edit2, CheckCircle2, Send } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 import { BlockChoice } from './BlockChoice';

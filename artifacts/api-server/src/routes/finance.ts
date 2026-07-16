@@ -13,7 +13,7 @@ import {
   attendance,
   settings,
 } from "@workspace/db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, like } from "drizzle-orm";
 import { requireBos, requireBosOrMandor, type AuthedRequest } from "../middleware/auth";
 
 const router: IRouter = Router();
@@ -92,7 +92,7 @@ router.post("/branches", requireBos, async (req, res) => {
   return res.status(201).json({ ...created, deposits: [] });
 });
 
-router.patch("/branches/:id", async (req, res) => {
+router.patch("/branches/:id", requireBosOrMandor, async (req, res) => {
   const updates: Record<string, unknown> = {};
   for (const k of [
     "name",
@@ -541,14 +541,19 @@ router.delete("/salary-slips/:id", requireBos, async (req, res) => {
 // --------------------------------------------------------------------------
 router.get("/attendance", async (req, res) => {
   const { userId, month, year } = req.query as Record<string, string>;
-  let rows = await db.select().from(attendance);
-  if (userId) rows = rows.filter((r) => r.userId === userId);
+  const conditions: ReturnType<typeof eq>[] = [];
+  if (userId) conditions.push(eq(attendance.userId, userId));
   if (month && year) {
     const prefix = `${year}-${String(Number(month)).padStart(2, "0")}`;
-    rows = rows.filter((r) => String(r.date).startsWith(prefix));
+    conditions.push(like(attendance.date, `${prefix}%`) as ReturnType<typeof eq>);
   } else if (year) {
-    rows = rows.filter((r) => String(r.date).startsWith(year));
+    conditions.push(like(attendance.date, `${year}%`) as ReturnType<typeof eq>);
   }
+  const rows = conditions.length === 0
+    ? await db.select().from(attendance)
+    : conditions.length === 1
+      ? await db.select().from(attendance).where(conditions[0])
+      : await db.select().from(attendance).where(and(...conditions));
   return res.json(rows);
 });
 

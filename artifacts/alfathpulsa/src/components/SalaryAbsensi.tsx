@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../api';
 import {
-  FileText, Plus, Trash2, Check, Clock, Calendar, CreditCard, ArrowLeft,
-  Download, Zap, Printer, X, BadgeCheck, CalendarDays, ChevronLeft, ChevronRight, AlertCircle,
+  FileText, Plus, Trash2, Check, Clock, Calendar, ArrowLeft,
+  Zap, Printer, X, BadgeCheck, CalendarDays, ChevronLeft, ChevronRight, AlertCircle,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useFinanceStore } from '../hooks/useFinanceStore';

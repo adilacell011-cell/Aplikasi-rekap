@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../api';
 import {
-  Shield, UserCog, User as UserIcon, Trash2, Store, Plus, Check,
+  UserCog, User as UserIcon, Trash2, Store, Plus, Check,
   Phone, Send, X, UserPlus, KeyRound, ChevronDown, ChevronUp, Pencil,
   Eye, EyeOff
 } from 'lucide-react';
