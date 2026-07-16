@@ -93,9 +93,11 @@ export function Team() {
         role: newUser.role,
         branchId: newUser.branchId || null
       });
+      const createdName = newUser.name.trim();
       setNewUser({ username: '', password: '', name: '', role: 'karyawan', branchId: '' });
       setShowAddUser(false);
       await loadUsers();
+      iosAlert('Anggota Berhasil Ditambahkan ✅', `Akun untuk ${createdName} sudah aktif dan bisa digunakan untuk login.`);
     } catch (err) { setAddUserError(err instanceof Error ? err.message : 'Gagal membuat akun'); }
     finally { setIsCreating(false); }
   };
@@ -142,10 +144,17 @@ export function Team() {
     } catch (e) { console.error(e); }
   };
 
-  const handleAddBranch = (e: React.FormEvent) => {
+  const handleAddBranch = async (e: React.FormEvent) => {
     e.preventDefault();
     const v = newBranchName.trim().toUpperCase();
-    if (v) { addBranch(v); setNewBranchName(''); }
+    if (!v) return;
+    try {
+      await addBranch(v);
+      setNewBranchName('');
+      iosAlert('Cabang Berhasil Ditambahkan ✅', `Cabang "${v}" sudah terdaftar dan siap digunakan.`);
+    } catch (err) {
+      iosAlert('Gagal Menambahkan Cabang', err instanceof Error ? err.message : 'Terjadi kesalahan, coba lagi.');
+    }
   };
 
   const handleUpdateBranchCapital = async (branchId: string, capital: string, physicalCapital: string) => {

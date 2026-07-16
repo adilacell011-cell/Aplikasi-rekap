@@ -5,6 +5,8 @@ import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ti
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { logout } from '../store/authStore';
 import { api } from '../api';
+import { iosAlert } from '../store/dialogStore';
+import { toast } from 'sonner';
 
 import { useFinanceStore, reloadFinanceData } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
@@ -56,6 +58,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
       await api.patch('/users/me/password', { oldPassword: changePwForm.old, newPassword: changePwForm.new });
       setShowChangePw(false);
       setChangePwForm({ old: '', new: '', confirm: '' });
+      await iosAlert('Password Berhasil Diubah ✅', 'Password baru Anda sudah aktif. Gunakan password baru saat login berikutnya.');
     } catch (err) {
       setChangePwError(err instanceof Error ? err.message : 'Gagal mengubah password');
     } finally {
@@ -328,6 +331,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                         useAuthStore.getState().setBranchId(branch.id);
                         reloadFinanceData();
                         setShowBranchPicker(false);
+                        toast.success(`Beralih ke ${branch.name}`, { description: 'Data cabang sedang dimuat...' });
                       }}
                       className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${
                         isSelected

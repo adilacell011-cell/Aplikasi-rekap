@@ -26,6 +26,7 @@ import { checkIsBos } from './utils/authUtils';
 import { AlertCircle } from 'lucide-react';
 import { logout } from './store/authStore';
 import { AppLogoIcon, AppLogoWordmark } from './components/AppLogo';
+import { Toaster } from 'sonner';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
@@ -114,6 +115,8 @@ export default function App() {
   }
 
   return (
+    <>
+    <Toaster position="top-right" richColors closeButton />
     <Layout activeTab={activeTab} setActiveTab={setActiveTab} role={role}>
       <NotificationManager />
       <PageTransition activeTab={activeTab}>
@@ -134,6 +137,7 @@ export default function App() {
         {activeTab === 'absensi' && isBos && <Absensi />}
       </PageTransition>
     </Layout>
+    </>
   );
 }
 

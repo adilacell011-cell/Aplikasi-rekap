@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { db, users } from "@workspace/db";
 import { eq } from "drizzle-orm";
-import { hashPassword } from "../lib/auth";
+import { hashPassword, verifyPassword } from "../lib/auth";
 import { requireBos, toProfile, type AuthedRequest } from "../middleware/auth";
 
 const router: IRouter = Router();
@@ -65,7 +65,7 @@ router.patch("/me/password", async (req, res) => {
   }
   const [u] = await db.select().from(users).where(eq(users.id, authUser.id));
   if (!u) return res.status(404).json({ error: "User tidak ditemukan" });
-  if (u.passwordHash !== hashPassword(String(oldPassword))) {
+  if (!verifyPassword(String(oldPassword), u.passwordHash)) {
     return res.status(401).json({ error: "Password lama salah" });
   }
   await db.update(users).set({ passwordHash: hashPassword(String(newPassword)) }).where(eq(users.id, authUser.id));

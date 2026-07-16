@@ -17,7 +17,21 @@ export function Login() {
     try {
       await login(username.trim(), password);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Gagal masuk. Coba lagi.');
+      const raw = err instanceof Error ? err.message : '';
+      // Map common API error messages to bahasa Indonesia yang jelas
+      if (raw.toLowerCase().includes('invalid') || raw.toLowerCase().includes('salah') || raw.toLowerCase().includes('incorrect') || raw.toLowerCase().includes('password')) {
+        setError('Username atau password salah. Periksa kembali dan coba lagi.');
+      } else if (raw.toLowerCase().includes('not found') || raw.toLowerCase().includes('tidak ditemukan')) {
+        setError('Akun tidak ditemukan. Hubungi admin untuk mendaftar.');
+      } else if (raw.toLowerCase().includes('sesi') || raw.toLowerCase().includes('unauthorized')) {
+        setError('Sesi tidak valid. Silakan coba login kembali.');
+      } else if (raw.toLowerCase().includes('network') || raw.toLowerCase().includes('fetch') || raw.toLowerCase().includes('failed')) {
+        setError('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.');
+      } else if (raw) {
+        setError(raw);
+      } else {
+        setError('Gagal masuk. Coba lagi beberapa saat.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +94,11 @@ export function Login() {
             </div>
 
             {error && (
-              <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3">
-                <p className="text-[10px] text-rose-400 font-bold text-center uppercase tracking-wider">{error}</p>
+              <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3.5 flex items-start gap-3">
+                <div className="w-5 h-5 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-rose-400 text-[10px] font-black">!</span>
+                </div>
+                <p className="text-[11px] text-rose-400 font-bold leading-relaxed">{error}</p>
               </div>
             )}
 
