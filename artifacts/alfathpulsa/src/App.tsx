@@ -112,7 +112,7 @@ export default function App() {
 
   return (
     <>
-    <Toaster position="top-right" richColors closeButton />
+    <Toaster position="top-right" richColors closeButton duration={2000} />
     <Layout activeTab={activeTab} setActiveTab={setActiveTab} role={role}>
       <NotificationManager />
       <PageTransition activeTab={activeTab}>

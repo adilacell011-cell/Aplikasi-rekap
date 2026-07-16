@@ -122,7 +122,7 @@ export function Team() {
       } catch { setBroadcastStatus(p => p ? { ...p, failed: p.failed + 1 } : null); }
     }
     setIsBroadcasting(false);
-    setTimeout(() => setBroadcastStatus(null), 5000);
+    setTimeout(() => setBroadcastStatus(null), 2000);
   };
 
   const handleRoleChange = async (uid: string, newRole: 'bos' | 'mandor' | 'karyawan') => {

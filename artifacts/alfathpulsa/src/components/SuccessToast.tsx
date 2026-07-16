@@ -14,7 +14,7 @@ export function SuccessToast({ show, message, onClose }: SuccessToastProps) {
     if (show) {
       const timer = setTimeout(() => {
         onClose();
-      }, 3000);
+      }, 1800);
       return () => clearTimeout(timer);
     }
     return undefined;
