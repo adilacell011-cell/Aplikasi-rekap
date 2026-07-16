@@ -93,8 +93,8 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
   ];
 
   return (
-    <div className="min-h-[100dvh] bg-asphalt-900 flex justify-center selection:bg-brand-500/30" data-theme={theme} data-mode={themeMode}>
-      <div className="w-full bg-asphalt-900 h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100">
+    <div className="min-h-[100dvh] bg-transparent flex justify-center selection:bg-brand-500/30" data-theme={theme} data-mode={themeMode}>
+      <div className="w-full bg-transparent h-[100dvh] flex flex-col relative shadow-2xl overflow-hidden text-asphalt-text-100">
         {/* Global Error Display */}
         <AnimatePresence>
           {error && (
@@ -121,7 +121,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         </AnimatePresence>
 
         {/* Top Header */}
-        <header className="bg-asphalt-900 text-white sticky top-0 z-20 px-5 pt-[calc(env(safe-area-inset-top,0px)+1rem)] pb-4 flex items-center justify-between border-b border-asphalt-800/10">
+        <header className="glass-header text-white sticky top-0 z-20 px-5 pt-[calc(env(safe-area-inset-top,0px)+1rem)] pb-4 flex items-center justify-between border-b border-asphalt-800/10">
           <div className="flex items-center gap-3.5">
             <div className="relative group">
               <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-brand-500/20 ring-2 ring-brand-500/10 active:scale-95 transition-transform">
@@ -169,21 +169,21 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
             )}
             <button
               onClick={() => setShowThemePicker(true)}
-              className="w-10 h-10 flex items-center justify-center bg-asphalt-800/50 hover:bg-asphalt-700 rounded-xl transition-all border border-asphalt-700/50 active:scale-90"
+              className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
               title="Pilih Tema"
             >
               <Palette className="w-4.5 h-4.5 text-brand-500" />
             </button>
             <button
               onClick={() => { setShowChangePw(true); setChangePwError(null); setChangePwForm({ old: '', new: '', confirm: '' }); }}
-              className="w-10 h-10 flex items-center justify-center bg-asphalt-800/50 hover:bg-asphalt-700 rounded-xl transition-all border border-asphalt-700/50 active:scale-90"
+              className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
               title="Ubah Password"
             >
               <KeyRound className="w-4.5 h-4.5 text-amber-400" />
             </button>
             <button
               onClick={logout}
-              className="w-10 h-10 flex items-center justify-center bg-asphalt-800/50 hover:bg-asphalt-700 rounded-xl transition-all border border-asphalt-700/50 active:scale-90"
+              className="w-10 h-10 flex items-center justify-center glass-sm hover:bg-white/10 transition-all active:scale-90"
               title="Keluar"
             >
               <LogOut className="w-4.5 h-4.5 text-rose-500" />
@@ -193,12 +193,12 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         
         {/* Running Text / Announcement */}
         {announcement && (
-          <div className="bg-asphalt-800 border-b border-asphalt-700 flex items-center overflow-hidden h-10 shadow-lg">
+          <div className="bg-white/10 backdrop-blur-sm border-b border-white/15 flex items-center overflow-hidden h-10 shadow-lg">
             <div className="bg-brand-500 self-stretch px-4 flex items-center z-10 shadow-[8px_0_15px_rgba(0,0,0,0.3)]">
               <AlertCircle className="w-4 h-4 text-white animate-pulse" />
               <span className="ml-2 text-[10px] font-black text-white uppercase tracking-tighter">INFO</span>
             </div>
-            <div className="flex-1 overflow-hidden relative flex items-center h-full bg-asphalt-900/50">
+            <div className="flex-1 overflow-hidden relative flex items-center h-full bg-white/5">
               <div className="flex whitespace-nowrap animate-marquee py-1">
                 <span className="text-xs font-black text-white px-10 uppercase tracking-wide">
                   {announcement}
@@ -361,7 +361,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         <div className="flex-1 flex overflow-hidden min-h-0">
 
           {/* ── Sidebar Navigation — tablet & desktop only ── */}
-          <nav className="hidden md:flex flex-col w-[4.5rem] lg:w-56 bg-asphalt-900 border-r border-asphalt-800/30 py-3 gap-0.5 shrink-0 overflow-y-auto">
+          <nav className="hidden md:flex flex-col w-[4.5rem] lg:w-56 glass-sidebar py-3 gap-0.5 shrink-0 overflow-y-auto">
 
             {/* helper to build each nav item */}
             {(
@@ -385,8 +385,8 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   onClick={() => setActiveTab(item.tab)}
                   className={`mx-2 flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-1 lg:gap-3 px-2 lg:px-4 py-3 rounded-2xl transition-all active:scale-95 ${
                     isActive
-                      ? 'bg-brand-500/10 text-brand-500'
-                      : 'text-asphalt-text-400 hover:bg-asphalt-800/60 hover:text-white'
+                      ? 'bg-brand-500/15 text-brand-500'
+                      : 'text-white/55 hover:bg-white/8 hover:text-white'
                   }`}
                 >
                   {item.icon}
@@ -405,14 +405,14 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
         </div>
 
         {/* ── Bottom Navigation — mobile only ── */}
-        <nav className="md:hidden fixed bottom-0 max-w-md w-full bg-asphalt-900/80 backdrop-blur-2xl border-t border-asphalt-800/30 z-30 pb-safe shadow-[0_-15px_50px_rgba(0,0,0,0.4)]">
+        <nav className="md:hidden fixed bottom-0 max-w-md w-full glass-nav z-30 pb-safe shadow-[0_-15px_50px_rgba(0,0,0,0.4)]">
           <div className="flex justify-around items-center h-[4.5rem] px-3 relative">
 
             {/* Beranda */}
             <button
               onClick={() => setActiveTab('dashboard')}
               className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                activeTab === 'dashboard' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                activeTab === 'dashboard' ? 'text-brand-500' : 'text-white/50'
               }`}
             >
               <LayoutDashboard className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'dashboard' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -424,7 +424,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <button
                 onClick={() => setActiveTab('savings')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                  activeTab === 'savings' || activeTab === 'debts' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                  activeTab === 'savings' || activeTab === 'debts' ? 'text-brand-500' : 'text-white/50'
                 }`}
               >
                 <PiggyBank className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -436,7 +436,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
             <button
               onClick={() => setActiveTab('vouchers')}
               className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                activeTab === 'vouchers' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                activeTab === 'vouchers' ? 'text-brand-500' : 'text-white/50'
               }`}
             >
               <Ticket className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'vouchers' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -448,7 +448,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <button
                 onClick={() => setActiveTab('salary-slips')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                  activeTab === 'salary-slips' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                  activeTab === 'salary-slips' ? 'text-brand-500' : 'text-white/50'
                 }`}
               >
                 <FileText className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'salary-slips' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -461,7 +461,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <button
                 onClick={() => setActiveTab('my-finance')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                  activeTab === 'my-finance' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                  activeTab === 'my-finance' ? 'text-brand-500' : 'text-white/50'
                 }`}
               >
                 <Wallet className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'my-finance' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -474,7 +474,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <button
                 onClick={() => setActiveTab('absensi')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                  activeTab === 'absensi' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                  activeTab === 'absensi' ? 'text-brand-500' : 'text-white/50'
                 }`}
               >
                 <CalendarDays className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'absensi' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -487,7 +487,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <button
                 onClick={() => setActiveTab('team')}
                 className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                  activeTab === 'team' || activeTab === 'sop' ? 'text-brand-500' : 'text-asphalt-text-400 opacity-60'
+                  activeTab === 'team' || activeTab === 'sop' ? 'text-brand-500' : 'text-white/50'
                 }`}
               >
                 <Users className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'team' || activeTab === 'sop' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
@@ -519,7 +519,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
               transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.8 }}
-              className="w-full max-w-md ios-card rounded-b-none rounded-t-[2rem] p-6 pb-8 space-y-5"
+              className="w-full max-w-md bg-[rgba(20,18,40,0.85)] backdrop-blur-xl border border-white/20 rounded-b-none rounded-t-[2rem] p-6 pb-8 space-y-5"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between">
@@ -551,7 +551,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                       value={changePwForm.old}
                       onChange={(e) => setChangePwForm(f => ({ ...f, old: e.target.value }))}
                       placeholder="••••••••"
-                      className="w-full px-4 pr-12 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-white font-semibold shadow-inner"
+                      className="w-full px-4 pr-12 py-3.5 text-sm glass-input font-semibold shadow-inner"
                     />
                     <button type="button" onClick={() => setChangePwOldVisible(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-asphalt-text-400 hover:text-white transition-colors">
                       {changePwOldVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -568,7 +568,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                       value={changePwForm.new}
                       onChange={(e) => setChangePwForm(f => ({ ...f, new: e.target.value }))}
                       placeholder="Min. 4 karakter"
-                      className="w-full px-4 pr-12 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-white font-semibold shadow-inner"
+                      className="w-full px-4 pr-12 py-3.5 text-sm glass-input font-semibold shadow-inner"
                     />
                     <button type="button" onClick={() => setChangePwNewVisible(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-asphalt-text-400 hover:text-white transition-colors">
                       {changePwNewVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}

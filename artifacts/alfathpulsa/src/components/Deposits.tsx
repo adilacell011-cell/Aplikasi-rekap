@@ -131,20 +131,20 @@ export function Deposits() {
   };
 
   return (
-    <div className="p-5 space-y-7 bg-asphalt-900 min-h-screen pb-32">
+    <div className="p-5 space-y-7 bg-transparent min-h-screen pb-32">
       {role === 'bos' && <DepositAnalytics />}
 
       {/* Summary Header */}
-      <div className={`bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group transition-all duration-500 ${role === 'mandor' && stats.sisaSetor > 0 ? 'ring-2 ring-emerald-500 ring-offset-4 ring-offset-asphalt-900' : ''}`}>
+      <div className={`glass-card p-5 relative overflow-hidden group transition-all duration-500 ${role === 'mandor' && stats.sisaSetor > 0 ? 'ring-2 ring-emerald-500 ring-offset-4 ring-offset-[rgba(20,18,40,0.8)]' : ''}`}>
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-emerald-500/20 transition-all duration-1000"></div>
         
         <div className="relative z-10 space-y-6">
           <div className="flex items-center gap-3">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border border-white/10 shadow-lg ${role === 'mandor' && stats.sisaSetor > 0 ? 'bg-emerald-500 text-white' : 'bg-asphalt-900 text-emerald-500'}`}>
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border shadow-lg ${role === 'mandor' && stats.sisaSetor > 0 ? 'bg-emerald-500 text-white border-emerald-500/50' : 'bg-white/10 text-emerald-500 border-white/20'}`}>
               <Send className={`w-6 h-6 ${role === 'mandor' && stats.sisaSetor > 0 ? 'animate-bounce' : ''}`} />
             </div>
             <div className="flex-1">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-asphalt-text-400">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">
                 {primaryLabel}
               </h3>
               <p className={`text-xl font-black tracking-tighter text-white mt-0.5 transition-all ${role === 'mandor' && stats.sisaSetor > 0 ? 'scale-105 origin-left' : ''}`}>
@@ -153,13 +153,13 @@ export function Deposits() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5 pt-6 border-t border-asphalt-700">
+          <div className="grid grid-cols-2 gap-5 pt-6 border-t border-white/10">
             <div>
-              <p className="text-[9px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1.5">Total Masuk (Hari Ini)</p>
+              <p className="text-[9px] text-white/60 uppercase font-black tracking-widest mb-1.5">Total Masuk (Hari Ini)</p>
               <p className="text-base font-black text-white uppercase tracking-tight">{formatRupiah(stats.totalSetor)}</p>
             </div>
             <div className="text-right">
-              <p className="text-[9px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1.5">
+              <p className="text-[9px] text-white/60 uppercase font-black tracking-widest mb-1.5">
                 {role === 'mandor' ? 'Setoran Berhasil' : 'Uang Belum Setor'}
               </p>
               <p className={`text-base font-black uppercase tracking-tight ${role === 'mandor' ? 'text-white' : 'text-rose-500'}`}>
@@ -252,7 +252,7 @@ export function Deposits() {
                   window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
                 }
               }}
-              className="mt-4 w-full bg-asphalt-900 hover:bg-asphalt-700 backdrop-blur-md text-white py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 border border-asphalt-700 transition-all active:scale-[0.98] shadow-lg"
+              className="mt-4 w-full glass-input hover:bg-white/10 backdrop-blur-md text-white py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 border  transition-all active:scale-[0.98] shadow-lg"
             >
               <Share2 className="w-5 h-5 text-emerald-500" />
               Laporan Gabungan
@@ -263,27 +263,27 @@ export function Deposits() {
 
       {/* Input Form for Karyawan/Mandor */}
       {(role === 'karyawan' || role === 'mandor') && myBranch && (
-        <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
-          <div className="p-6 border-b border-asphalt-700/50 flex items-center gap-4 bg-asphalt-900/40">
+        <div className="glass-card rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+          <div className="p-6 border-b border-white/10 flex items-center gap-4 bg-white/5">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shadow-inner">
               <Send className="w-6 h-6" />
             </div>
             <div>
               <h3 className="text-sm font-black text-white uppercase tracking-tight">Input Setoran Baru</h3>
-              <p className="text-[10px] text-asphalt-text-400 font-black uppercase tracking-widest leading-none mt-1">Lapor setoran ke Mandor</p>
+              <p className="text-[10px] text-white/60 font-black uppercase tracking-widest leading-none mt-1">Lapor setoran ke Mandor</p>
             </div>
           </div>
           <div className="p-4">
             <form onSubmit={handleSetor} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Nominal Setoran</label>
+                <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Nominal Setoran</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-sm font-black">Rp</span>
+                  <span className="absolute left-5 top-1/2 -translate-y-1/2 text-white/60 text-sm font-black">Rp</span>
                   <input
                     type="text"
                     placeholder="0"
                     inputMode="numeric"
-                    className="w-full pl-12 pr-5 py-3 text-base bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black shadow-inner"
+                    className="w-full pl-12 pr-5 py-3 text-base glass-input border  rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black shadow-inner"
                     value={formatNumberInput(setorAmount)}
                     onChange={(e) => handleNumericInput(e, setSetorAmount)}
                     required
@@ -291,11 +291,11 @@ export function Deposits() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Keterangan</label>
+                <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Keterangan</label>
                 <input
                   type="text"
                   placeholder="Contoh: Setoran Pagi"
-                  className="w-full px-5 py-3 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium shadow-inner placeholder:text-asphalt-text-400/30"
+                  className="w-full px-5 py-3 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium shadow-inner placeholder:text-white/60/30"
                   value={setorDesc}
                   onChange={(e) => setSetorDesc(e.target.value)}
                   required
@@ -327,16 +327,16 @@ export function Deposits() {
             <Clock className="w-5 h-5 text-emerald-500" />
             <h3 className="text-sm font-black text-white uppercase tracking-tight">Daftar Setoran</h3>
           </div>
-          <div className="flex bg-asphalt-800 p-1 rounded-2xl border border-asphalt-700/50 shadow-xl">
+          <div className="flex glass-card p-1 rounded-2xl border border-white/10 shadow-xl">
             <button
               onClick={() => handleTabChange('active')}
-              className={`px-5 py-2 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeTab === 'active' ? 'bg-brand-500 text-white shadow-lg' : 'text-asphalt-text-400'}`}
+              className={`px-5 py-2 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeTab === 'active' ? 'bg-brand-500 text-white shadow-lg' : 'text-white/60'}`}
             >
               AKTIF
             </button>
             <button
               onClick={() => handleTabChange('history')}
-              className={`px-5 py-2 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeTab === 'history' ? 'bg-brand-500 text-white shadow-lg' : 'text-asphalt-text-400'}`}
+              className={`px-5 py-2 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeTab === 'history' ? 'bg-brand-500 text-white shadow-lg' : 'text-white/60'}`}
             >
               RIWAYAT
             </button>
@@ -345,11 +345,11 @@ export function Deposits() {
 
         <div className="flex flex-col gap-4">
           <div className="relative">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-asphalt-text-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
             <input
               type="text"
               placeholder="Cari cabang, karyawan, atau keterangan..."
-              className="w-full pl-12 pr-5 py-3 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white shadow-xl font-medium placeholder:text-asphalt-text-400/30"
+              className="w-full pl-12 pr-5 py-3 text-sm glass-card border border-white/10 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white shadow-xl font-medium placeholder:text-white/60/30"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -359,32 +359,32 @@ export function Deposits() {
             <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar px-1">
               <button
                 onClick={() => setFilterStatus('all')}
-                className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${filterStatus === 'all' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-asphalt-800 text-asphalt-text-400 border border-asphalt-700'}`}
+                className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${filterStatus === 'all' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'glass-card text-white/60 border border-white/10'}`}
               >
                 Semua Aktif
               </button>
               <button
                 onClick={() => setFilterStatus('pending')}
-                className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all relative ${filterStatus === 'pending' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-asphalt-800 text-asphalt-text-400 border border-asphalt-700'}`}
+                className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all relative ${filterStatus === 'pending' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'glass-card text-white/60 border border-white/10'}`}
               >
                 Pusat/Mandor
                 {hasPending && (
                   <span className="absolute -top-1 -right-1 flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500 border-2 border-asphalt-800"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500 border-2 border-white/10"></span>
                   </span>
                 )}
               </button>
               <button
                 onClick={() => setFilterStatus('received')}
-                className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${filterStatus === 'received' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 'bg-asphalt-800 text-asphalt-text-400 border border-asphalt-700'}`}
+                className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${filterStatus === 'received' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 'glass-card text-white/60 border border-white/10'}`}
               >
                 Lapor Mandor
               </button>
               {role === 'mandor' && (
                 <button
                   onClick={() => setFilterStatus('verified')}
-                  className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${filterStatus === 'verified' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-asphalt-800 text-asphalt-text-400 border border-asphalt-700'}`}
+                  className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${filterStatus === 'verified' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'glass-card text-white/60 border border-white/10'}`}
                 >
                   Baru Selesai
                 </button>
@@ -397,11 +397,11 @@ export function Deposits() {
       {/* Deposits Feed */}
       <div className="space-y-6 pb-20">
         {displayedDeposits.length === 0 ? (
-          <div className="bg-asphalt-800 rounded-2xl py-10 px-4 text-center border border-asphalt-700 shadow-xl">
-            <div className="w-20 h-20 bg-asphalt-900 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-asphalt-700/50 shadow-inner">
+          <div className="glass-card rounded-2xl py-10 px-4 text-center border border-white/10 shadow-xl">
+            <div className="w-20 h-20 bg-transparent rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-inner">
               <Clock className="w-10 h-10 text-asphalt-700" />
             </div>
-            <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">
               {activeTab === 'active' ? 'Tidak ada setoran aktif' : 'Tidak ada riwayat setoran'}
             </p>
           </div>
@@ -413,7 +413,7 @@ export function Deposits() {
             const sisaSetor = deposit.sisaSetor ?? (totalSetor - berhasilDisetor);
 
             return (
-              <div key={deposit.id} className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 hover:border-asphalt-600 transition-all relative overflow-hidden group">
+              <div key={deposit.id} className="glass-card rounded-2xl shadow-2xl border border-white/10 hover:border-white/10 transition-all relative overflow-hidden group">
                 <div className={`absolute top-0 left-0 w-2 h-full transition-colors ${
                   deposit.status === 'pending' ? 'bg-orange-500' : 
                   deposit.status === 'received' ? 'bg-brand-500' : 'bg-emerald-500'
@@ -471,33 +471,33 @@ export function Deposits() {
                       <span className="text-[9px] font-black text-emerald-500 uppercase tracking-tighter">1. Input</span>
                     </div>
                     <div className="flex-1 flex flex-col gap-2">
-                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status !== 'pending' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]' : 'bg-asphalt-900 group-hover:bg-asphalt-700'}`}></div>
+                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status !== 'pending' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]' : 'bg-transparent group-hover:bg-white/10'}`}></div>
                       <span className={`text-[9px] font-black uppercase tracking-tighter ${deposit.status !== 'pending' ? 'text-emerald-500' : 'text-asphalt-700'}`}>2. Terima</span>
                     </div>
                     <div className="flex-1 flex flex-col gap-2">
-                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status === 'verified' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]' : 'bg-asphalt-900 group-hover:bg-asphalt-700'}`}></div>
+                      <div className={`h-1.5 rounded-full transition-all duration-500 ${deposit.status === 'verified' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(0,132,255,0.3)]' : 'bg-transparent group-hover:bg-white/10'}`}></div>
                       <span className={`text-[9px] font-black uppercase tracking-tighter ${deposit.status === 'verified' ? 'text-emerald-500' : 'text-asphalt-700'}`}>3. Selesai</span>
                     </div>
                   </div>
 
                   {/* Message & Info */}
-                  <div className="bg-asphalt-900/60 rounded-[1.5rem] p-5 border border-asphalt-700/50 mb-6">
+                  <div className="bg-white/5 rounded-[1.5rem] p-5 border border-white/10 mb-6">
                     <div className="flex items-start gap-4 mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-asphalt-800 border border-asphalt-700 flex items-center justify-center text-[11px] text-white font-black shadow-lg shrink-0">
+                      <div className="w-10 h-10 rounded-2xl glass-card border border-white/10 flex items-center justify-center text-[11px] text-white font-black shadow-lg shrink-0">
                         {deposit.createdByName?.substring(0, 1).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[10px] text-asphalt-text-400 font-black uppercase tracking-widest mb-1">KET: {deposit.createdByName}</p>
-                        <p className="text-sm text-asphalt-text-100 font-medium leading-relaxed italic">
+                        <p className="text-[10px] text-white/60 font-black uppercase tracking-widest mb-1">KET: {deposit.createdByName}</p>
+                        <p className="text-sm text-white/90 font-medium leading-relaxed italic">
                           "{deposit.description}"
                         </p>
                       </div>
                     </div>
                     
-                    <div className="flex flex-col gap-3 pt-4 border-t border-asphalt-700">
+                    <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-[10px] uppercase font-black tracking-tighter">
-                          <span className="text-asphalt-text-400">Tujuan:</span>
+                          <span className="text-white/60">Tujuan:</span>
                           <span className="text-white">{deposit.destination || 'MANDOR'}</span>
                         </div>
                         {deposit.status !== 'pending' && (
@@ -510,7 +510,7 @@ export function Deposits() {
                       {deposit.status === 'verified' && (
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 text-[10px] uppercase font-black tracking-tighter">
-                            <span className="text-asphalt-text-400">ATM/Bank:</span>
+                            <span className="text-white/60">ATM/Bank:</span>
                             <span className="text-emerald-500">{deposit.atmName || '-'}</span>
                           </div>
                           <div className="text-[10px] text-emerald-500 font-black flex items-center gap-2 uppercase tracking-tighter">
@@ -529,9 +529,9 @@ export function Deposits() {
                         <p className="text-[10px] text-emerald-500 font-black uppercase tracking-widest mb-1.5">Masuk Rekening</p>
                         <p className="text-base font-black text-white">{formatRupiah(berhasilDisetor)}</p>
                       </div>
-                      <div className={`rounded-2xl p-4 border ${sisaSetor > 0 ? 'bg-rose-500/5 border-rose-500/10' : 'bg-asphalt-900 border-asphalt-700'}`}>
-                        <p className={`text-[10px] font-black uppercase tracking-widest mb-1.5 ${sisaSetor > 0 ? 'text-rose-500' : 'text-asphalt-text-400'}`}>Sisa Tunai</p>
-                        <p className={`text-base font-black ${sisaSetor > 0 ? 'text-white' : 'text-asphalt-text-400'}`}>
+                      <div className={`rounded-2xl p-4 border ${sisaSetor > 0 ? 'bg-rose-500/5 border-rose-500/10' : 'bg-transparent border-white/10'}`}>
+                        <p className={`text-[10px] font-black uppercase tracking-widest mb-1.5 ${sisaSetor > 0 ? 'text-rose-500' : 'text-white/60'}`}>Sisa Tunai</p>
+                        <p className={`text-base font-black ${sisaSetor > 0 ? 'text-white' : 'text-white/60'}`}>
                           {sisaSetor > 0 ? `-${formatRupiah(sisaSetor)}` : 'LUNAS'}
                         </p>
                       </div>
@@ -544,9 +544,9 @@ export function Deposits() {
                       <p className="text-[10px] font-black text-brand-500 mb-3 uppercase tracking-widest">Update Nominal Masuk:</p>
                       <div className="space-y-2.5">
                         {deposit.editHistory.map((history, idx) => (
-                          <div key={idx} className="flex justify-between text-[10px] border-b border-asphalt-700 pb-2">
+                          <div key={idx} className="flex justify-between text-[10px] border-b border-white/10 pb-2">
                             <span className="text-white font-black">{formatRupiah(history.previousAmount)}</span>
-                            <span className="text-asphalt-text-400 font-bold uppercase tracking-tighter">{history.editedByName} ({formatDate(history.editedAt).split(' ')[0]})</span>
+                            <span className="text-white/60 font-bold uppercase tracking-tighter">{history.editedByName} ({formatDate(history.editedAt).split(' ')[0]})</span>
                           </div>
                         ))}
                       </div>
@@ -619,7 +619,7 @@ export function Deposits() {
                                 window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
                               }
                             }}
-                            className="flex-1 h-14 bg-asphalt-900 text-emerald-500 rounded-2xl flex items-center justify-center border border-asphalt-700 hover:bg-asphalt-700 transition-all font-black text-[10px] uppercase tracking-widest gap-2"
+                            className="flex-1 h-14 bg-transparent text-emerald-500 rounded-2xl flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all font-black text-[10px] uppercase tracking-widest gap-2"
                           >
                             <Share2 className="w-5 h-5" />
                             WhatsApp
@@ -629,14 +629,14 @@ export function Deposits() {
                           onClick={() => {
                             setEditingDeposit({ branchId: deposit.branchId, depositId: deposit.id, amount: berhasilDisetor.toString() });
                           }}
-                          className="flex-1 h-14 bg-asphalt-900 text-brand-500 rounded-2xl flex items-center justify-center border border-asphalt-700 hover:bg-asphalt-700 transition-all font-black text-[10px] uppercase tracking-widest gap-2"
+                          className="flex-1 h-14 bg-transparent text-brand-500 rounded-2xl flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all font-black text-[10px] uppercase tracking-widest gap-2"
                         >
                           Update Rp
                         </button>
                           {role === 'mandor' && (
                             <button
                               onClick={() => setDeleteConfirm({ isOpen: true, branchId: deposit.branchId, depositId: deposit.id, name: deposit.description })}
-                              className="w-14 h-14 bg-asphalt-900 text-asphalt-700 hover:text-rose-500 rounded-2xl flex items-center justify-center border border-asphalt-700 hover:bg-rose-500/10 transition-all"
+                              className="w-14 h-14 bg-transparent text-asphalt-700 hover:text-rose-500 rounded-2xl flex items-center justify-center border border-white/10 hover:bg-rose-500/10 transition-all"
                             >
                               <Trash2 className="w-5 h-5" />
                             </button>
@@ -648,28 +648,28 @@ export function Deposits() {
 
                 {/* Inline Completion Form */}
                 {completingDeposit?.depositId === deposit.id && (
-                  <div className="p-7 bg-asphalt-900/60 border-t border-asphalt-700 animate-in fade-in slide-in-from-top-4">
+                  <div className="p-7 bg-white/5 border-t border-white/10 animate-in fade-in slide-in-from-top-4">
                     <h5 className="text-[10px] font-black text-emerald-500 mb-5 uppercase tracking-[0.2em]">Detail Setoran Bank:</h5>
                     <div className="space-y-6">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Nama ATM / Bank</label>
+                        <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Nama ATM / Bank</label>
                         <input
                           type="text"
                           placeholder="ATM Mandiri Sudirman"
-                          className="w-full px-5 py-4 bg-asphalt-800 border border-asphalt-700 rounded-2xl text-sm font-black text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
+                          className="w-full px-5 py-4 glass-card border border-white/10 rounded-2xl text-sm font-black text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
                           value={completingDeposit.atmName}
                           onChange={(e) => setCompletingDeposit({ ...completingDeposit, atmName: e.target.value })}
                           autoFocus
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Sisa Tunai (Rp)</label>
+                        <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Sisa Tunai (Rp)</label>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-sm font-black">Rp</span>
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 text-sm font-black">Rp</span>
                           <input
                             type="text"
                             inputMode="numeric"
-                            className="w-full pl-10 pr-4 py-4 bg-asphalt-800 border border-asphalt-700 rounded-2xl text-sm font-black text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
+                            className="w-full pl-10 pr-4 py-4 glass-card border border-white/10 rounded-2xl text-sm font-black text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
                             value={formatNumberInput(completingDeposit.amount)}
                             onChange={(e) => handleNumericInput(e, (val) => setCompletingDeposit({ ...completingDeposit, amount: val }))}
                           />
@@ -705,7 +705,7 @@ export function Deposits() {
                         </button>
                         <button
                           onClick={() => setCompletingDeposit(null)}
-                          className="px-6 h-14 bg-asphalt-800 text-asphalt-text-400 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-asphalt-700"
+                          className="px-6 h-14 glass-card text-white/60 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-white/10"
                         >
                           Batal
                         </button>
@@ -716,15 +716,15 @@ export function Deposits() {
 
                 {/* Inline Edit Form */}
                 {editingDeposit?.depositId === deposit.id && (
-                  <div className="p-7 bg-asphalt-900/60 border-t border-asphalt-700 animate-in fade-in slide-in-from-top-4">
+                  <div className="p-7 bg-white/5 border-t border-white/10 animate-in fade-in slide-in-from-top-4">
                     <p className="text-[10px] font-black text-brand-500 mb-5 uppercase tracking-widest">Update Nominal Rekening:</p>
                     <div className="flex gap-3">
                       <div className="relative flex-1">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-sm font-black">Rp</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 text-sm font-black">Rp</span>
                         <input
                           type="text"
                           inputMode="numeric"
-                          className="w-full pl-10 pr-4 py-4 bg-asphalt-800 border border-asphalt-700 rounded-2xl text-base font-black text-white focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                          className="w-full pl-10 pr-4 py-4 glass-card border border-white/10 rounded-2xl text-base font-black text-white focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                           value={formatNumberInput(editingDeposit.amount)}
                           onChange={(e) => handleNumericInput(e, (val) => setEditingDeposit({ ...editingDeposit, amount: val }))}
                           autoFocus
@@ -746,7 +746,7 @@ export function Deposits() {
                       </button>
                       <button
                         onClick={() => setEditingDeposit(null)}
-                        className="p-4 bg-asphalt-800 text-asphalt-text-400 rounded-2xl border border-asphalt-700"
+                        className="p-4 glass-card text-white/60 rounded-2xl border border-white/10"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
@@ -760,7 +760,7 @@ export function Deposits() {
           {activeTab === 'history' && filteredDeposits.length > historyLimit && (
             <button
               onClick={() => setHistoryLimit(prev => prev + 10)}
-              className="w-full py-5 bg-asphalt-800 border border-asphalt-700 rounded-3xl text-[10px] font-black text-brand-500 hover:text-white uppercase tracking-[0.25em] transition-all shadow-xl"
+              className="w-full py-5 glass-card border border-white/10 rounded-3xl text-[10px] font-black text-brand-500 hover:text-white uppercase tracking-[0.25em] transition-all shadow-xl"
             >
               Lihat History Lainnya ({filteredDeposits.length - historyLimit})
             </button>

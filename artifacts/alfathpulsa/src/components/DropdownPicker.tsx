@@ -85,12 +85,12 @@ export function DropdownPicker({
         className={`w-full flex items-center justify-between gap-3 px-5 py-3 border font-black text-[11px] uppercase tracking-widest transition-all active:scale-95 ${
           open
             ? 'rounded-t-2xl rounded-b-none border-b-0 border-brand-500 bg-brand-500/10 text-brand-400'
-            : 'rounded-2xl border-asphalt-700 bg-asphalt-900 text-asphalt-text-300 hover:border-asphalt-600'
+            : 'rounded-2xl border-white/10 bg-transparent text-white/70 hover:border-white/10'
         } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <span>{selectedLabel}</span>
         <ChevronDown
-          className={`w-4 h-4 transition-transform duration-300 ${open ? 'rotate-180 text-brand-400' : 'text-asphalt-text-400'}`}
+          className={`w-4 h-4 transition-transform duration-300 ${open ? 'rotate-180 text-brand-400' : 'text-white/60'}`}
         />
       </button>
 
@@ -98,7 +98,7 @@ export function DropdownPicker({
         <div
           ref={dropdownRef}
           style={dropdownStyle}
-          className="bg-asphalt-800 border border-t-0 border-brand-500 rounded-b-2xl shadow-[0_16px_32px_-8px_rgba(0,0,0,0.5)] overflow-y-auto no-scrollbar animate-in fade-in duration-150"
+          className="glass-card border border-t-0 border-brand-500 rounded-b-2xl shadow-[0_16px_32px_-8px_rgba(0,0,0,0.5)] overflow-y-auto no-scrollbar animate-in fade-in duration-150"
         >
           {options.map((opt, i) => {
             const selected = String(opt.value) === String(value);
@@ -114,8 +114,8 @@ export function DropdownPicker({
                 className={`w-full flex items-center justify-between px-5 py-3.5 text-[11px] font-black uppercase tracking-widest transition-colors text-left ${
                   selected
                     ? 'text-brand-400 bg-brand-500/10'
-                    : 'text-asphalt-text-300 hover:bg-asphalt-700/50'
-                } ${i > 0 ? 'border-t border-asphalt-700/40' : ''}`}
+                    : 'text-white/70 hover:bg-white/10'
+                } ${i > 0 ? 'border-t border-white/10' : ''}`}
               >
                 <span>{opt.label}</span>
                 {selected && <Check className="w-4 h-4 text-brand-400 shrink-0" />}

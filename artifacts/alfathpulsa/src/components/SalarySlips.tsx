@@ -312,7 +312,7 @@ export function SalarySlips() {
   }
 
   return (
-    <div className="p-5 space-y-6 bg-asphalt-900 min-h-screen pb-40">
+    <div className="p-5 space-y-6 bg-transparent min-h-screen pb-40">
       {/* Mini Header */}
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-3">
@@ -321,14 +321,14 @@ export function SalarySlips() {
           </div>
           <div>
             <h3 className="text-xs font-black text-white uppercase tracking-tight">Slip Gaji</h3>
-            <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest">{slips.length} Tersedia</p>
+            <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">{slips.length} Tersedia</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {canManageSlips && slips.length > 0 && !isAdding && (
             <button
               onClick={() => setDeleteConfirm({ isOpen: true, id: 'ALL', name: 'SEMUA SLIP GAJI' })}
-              className="px-3 py-2 bg-asphalt-800 text-rose-500 border border-asphalt-700/50 rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-asphalt-700 transition-all"
+              className="px-3 py-2 glass-card text-rose-500 border border-white/10 rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
             >
               BERSIHKAN
             </button>
@@ -346,16 +346,16 @@ export function SalarySlips() {
       </div>
 
       {isAdding && (
-        <div className="bg-asphalt-800 rounded-2xl p-5 shadow-2xl border border-asphalt-700 animate-in slide-in-from-bottom duration-500">
+        <div className="glass-card rounded-2xl p-5 shadow-2xl border border-white/10 animate-in slide-in-from-bottom duration-500">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-sm font-black text-white uppercase tracking-tight">Buat Slip Gaji</h3>
-            <button onClick={() => setIsAdding(false)} className="text-asphalt-text-400 p-2"><ArrowLeft className="w-5 h-5" /></button>
+            <button onClick={() => setIsAdding(false)} className="text-white/60 p-2"><ArrowLeft className="w-5 h-5" /></button>
           </div>
 
           <form onSubmit={handleAddSlip} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Pilih Anggota</label>
+                <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Pilih Anggota</label>
                 <BlockChoice
                   columns={1}
                   value={selectedUserId}
@@ -369,7 +369,7 @@ export function SalarySlips() {
 
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bulan</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Bulan</label>
                   <DropdownPicker
                     value={String(month)}
                     onChange={(v) => setMonth(parseInt(v))}
@@ -380,7 +380,7 @@ export function SalarySlips() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tahun</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Tahun</label>
                   <DropdownPicker
                     value={String(year)}
                     onChange={(v) => setYear(parseInt(v))}
@@ -395,14 +395,14 @@ export function SalarySlips() {
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Gaji Per Hari</label>
+                <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Gaji Per Hari</label>
                 <div className="relative">
-                  <span className="absolute left-5 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
+                  <span className="absolute left-5 top-1/2 -translate-y-1/2 text-white/60 text-xs font-black">Rp</span>
                   <input
                     type="text"
                     inputMode="numeric"
                     placeholder="0"
-                    className="w-full pl-12 pr-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                    className="w-full pl-12 pr-5 py-3 glass-input border  rounded-2xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                     value={formatNumberInput(dailyRate)}
                     onChange={(e) => handleNumericInput(e, setDailyRate)}
                     required
@@ -412,25 +412,25 @@ export function SalarySlips() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Hari Libur</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Hari Libur</label>
                   <div className="relative">
                     <input
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full pl-5 pr-14 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                      className="w-full pl-5 pr-14 py-3 glass-input border  rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
                       value={daysOff}
                       onChange={(e) => handleNumericInput(e, setDaysOff)}
                     />
-                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-[10px] font-black uppercase tracking-widest">Hari</span>
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-white/60 text-[10px] font-black uppercase tracking-widest">Hari</span>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bonus</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Bonus</label>
                   <input
                     type="text"
                     inputMode="numeric"
-                    className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-emerald-500 font-black outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
+                    className="w-full px-5 py-3 glass-input border  rounded-2xl text-sm text-emerald-500 font-black outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner"
                     value={formatNumberInput(bonus)}
                     onChange={(e) => handleNumericInput(e, setBonus)}
                   />
@@ -438,11 +438,11 @@ export function SalarySlips() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Potongan (Otomatis Dari Hari Libur)</label>
+                <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Potongan (Otomatis Dari Hari Libur)</label>
                 <input
                   type="text"
                   inputMode="numeric"
-                  className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                  className="w-full px-5 py-3 glass-input border  rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
                   value={formatNumberInput(deductions)}
                   onChange={(e) => handleNumericInput(e, setDeductions)}
                 />
@@ -452,45 +452,45 @@ export function SalarySlips() {
             {selectedUserId && (
               <div className="md:col-span-2 space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 bg-asphalt-900/40 border border-rose-500/20 rounded-2xl p-3 shadow-inner">
+                  <div className="flex-1 bg-white/5 border border-rose-500/20 rounded-2xl p-3 shadow-inner">
                     <p className="text-[8px] font-black text-rose-500 uppercase tracking-widest opacity-70">Sisa Kasbon</p>
                     <p className="text-sm font-black text-rose-500">{formatRupiah(selEmpBon)}</p>
                   </div>
-                  <div className="flex-1 bg-asphalt-900/40 border border-brand-500/20 rounded-2xl p-3 shadow-inner">
+                  <div className="flex-1 bg-white/5 border border-brand-500/20 rounded-2xl p-3 shadow-inner">
                     <p className="text-[8px] font-black text-brand-500 uppercase tracking-widest opacity-70">Saldo Tabungan</p>
                     <p className="text-sm font-black text-brand-500">{formatRupiah(selEmpSaving)}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bayar Kasbon</label>
+                    <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Bayar Kasbon</label>
                     <input
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
+                      className="w-full px-5 py-3 glass-input border  rounded-2xl text-sm text-rose-500 font-black outline-none focus:ring-2 focus:ring-rose-500 shadow-inner"
                       value={formatNumberInput(debtPayment)}
                       onChange={(e) => handleNumericInput(e, setDebtPayment)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tabung (Setor)</label>
+                    <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Tabung (Setor)</label>
                     <input
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                      className="w-full px-5 py-3 glass-input border  rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                       value={formatNumberInput(savingDeposit)}
                       onChange={(e) => handleNumericInput(e, setSavingDeposit)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Ambil Tabungan</label>
+                    <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Ambil Tabungan</label>
                     <input
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
-                      className="w-full px-5 py-3 bg-asphalt-900 border border-asphalt-700 rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                      className="w-full px-5 py-3 glass-input border  rounded-2xl text-sm text-brand-500 font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                       value={formatNumberInput(savingWithdraw)}
                       onChange={(e) => handleNumericInput(e, setSavingWithdraw)}
                     />
@@ -500,45 +500,45 @@ export function SalarySlips() {
             )}
 
             <div className="md:col-span-2">
-              <div className="bg-asphalt-900/40 border border-asphalt-700 rounded-2xl p-4 shadow-inner space-y-2.5">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-inner space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Jumlah Hari {getMonthName(month)} {year}</span>
+                  <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Jumlah Hari {getMonthName(month)} {year}</span>
                   <span className="text-[11px] font-black text-white">{formDim} Hari</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Gaji Pokok Sebulan</span>
+                  <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Gaji Pokok Sebulan</span>
                   <span className="text-[11px] font-black text-white">{formatRupiah(formMonthlyBase)}</span>
                 </div>
                 {formOff > 0 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Potongan {formOff} Hari Libur</span>
+                    <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Potongan {formOff} Hari Libur</span>
                     <span className="text-[11px] font-black text-rose-500">- {formatRupiah(formOff * formDaily)}</span>
                   </div>
                 )}
-                <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-asphalt-700/60">
+                <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-white/10">
                   <span className="text-[10px] font-black text-white uppercase tracking-widest">{hasAllocation ? 'Gaji Bersih' : 'Estimasi Diterima'}</span>
                   <span className="text-sm font-black text-emerald-500">{formatRupiah(formNet)}</span>
                 </div>
                 {formDebtPay > 0 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Bayar Kasbon</span>
+                    <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Bayar Kasbon</span>
                     <span className="text-[11px] font-black text-rose-500">- {formatRupiah(formDebtPay)}</span>
                   </div>
                 )}
                 {formSaveDep > 0 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Tabung</span>
+                    <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Tabung</span>
                     <span className="text-[11px] font-black text-brand-500">- {formatRupiah(formSaveDep)}</span>
                   </div>
                 )}
                 {formSaveWd > 0 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-bold text-asphalt-text-400 uppercase tracking-widest">Ambil Tabungan</span>
+                    <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Ambil Tabungan</span>
                     <span className="text-[11px] font-black text-brand-500">+ {formatRupiah(formSaveWd)}</span>
                   </div>
                 )}
                 {hasAllocation && (
-                  <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-asphalt-700/60">
+                  <div className="flex items-center justify-between pt-2.5 border-t border-dashed border-white/10">
                     <span className="text-[10px] font-black text-white uppercase tracking-widest">Diterima Tunai</span>
                     <span className={`text-base font-black ${formTakeHome < 0 ? 'text-rose-500' : 'text-brand-500'}`}>{formatRupiah(formTakeHome)}</span>
                   </div>
@@ -575,9 +575,9 @@ export function SalarySlips() {
           </div>
 
           {!showAllHistory && (
-             <div className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700 space-y-4 animate-in fade-in slide-in-from-top-1">
+             <div className="glass-card p-4 rounded-2xl border border-white/10 space-y-4 animate-in fade-in slide-in-from-top-1">
               <div className="space-y-1">
-                <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bulan</span>
+                <span className="text-[8px] font-black text-white/60 uppercase tracking-widest ml-1">Bulan</span>
                 <DropdownPicker
                   value={String(filterMonth)}
                   onChange={(v) => setFilterMonth(parseInt(v))}
@@ -588,7 +588,7 @@ export function SalarySlips() {
                 />
               </div>
               <div className="space-y-1">
-                <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Tahun</span>
+                <span className="text-[8px] font-black text-white/60 uppercase tracking-widest ml-1">Tahun</span>
                 <DropdownPicker
                   value={String(filterYear)}
                   onChange={(v) => setFilterYear(parseInt(v))}
@@ -604,9 +604,9 @@ export function SalarySlips() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {slips.length === 0 ? (
-            <div className="col-span-full bg-asphalt-800 rounded-2xl py-8 px-4 text-center border border-asphalt-700/50">
+            <div className="col-span-full glass-card rounded-2xl py-8 px-4 text-center border border-white/10">
               <FileText className="w-12 h-12 text-asphalt-900 mx-auto mb-4" />
-              <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Belum ada slip gaji tersedia.</p>
+              <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Belum ada slip gaji tersedia.</p>
             </div>
           ) : (
             slips.map((slip) => (
@@ -661,7 +661,7 @@ function SlipCard({
   return (
     <button
       onClick={onView}
-      className="text-left w-full bg-asphalt-800 rounded-3xl border border-asphalt-700/50 shadow-xl overflow-hidden group active:scale-[0.98] transition-all"
+      className="text-left w-full glass-card rounded-3xl border border-white/10 shadow-xl overflow-hidden group active:scale-[0.98] transition-all"
     >
       <div className="p-5">
         <div className="flex items-center justify-between gap-3">
@@ -673,7 +673,7 @@ function SlipCard({
             </div>
             <div className="min-w-0">
               <h4 className="text-xs font-black text-white uppercase tracking-tight truncate">{slip.userName || 'Karyawan'}</h4>
-              <p className="text-[9px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">
+              <p className="text-[9px] text-white/60 font-bold uppercase tracking-widest mt-0.5">
                 {getMonthName(slip.month)} {slip.year}
               </p>
             </div>
@@ -685,9 +685,9 @@ function SlipCard({
           </span>
         </div>
 
-        <div className="mt-4 bg-asphalt-900/40 p-4 rounded-2xl border border-asphalt-700 shadow-inner flex items-end justify-between gap-3">
+        <div className="mt-4 bg-white/5 p-4 rounded-2xl border border-white/10 shadow-inner flex items-end justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[7px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1 opacity-60">Gaji Bersih Diterima</p>
+            <p className="text-[7px] text-white/60 uppercase font-black tracking-widest mb-1 opacity-60">Gaji Bersih Diterima</p>
             <p className="text-base font-black text-emerald-500 truncate">{formatRupiah(slip.netSalary)}</p>
           </div>
           <span className="text-[8px] font-black text-brand-500 uppercase tracking-widest flex items-center gap-1 shrink-0">
@@ -702,7 +702,7 @@ function SlipCard({
 function MetaItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest mb-1 opacity-70">{label}</p>
+      <p className="text-[8px] font-black text-white/60 uppercase tracking-widest mb-1 opacity-70">{label}</p>
       <p className="text-[11px] font-black text-white leading-tight break-words">{value}</p>
     </div>
   );
@@ -710,16 +710,16 @@ function MetaItem({ label, value }: { label: string; value: string }) {
 
 function SectionHead({ title }: { title: string }) {
   return (
-    <div className="px-4 pt-3 pb-2 bg-asphalt-800/50">
-      <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-[0.2em]">{title}</p>
+    <div className="px-4 pt-3 pb-2 glass-card/50">
+      <p className="text-[8px] font-black text-white/60 uppercase tracking-[0.2em]">{title}</p>
     </div>
   );
 }
 
 function SlipRow({ label, value, valueClass, bold, last }: { label: string; value: string; valueClass?: string; bold?: boolean; last?: boolean }) {
   return (
-    <div className={`flex items-center justify-between px-4 py-2.5 gap-3 ${last ? '' : 'border-b border-asphalt-700/40'} ${bold ? 'bg-asphalt-800/40' : ''}`}>
-      <span className={`text-[10px] uppercase tracking-wide ${bold ? 'font-black text-white' : 'font-bold text-asphalt-text-400'}`}>{label}</span>
+    <div className={`flex items-center justify-between px-4 py-2.5 gap-3 ${last ? '' : 'border-b border-white/10'} ${bold ? 'glass-card/40' : ''}`}>
+      <span className={`text-[10px] uppercase tracking-wide ${bold ? 'font-black text-white' : 'font-bold text-white/60'}`}>{label}</span>
       <span className={`text-[11px] font-black text-right ${valueClass || 'text-white'}`}>{value}</span>
     </div>
   );
@@ -782,7 +782,7 @@ function SlipDocument({
     <div className="fixed inset-0 z-[110] ios-backdrop flex flex-col" onClick={onClose}>
       <div className="flex-1 overflow-y-auto px-4 py-6 flex items-start justify-center">
         <div
-          className="slip-print-area w-full max-w-md bg-asphalt-800 rounded-[2rem] border border-asphalt-700 shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200"
+          className="slip-print-area w-full max-w-md glass-card rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="h-1.5 w-full bg-brand-500"></div>
@@ -795,7 +795,7 @@ function SlipDocument({
               </div>
               <div>
                 <h3 className="text-base font-black text-white tracking-tighter leading-none">AlfathPulsa</h3>
-                <p className="text-[8px] text-asphalt-text-400 font-bold uppercase tracking-[0.2em] mt-1">Agen BRILink &amp; Pulsa</p>
+                <p className="text-[8px] text-white/60 font-bold uppercase tracking-[0.2em] mt-1">Agen BRILink &amp; Pulsa</p>
               </div>
             </div>
             <div className="text-right shrink-0">
@@ -804,7 +804,7 @@ function SlipDocument({
             </div>
           </div>
 
-          <div className="mx-6 border-t border-dashed border-asphalt-700"></div>
+          <div className="mx-6 border-t border-dashed border-white/10"></div>
 
           {/* Employee meta */}
           <div className="px-6 py-5 grid grid-cols-2 gap-x-4 gap-y-4">
@@ -815,7 +815,7 @@ function SlipDocument({
           </div>
 
           {/* Earnings & deductions */}
-          <div className="mx-6 rounded-2xl bg-asphalt-900/40 border border-asphalt-700 shadow-inner overflow-hidden">
+          <div className="mx-6 rounded-2xl bg-white/5 border border-white/10 shadow-inner overflow-hidden">
             <SectionHead title="Pendapatan" />
             <SlipRow label={`Jumlah Hari (${getMonthName(slip.month)})`} value={`${dim} hari`} />
             <SlipRow label="Gaji Pokok" value={formatRupiah(slip.baseSalary)} bold />
@@ -829,19 +829,19 @@ function SlipDocument({
           <div className="mx-6 mt-5 rounded-2xl border-2 border-brand-500/30 bg-brand-500/5 px-5 py-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-[0.2em]">Gaji Bersih</p>
-                <p className="text-[8px] font-bold text-asphalt-text-400 uppercase tracking-widest opacity-70">Take Home Pay</p>
+                <p className="text-[8px] font-black text-white/60 uppercase tracking-[0.2em]">Gaji Bersih</p>
+                <p className="text-[8px] font-bold text-white/60 uppercase tracking-widest opacity-70">Take Home Pay</p>
               </div>
               <p className="text-xl font-black text-emerald-500 text-right">{formatRupiah(slip.netSalary)}</p>
             </div>
-            <p className="mt-3 pt-3 border-t border-asphalt-700/60 text-[9px] font-bold text-asphalt-text-400 italic leading-relaxed">
+            <p className="mt-3 pt-3 border-t border-white/10 text-[9px] font-bold text-white/60 italic leading-relaxed">
               Terbilang: <span className="text-white not-italic font-black">{terbilang(slip.netSalary)}</span>
             </p>
           </div>
 
           {/* Alokasi gaji (kasbon & tabungan karyawan) */}
           {hasAlloc && (
-            <div className="mx-6 mt-5 rounded-2xl bg-asphalt-900/40 border border-asphalt-700 shadow-inner overflow-hidden">
+            <div className="mx-6 mt-5 rounded-2xl bg-white/5 border border-white/10 shadow-inner overflow-hidden">
               <SectionHead title="Alokasi Gaji" />
               <SlipRow label="Gaji Bersih" value={formatRupiah(slip.netSalary)} bold />
               {debtPay > 0 && <SlipRow label="Bayar Kasbon" value={`- ${formatRupiah(debtPay)}`} valueClass="text-rose-500" />}
@@ -859,15 +859,15 @@ function SlipDocument({
                 {isPaid ? 'Lunas Dibayarkan' : 'Belum Dibayar'}
               </span>
             </div>
-            <span className="text-[9px] font-bold text-asphalt-text-400 text-right">
+            <span className="text-[9px] font-bold text-white/60 text-right">
               {isPaid ? `Dibayar ${fmtDate(slip.paidAt)}` : `Diterbitkan ${fmtDate(slip.createdAt)}`}
             </span>
           </div>
 
           {/* Footer */}
           <div className="px-6 pb-6">
-            <div className="border-t border-dashed border-asphalt-700 pt-4">
-              <p className="text-[8px] text-asphalt-text-400 font-medium leading-relaxed text-center">
+            <div className="border-t border-dashed border-white/10 pt-4">
+              <p className="text-[8px] text-white/60 font-medium leading-relaxed text-center">
                 Slip gaji ini diterbitkan secara digital oleh <span className="font-black text-brand-500">AlfathPulsa</span> dan sah tanpa tanda tangan basah.
                 {slip.createdByName ? <> Diproses oleh <span className="font-bold text-white">{slip.createdByName}</span>.</> : null}
               </p>
@@ -878,18 +878,18 @@ function SlipDocument({
 
       {/* Action bar */}
       <div
-        className="slip-no-print bg-asphalt-800/95 backdrop-blur border-t border-asphalt-700 px-4 py-3 flex items-center gap-2"
+        className="slip-no-print glass-card/95 backdrop-blur border-t border-white/10 px-4 py-3 flex items-center gap-2"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="px-4 py-3 rounded-2xl bg-asphalt-900 border border-asphalt-700 text-asphalt-text-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
+          className="px-4 py-3 rounded-2xl bg-transparent border border-white/10 text-white/60 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
         >
           <X className="w-4 h-4" /> Tutup
         </button>
         <button
           onClick={() => window.print()}
-          className="flex-1 px-4 py-3 rounded-2xl bg-asphalt-900 border border-asphalt-700 text-brand-500 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-all"
+          className="flex-1 px-4 py-3 rounded-2xl bg-transparent border border-white/10 text-brand-500 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-all"
         >
           <Printer className="w-4 h-4" /> Cetak / PDF
         </button>
@@ -906,7 +906,7 @@ function SlipDocument({
           <button
             onClick={onDelete}
             disabled={processing}
-            className="px-3 py-3 rounded-2xl bg-asphalt-900 border border-asphalt-700 text-rose-500 active:scale-95 transition-all disabled:opacity-50"
+            className="px-3 py-3 rounded-2xl bg-transparent border border-white/10 text-rose-500 active:scale-95 transition-all disabled:opacity-50"
           >
             <Trash2 className="w-4 h-4" />
           </button>

@@ -183,7 +183,7 @@ export function Team() {
           <UserCog className="w-4.5 h-4.5" />
         </div>
         <div className="flex-1">
-          <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest leading-none">Manajemen Tim & Cabang</p>
+          <p className="text-[10px] font-black text-white/60 uppercase tracking-widest leading-none">Manajemen Tim & Cabang</p>
           <p className="text-sm font-black text-white mt-0.5 leading-none">{users.length} Anggota · {branches.length} Cabang</p>
         </div>
         {isBos && (
@@ -191,7 +191,7 @@ export function Team() {
             onClick={() => { setShowAddUser(v => !v); setAddUserError(null); }}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${
               showAddUser
-                ? 'bg-asphalt-700 border-asphalt-600 text-white'
+                ? 'bg-white/10 border-white/10 text-white'
                 : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20'
             }`}
           >
@@ -211,7 +211,7 @@ export function Team() {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <form onSubmit={handleCreateUser} className="bg-asphalt-800 rounded-2xl border border-emerald-500/20 p-4 space-y-4">
+            <form onSubmit={handleCreateUser} className="glass-card rounded-2xl border border-emerald-500/20 p-4 space-y-4">
               <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Buat Akun Baru</p>
 
               <div className="grid grid-cols-2 gap-3">
@@ -221,19 +221,19 @@ export function Team() {
                   { label: 'Password', key: 'password', placeholder: 'Password awal', extra: {} },
                 ].map(({ label, key, placeholder, extra }) => (
                   <div key={key} className={`space-y-1.5 ${key === 'name' ? 'col-span-2' : ''}`}>
-                    <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-0.5">{label}</label>
+                    <label className="text-[8px] font-black text-white/60 uppercase tracking-widest ml-0.5">{label}</label>
                     <input
                       type="text"
                       value={(newUser as any)[key]}
                       onChange={(e) => setNewUser({ ...newUser, [key]: e.target.value })}
                       placeholder={placeholder}
                       {...extra}
-                      className="w-full px-3 py-2.5 text-xs bg-asphalt-900 border border-asphalt-700 rounded-xl outline-none focus:ring-1 focus:ring-emerald-500 text-white font-semibold"
+                      className="w-full px-3 py-2.5 text-xs glass-input border  rounded-xl outline-none focus:ring-1 focus:ring-emerald-500 text-white font-semibold"
                     />
                   </div>
                 ))}
                 <div className="col-span-2 space-y-1.5">
-                  <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-0.5">Role</label>
+                  <label className="text-[8px] font-black text-white/60 uppercase tracking-widest ml-0.5">Role</label>
                   <BlockChoice
                     columns={3} size="sm" value={newUser.role}
                     onChange={(v) => setNewUser({ ...newUser, role: v as any })}
@@ -245,7 +245,7 @@ export function Team() {
                   />
                 </div>
                 <div className="col-span-2 space-y-1.5">
-                  <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest ml-0.5">Cabang</label>
+                  <label className="text-[8px] font-black text-white/60 uppercase tracking-widest ml-0.5">Cabang</label>
                   <BlockChoice
                     columns={3} size="sm" value={newUser.branchId}
                     onChange={(v) => setNewUser({ ...newUser, branchId: v })}
@@ -278,7 +278,7 @@ export function Team() {
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <Store className="w-3.5 h-3.5 text-brand-500" />
-            <span className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest">Daftar Cabang</span>
+            <span className="text-[9px] font-black text-white/60 uppercase tracking-widest">Daftar Cabang</span>
           </div>
           {isBos && (
             <form onSubmit={handleAddBranch} className="flex items-center gap-1.5">
@@ -286,7 +286,7 @@ export function Team() {
                 type="text" placeholder="Nama cabang baru" value={newBranchName}
                 onChange={(e) => setNewBranchName(e.target.value)}
                 autoCorrect="off" autoComplete="off" spellCheck={false} autoCapitalize="characters"
-                className="bg-asphalt-800 border border-asphalt-700 rounded-lg px-2.5 py-1.5 text-[10px] font-bold text-white uppercase tracking-wide placeholder:text-asphalt-text-400 focus:outline-none focus:border-brand-500 w-36"
+                className="glass-card border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] font-bold text-white uppercase tracking-wide placeholder:text-white/60 focus:outline-none focus:border-brand-500 w-36"
               />
               <button
                 type="submit" disabled={!newBranchName.trim()}
@@ -299,25 +299,25 @@ export function Team() {
         </div>
 
         {branches.length === 0 ? (
-          <p className="text-[10px] text-asphalt-text-400 font-bold text-center py-4 uppercase tracking-widest">Belum ada cabang.</p>
+          <p className="text-[10px] text-white/60 font-bold text-center py-4 uppercase tracking-widest">Belum ada cabang.</p>
         ) : (
-          <div className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 overflow-hidden divide-y divide-asphalt-700/40">
+          <div className="glass-card rounded-2xl border border-white/10 overflow-hidden divide-y divide-asphalt-700/40">
             {branches.map(branch => (
               <div key={branch.id}>
                 <div className="flex items-center gap-3 px-4 py-3">
-                  <div className="w-7 h-7 rounded-lg bg-asphalt-900 border border-asphalt-700 flex items-center justify-center text-brand-500 text-[9px] font-black shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-transparent border border-white/10 flex items-center justify-center text-brand-500 text-[9px] font-black shrink-0">
                     {branch.name.substring(0, 2).toUpperCase()}
                   </div>
                   <span className="text-xs font-black text-white flex-1 uppercase tracking-tight">{branch.name}</span>
                   <div className="flex items-center gap-2">
                     <div className="text-right">
                       <p className="text-[9px] font-black text-brand-500 leading-none">{fmt(branch.capital || 0)}</p>
-                      <p className="text-[8px] text-asphalt-text-400 font-bold leading-none mt-0.5">{fmt(branch.physicalCapital || 0)} fisik</p>
+                      <p className="text-[8px] text-white/60 font-bold leading-none mt-0.5">{fmt(branch.physicalCapital || 0)} fisik</p>
                     </div>
                     {isBos && (
                       <button
                         onClick={() => setEditingBranch(editingBranch?.id === branch.id ? null : { id: branch.id, capital: (branch.capital || 0).toString(), physicalCapital: (branch.physicalCapital || 0).toString() })}
-                        className="w-7 h-7 flex items-center justify-center text-asphalt-text-400 hover:text-brand-500 rounded-lg transition-all"
+                        className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-brand-500 rounded-lg transition-all"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
@@ -325,7 +325,7 @@ export function Team() {
                     {isBos && (
                       <button
                         onClick={() => setDeleteConfirm({ isOpen: true, type: 'branch', id: branch.id, name: branch.name })}
-                        className="w-7 h-7 flex items-center justify-center text-asphalt-text-400 hover:text-rose-500 rounded-lg transition-all"
+                        className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-rose-500 rounded-lg transition-all"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -344,20 +344,20 @@ export function Team() {
                     >
                       <div className="px-4 pb-3 grid grid-cols-2 gap-2">
                         <div className="space-y-1">
-                          <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">Modal Non-Fisik</label>
+                          <label className="text-[8px] font-black text-white/60 uppercase tracking-widest">Modal Non-Fisik</label>
                           <input
                             type="text"
-                            className="w-full bg-asphalt-900 border border-brand-500/30 rounded-lg px-2.5 py-2 text-xs font-bold text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
+                            className="w-full bg-transparent border border-brand-500/30 rounded-lg px-2.5 py-2 text-xs font-bold text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
                             value={editingBranch.capital.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                             onChange={(e) => setEditingBranch({ ...editingBranch, capital: e.target.value.replace(/\D/g, '') })}
                             autoFocus
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">Modal Fisik</label>
+                          <label className="text-[8px] font-black text-white/60 uppercase tracking-widest">Modal Fisik</label>
                           <input
                             type="text"
-                            className="w-full bg-asphalt-900 border border-brand-500/30 rounded-lg px-2.5 py-2 text-xs font-bold text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
+                            className="w-full bg-transparent border border-brand-500/30 rounded-lg px-2.5 py-2 text-xs font-bold text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
                             value={editingBranch.physicalCapital.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                             onChange={(e) => setEditingBranch({ ...editingBranch, physicalCapital: e.target.value.replace(/\D/g, '') })}
                           />
@@ -382,10 +382,10 @@ export function Team() {
       <div className="space-y-2">
         <div className="flex items-center gap-2 px-1">
           <UserIcon className="w-3.5 h-3.5 text-brand-500" />
-          <span className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest">Anggota Tim</span>
+          <span className="text-[9px] font-black text-white/60 uppercase tracking-widest">Anggota Tim</span>
         </div>
 
-        <div className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 overflow-hidden divide-y divide-asphalt-700/40">
+        <div className="glass-card rounded-2xl border border-white/10 overflow-hidden divide-y divide-asphalt-700/40">
           {users.map((u) => {
             const branchName = u.branchId ? branches.find(b => b.id === u.branchId)?.name : null;
             const isExpanded = expandedUser === u.uid;
@@ -413,9 +413,9 @@ export function Team() {
                         {ROLE_LABEL[u.role]}
                       </span>
                       {branchName ? (
-                        <span className="text-[8px] font-bold text-asphalt-text-400 truncate">{branchName}</span>
+                        <span className="text-[8px] font-bold text-white/60 truncate">{branchName}</span>
                       ) : (
-                        <span className="text-[8px] font-bold text-asphalt-text-400 opacity-50">{u.role === 'bos' ? 'Pusat' : 'Tanpa Cabang'}</span>
+                        <span className="text-[8px] font-bold text-white/60 opacity-50">{u.role === 'bos' ? 'Pusat' : 'Tanpa Cabang'}</span>
                       )}
                       {u.phone && <span className="text-[8px] text-emerald-500 font-bold">· WA ✓</span>}
                     </div>
@@ -426,7 +426,7 @@ export function Team() {
                     {isBos && (
                       <button
                         onClick={() => { setResetPassModal({ userId: u.uid, userName: u.name }); setResetPassVal(''); setResetPassError(null); }}
-                        className="w-7 h-7 flex items-center justify-center text-asphalt-text-400 hover:text-amber-400 rounded-lg transition-all"
+                        className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-amber-400 rounded-lg transition-all"
                         title="Reset Password"
                       >
                         <KeyRound className="w-3.5 h-3.5" />
@@ -435,7 +435,7 @@ export function Team() {
                     {isBos && !isAdmin && (
                       <button
                         onClick={() => setDeleteConfirm({ isOpen: true, type: 'user', id: u.uid, name: u.name })}
-                        className="w-7 h-7 flex items-center justify-center text-asphalt-text-400 hover:text-rose-500 rounded-lg transition-all"
+                        className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-rose-500 rounded-lg transition-all"
                         title="Hapus"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -444,7 +444,7 @@ export function Team() {
                     {isBos && (
                       <button
                         onClick={() => setExpandedUser(isExpanded ? null : u.uid)}
-                        className="w-7 h-7 flex items-center justify-center text-asphalt-text-400 hover:text-white rounded-lg transition-all"
+                        className="w-7 h-7 flex items-center justify-center text-white/60 hover:text-white rounded-lg transition-all"
                       >
                         {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                       </button>
@@ -462,11 +462,11 @@ export function Team() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 pb-4 space-y-3 border-t border-asphalt-700/40 pt-3">
+                      <div className="px-4 pb-4 space-y-3 border-t border-white/10 pt-3">
 
                         {/* Role */}
                         <div className="space-y-1.5">
-                          <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">Role</label>
+                          <label className="text-[8px] font-black text-white/60 uppercase tracking-widest">Role</label>
                           <BlockChoice
                             columns={3} size="sm" value={u.role}
                             onChange={(v) => handleRoleChange(u.uid, v as any)}
@@ -481,7 +481,7 @@ export function Team() {
 
                         {/* Branch */}
                         <div className="space-y-1.5">
-                          <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">Cabang</label>
+                          <label className="text-[8px] font-black text-white/60 uppercase tracking-widest">Cabang</label>
                           <BlockChoice
                             columns={3} size="sm"
                             value={u.branchId || ''}
@@ -496,12 +496,12 @@ export function Team() {
 
                         {/* Phone */}
                         <div className="space-y-1.5">
-                          <label className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">WhatsApp</label>
+                          <label className="text-[8px] font-black text-white/60 uppercase tracking-widest">WhatsApp</label>
                           {isEditingThisPhone ? (
                             <div className="flex items-center gap-2">
                               <input
                                 type="text" placeholder="62812345678"
-                                className="flex-1 px-3 py-2 text-xs bg-asphalt-900 border border-brand-500/30 rounded-xl outline-none focus:ring-1 focus:ring-brand-500 text-white font-bold"
+                                className="flex-1 px-3 py-2 text-xs bg-transparent border border-brand-500/30 rounded-xl outline-none focus:ring-1 focus:ring-brand-500 text-white font-bold"
                                 value={editingPhone!.phone}
                                 onChange={(e) => setEditingPhone({ ...editingPhone!, phone: e.target.value.replace(/\D/g, '') })}
                                 autoFocus
@@ -514,7 +514,7 @@ export function Team() {
                               </button>
                               <button
                                 onClick={() => setEditingPhone(null)}
-                                className="w-9 h-9 flex items-center justify-center text-asphalt-text-400 hover:text-white border border-asphalt-700 rounded-xl transition-all"
+                                className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white border border-white/10 rounded-xl transition-all"
                               >
                                 <X className="w-3.5 h-3.5" />
                               </button>
@@ -522,12 +522,12 @@ export function Team() {
                           ) : (
                             <button
                               onClick={() => setEditingPhone({ uid: u.uid, phone: u.phone || '' })}
-                              className="w-full flex items-center justify-between px-3 py-2 bg-asphalt-900 rounded-xl text-xs font-bold text-white hover:bg-asphalt-700 transition-all border border-asphalt-700"
+                              className="w-full flex items-center justify-between px-3 py-2 glass-input rounded-xl text-xs font-bold text-white hover:bg-white/10 transition-all border "
                             >
-                              <span className={u.phone ? 'text-white' : 'text-asphalt-text-400'}>
+                              <span className={u.phone ? 'text-white' : 'text-white/60'}>
                                 {u.phone || 'Belum diatur'}
                               </span>
-                              <Phone className="w-3.5 h-3.5 text-asphalt-text-400" />
+                              <Phone className="w-3.5 h-3.5 text-white/60" />
                             </button>
                           )}
                         </div>
@@ -542,7 +542,7 @@ export function Team() {
       </div>
 
       {/* ── WhatsApp Broadcast ──────────────────────────── */}
-      <div className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 p-4 space-y-3">
+      <div className="glass-card rounded-2xl border border-white/10 p-4 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
@@ -550,7 +550,7 @@ export function Team() {
             </div>
             <div>
               <p className="text-xs font-black text-white leading-none">Tes WhatsApp Masal</p>
-              <p className="text-[8px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Verifikasi nomor Fonnte</p>
+              <p className="text-[8px] text-white/60 font-bold uppercase tracking-widest mt-0.5">Verifikasi nomor Fonnte</p>
             </div>
           </div>
           {isBroadcasting && (
@@ -562,7 +562,7 @@ export function Team() {
         </div>
 
         {broadcastStatus && (
-          <div className="flex items-center gap-2 px-3 py-2 bg-asphalt-900 rounded-xl border border-asphalt-700">
+          <div className="flex items-center gap-2 px-3 py-2 bg-transparent rounded-xl border border-white/10">
             <Check className="w-3.5 h-3.5 text-emerald-500 stroke-[3px] shrink-0" />
             <span className="text-[9px] font-black text-emerald-500 uppercase tracking-wide">
               Berhasil: {broadcastStatus.success} · Gagal: {broadcastStatus.failed}
@@ -618,18 +618,18 @@ export function Team() {
                     </div>
                   </div>
                   <button onClick={() => setResetPassModal(null)} disabled={resetPassLoading}
-                    className="w-9 h-9 flex items-center justify-center text-asphalt-text-400 hover:text-white rounded-xl border border-asphalt-700 transition-all">
+                    className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white rounded-xl border border-white/10 transition-all">
                     <X className="w-4 h-4" />
                   </button>
                 </div>
                 <form onSubmit={handleResetPassword} className="space-y-4">
                   <div className="space-y-1.5">
-                    <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Password Baru</label>
+                    <label className="text-[9px] font-black text-white/60 uppercase tracking-widest ml-1">Password Baru</label>
                     <input
                       type="text" value={resetPassVal}
                       onChange={(e) => setResetPassVal(e.target.value)}
                       placeholder="Min. 4 karakter" autoFocus
-                      className="w-full px-4 py-3.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 text-white font-semibold shadow-inner"
+                      className="w-full px-4 py-3.5 text-sm glass-input border  rounded-2xl outline-none focus:ring-2 focus:ring-amber-400/50 text-white font-semibold shadow-inner"
                     />
                   </div>
                   {resetPassError && (

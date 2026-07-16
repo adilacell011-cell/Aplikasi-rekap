@@ -13,20 +13,21 @@ interface ServiceIconProps {
   onClick: () => void;
   badge?: string;
   index?: number;
+  priority?: boolean;
 }
 
-function ServiceIcon({ icon, label, onClick, badge }: ServiceIconProps) {
+function ServiceIcon({ icon, label, onClick, badge, priority }: ServiceIconProps) {
   return (
     <button 
       onClick={onClick}
       className="menu-tile-btn flex flex-col items-center gap-2.5 group relative transition-transform duration-150"
     >
-      <div className="menu-tile w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-200 relative overflow-hidden group-hover:-translate-y-0.5">
+      <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-200 relative overflow-hidden group-hover:-translate-y-0.5 ${priority ? 'menu-tile' : 'menu-tile-secondary'}`}>
         <div className="menu-tile-icon relative transition-transform duration-200 group-hover:scale-110">
           {React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6 md:w-7 md:h-7' })}
         </div>
       </div>
-      <span className="text-[11px] md:text-xs font-bold text-asphalt-text-100 text-center leading-tight tracking-tight">
+      <span className="text-[11px] md:text-xs font-bold text-white text-center leading-tight tracking-tight">
         {label}
       </span>
       {badge && (
@@ -261,7 +262,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
     <div className="p-4 space-y-6 pb-32">
       {/* Announcement Editor for Bos */}
       {isBosGlobal && (
-        <div className="bg-asphalt-800 rounded-3xl p-4 border border-asphalt-700/50 shadow-xl overflow-hidden relative group transition-all hover:border-brand-500/30">
+        <div className="glass-card p-4 shadow-xl overflow-hidden relative group transition-all hover:border-brand-500/30">
           <div className="absolute top-0 right-0 w-24 h-24 bg-brand-500/5 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-brand-500/10 transition-colors"></div>
           <div className="relative z-10 space-y-3">
             <div className="flex items-center justify-between">
@@ -269,7 +270,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                 <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
                   <Edit3 className="w-4 h-4 text-amber-500" />
                 </div>
-                <h3 className="text-xs font-black text-asphalt-text-100 uppercase tracking-widest">Pesan Running Text</h3>
+                <h3 className="text-xs font-black text-white uppercase tracking-widest">Pesan Running Text</h3>
               </div>
               {!isEditingAnnouncement ? (
                 <button 
@@ -282,7 +283,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                 <div className="flex gap-2">
                   <button 
                     onClick={() => setIsEditingAnnouncement(false)}
-                    className="text-[9px] font-black text-asphalt-text-400 px-3 py-1.5 uppercase tracking-tighter"
+                    className="text-[9px] font-black text-white/60 px-3 py-1.5 uppercase tracking-tighter"
                   >
                     Batal
                   </button>
@@ -299,14 +300,14 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             
             {isEditingAnnouncement ? (
               <textarea
-                className="w-full p-3 text-xs bg-asphalt-900 border border-asphalt-700 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none resize-none min-h-[80px] text-asphalt-text-100 transition-all font-medium"
+                className="w-full p-3 text-xs glass-input resize-none min-h-[80px] transition-all font-medium"
                 placeholder="Masukkan pesan untuk karyawan..."
                 value={announcementInput}
                 onChange={(e) => setAnnouncementInput(e.target.value)}
               />
             ) : (
-              <div className="bg-asphalt-900/50 p-3 rounded-xl border border-asphalt-700/50 min-h-[50px] flex items-center">
-                <p className="text-xs italic text-asphalt-text-400 leading-relaxed font-medium">
+              <div className="bg-white/8 backdrop-blur-sm p-3 rounded-xl border border-white/15 min-h-[50px] flex items-center">
+                <p className="text-xs italic text-white/60 leading-relaxed font-medium">
                   {store.announcement || 'Belum ada pesan running text.'}
                 </p>
               </div>
@@ -317,7 +318,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
 
       {/* Main Balance Card (Android Widget Style) */}
       <div 
-        className="bg-gradient-to-br from-[#181E2B] via-[#101520] to-[#0A0E17] rounded-2xl p-5 border border-[#262E3D]/30 shadow-2xl relative overflow-hidden group transition-all duration-300 hover:border-brand-500/20"
+        className="glass-card-strong p-5 shadow-2xl relative overflow-hidden group transition-all duration-300 hover:border-brand-500/20"
       >
         <div className="absolute top-0 right-0 w-48 md:w-96 h-48 md:h-96 bg-brand-500/10 rounded-full -mr-24 -mt-24 blur-[80px] group-hover:bg-brand-500/20 transition-all duration-700"></div>
         <div className="relative z-10 space-y-6 md:space-y-8">
@@ -326,7 +327,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               <div className="p-1.5 bg-brand-500/10 rounded-lg">
                 <Coins className="w-3.5 h-3.5 md:w-5 md:h-5 text-brand-500" />
               </div>
-              <h3 className="text-[10px] md:text-sm font-black text-asphalt-text-400 uppercase tracking-[0.2em]">
+              <h3 className="text-[10px] md:text-sm font-black text-white/60 uppercase tracking-[0.2em]">
                 {isBosGlobal ? 'Total Dana Terkelola' : `Sisa Saldo Tunai`}
               </h3>
             </div>
@@ -338,19 +339,19 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-6 md:gap-12 pt-5 border-t border-asphalt-700/50">
+          <div className="grid grid-cols-2 gap-6 md:gap-12 pt-5 border-t border-white/15">
             <div className="space-y-2">
-              <p className="text-[9px] md:text-xs font-black text-asphalt-text-400 uppercase tracking-widest">
+              <p className="text-[9px] md:text-xs font-black text-white/60 uppercase tracking-widest">
                 Dana Digital
               </p>
               {isEditingFixed ? (
                 <div className="flex items-center gap-2">
                   <div className="relative flex-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-[10px] md:text-xs font-bold">Rp</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 text-[10px] md:text-xs font-bold">Rp</span>
                     <input
                       type="text"
                       inputMode="numeric"
-                      className="w-full pl-8 pr-3 py-2 bg-asphalt-900 border border-asphalt-700 rounded-xl text-sm md:text-base text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+                      className="w-full pl-8 pr-3 py-2 glass-input text-sm md:text-base transition-all"
                       value={formatNumberInput(fixedInput)}
                       onChange={(e) => handleNumericInput(e, setFixedInput)}
                       autoFocus
@@ -374,7 +375,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                   {isBos && !isBosGlobal && (
                     <button 
                       onClick={() => { setFixedInput(effectiveFixedBalance.toString()); setIsEditingFixed(true); }} 
-                      className="text-asphalt-text-400 hover:text-brand-500 p-2 bg-asphalt-700/50 rounded-lg transition-all opacity-0 group-hover/row:opacity-100"
+                      className="text-white/60 hover:text-brand-500 p-2 glass-sm transition-all opacity-0 group-hover/row:opacity-100"
                     >
                       <Edit3 className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </button>
@@ -383,8 +384,8 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               )}
             </div>
 
-            <div className="space-y-2 pl-6 border-l border-asphalt-700/50">
-              <p className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest">Dana Fisik</p>
+            <div className="space-y-2 pl-6 border-l border-white/15">
+              <p className="text-[9px] font-black text-white/60 uppercase tracking-widest">Dana Fisik</p>
               <p className="text-base font-black text-white">
                 {formatRupiah(isBosGlobal ? totalAllBranchesPhysicalCapital : (myBranch?.physicalCapital || 0))}
               </p>
@@ -395,7 +396,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
 
       {/* Simplified Quick Transfer for Karyawan/Mandor */}
       {(role === 'karyawan' || role === 'mandor') && myBranch && (
-        <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/50 shadow-xl flex items-center justify-between group transition-all hover:border-brand-500/30">
+        <div className="glass-card p-4 shadow-xl flex items-center justify-between group transition-all hover:border-brand-500/30">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20 shadow-inner">
               <ArrowLeftRight className={`w-6 h-6 transition-transform duration-500 ${myBranch.branchPhysicalCapital > 0 ? '' : 'rotate-180'}`} />
@@ -418,7 +419,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
       )}
 
       {/* Grid Services - colorful gradient tiles, clean & fresh */}
-      <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/40 shadow-xl shadow-black/10">
+      <div className="glass-card p-5 shadow-xl">
         <div className="flex items-center gap-2 mb-5 px-1">
           <div className="w-1.5 h-4 bg-brand-500 rounded-full"></div>
           <span className="text-[11px] font-black text-brand-500 tracking-wider uppercase">Menu Layanan Utama</span>
@@ -431,12 +432,14 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                 icon={<Users />} 
                 label="Hutang / Bon" 
                 onClick={() => onNavigate?.('debts')}
+                priority={true}
               />
               <ServiceIcon 
                 index={1}
                 icon={<PiggyBank />} 
                 label="Tabungan" 
                 onClick={() => onNavigate?.('savings')}
+                priority={true}
               />
             </>
           )}
@@ -445,6 +448,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             icon={<Store />} 
             label="Setoran" 
             onClick={() => onNavigate?.('deposits')}
+            priority={true}
           />
           <ServiceIcon 
             index={3}
@@ -494,6 +498,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               icon={<CalendarDays />} 
               label="Absensi" 
               onClick={() => onNavigate?.('absensi')}
+              priority={true}
             />
           )}
         </div>
@@ -506,7 +511,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center">
               <Building2 className="w-4 h-4 text-brand-500" />
             </div>
-            <h3 className="text-xs font-black text-asphalt-text-100 uppercase tracking-[0.2em]">Kinerja Cabang</h3>
+            <h3 className="text-xs font-black text-white uppercase tracking-[0.2em]">Kinerja Cabang</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -515,30 +520,30 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               if (!currentBranchData) return null;
 
               return (
-                <div key={branch.id} className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/50 shadow-xl space-y-4">
-                  <div className="flex justify-between items-center border-b border-asphalt-700/50 pb-3">
+                <div key={branch.id} className="glass-card p-4 space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/15 pb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-2xl bg-brand-500/10 flex items-center justify-center border border-brand-500/20">
                         <Building2 className="w-5 h-5 text-brand-500" />
                       </div>
                       <div>
                         <h4 className="text-sm font-black text-white uppercase tracking-tight">{branch.name}</h4>
-                        <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-wider">ID: {branch.id.slice(0, 8)}</p>
+                        <p className="text-[10px] text-white/60 font-bold uppercase tracking-wider">ID: {branch.id.slice(0, 8)}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-[8px] text-asphalt-text-400 uppercase font-black tracking-[0.2em] mb-0.5">Saldo Tunai Fisik</p>
+                      <p className="text-[8px] text-white/60 uppercase font-black tracking-[0.2em] mb-0.5">Saldo Tunai Fisik</p>
                       <p className="text-sm font-black text-brand-500">{formatRupiah(currentBranchData.branchCash)}</p>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-asphalt-900/50 p-3 rounded-2xl border border-asphalt-700/30">
-                      <p className="text-[8px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1.5 text-center">Modal Digital</p>
-                      <p className="text-xs font-black text-asphalt-text-100 text-center">{formatRupiah(currentBranchData.branchNonPhysicalCapital)}</p>
+                    <div className="bg-white/5 p-3 rounded-2xl border border-white/10">
+                      <p className="text-[8px] text-white/60 uppercase font-black tracking-widest mb-1.5 text-center">Modal Digital</p>
+                      <p className="text-xs font-black text-white text-center">{formatRupiah(currentBranchData.branchNonPhysicalCapital)}</p>
                     </div>
-                    <div className="bg-asphalt-900/50 p-3 rounded-2xl border border-asphalt-700/30">
-                      <p className="text-[8px] text-asphalt-text-400 uppercase font-black tracking-widest mb-1.5 text-center">Modal Fisik</p>
+                    <div className="bg-white/5 p-3 rounded-2xl border border-white/10">
+                      <p className="text-[8px] text-white/60 uppercase font-black tracking-widest mb-1.5 text-center">Modal Fisik</p>
                       <p className="text-xs font-black text-amber-500 text-center">{formatRupiah(currentBranchData.branchPhysicalCapital)}</p>
                     </div>
                   </div>
@@ -552,7 +557,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
       {/* Mini Stats - Hidden for Bos Global as requested */}
       {!isBosGlobal && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <div className="bg-asphalt-800 p-4 md:p-6 rounded-3xl border border-asphalt-700/50 shadow-xl flex flex-col justify-center space-y-2 group hover:border-emerald-500/30 transition-all col-span-2 lg:col-span-1">
+          <div className="glass-card p-4 md:p-6 flex flex-col justify-center space-y-2 group hover:border-emerald-500/30 transition-all col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 text-emerald-500">
               <div className="p-1.5 bg-emerald-500/10 rounded-lg">
                 <Landmark className="w-4 h-4" />
@@ -564,7 +569,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
           
           {role !== 'mandor' && (
             <>
-              <div className="bg-asphalt-800 p-4 rounded-3xl border border-asphalt-700/50 shadow-xl flex flex-col justify-center space-y-2 group hover:border-rose-500/30 transition-all">
+              <div className="glass-card p-4 flex flex-col justify-center space-y-2 group hover:border-rose-500/30 transition-all">
                 <div className="flex items-center gap-2 text-rose-500">
                   <div className="p-1.5 bg-rose-500/10 rounded-lg">
                     <Receipt className="w-4 h-4" />
@@ -573,7 +578,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                 </div>
                 <p className="text-base font-black text-white">{formatRupiah(currentDebtTotal)}</p>
               </div>
-              <div className="bg-brand-500 p-4 rounded-2xl shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
+              <div className="bg-brand-500 p-4 rounded-[24px] shadow-xl shadow-brand-500/20 flex flex-col justify-center space-y-2">
                 <div className="flex items-center gap-2 text-white/80">
                   <PiggyBank className="w-5 h-5 text-white" />
                   <span className="text-[10px] font-black uppercase tracking-[0.2em]">Tabungan Nasabah</span>
@@ -592,32 +597,32 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
               <Landmark className="w-4 h-4 text-emerald-500" />
             </div>
-            <h3 className="text-xs font-black text-asphalt-text-100 uppercase tracking-[0.2em]">Rekening Bank</h3>
+            <h3 className="text-xs font-black text-white uppercase tracking-[0.2em]">Rekening Bank</h3>
           </div>
 
-          <div className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 shadow-2xl overflow-hidden">
+          <div className="glass-card overflow-hidden">
             {role !== 'bos' && (
-              <div className="p-4 bg-asphalt-900/40 border-b border-asphalt-700/50">
+              <div className="p-4 bg-white/5 border-b border-white/10">
                 <form onSubmit={handleAddBank} className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Bank</label>
+                      <label className="text-[9px] font-black text-white/60 uppercase tracking-widest ml-1">Bank</label>
                       <input
                         type="text"
                         placeholder="e.g. BCA"
-                        className="w-full pl-4 pr-3 py-3 text-xs bg-asphalt-800 border border-asphalt-700 rounded-xl focus:ring-1 focus:ring-brand-500 outline-none text-white font-bold"
+                        className="w-full pl-4 pr-3 py-3 text-xs glass-input font-bold"
                         value={newBankName}
                         onChange={(e) => setNewBankName(e.target.value)}
                         required
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Saldo</label>
+                      <label className="text-[9px] font-black text-white/60 uppercase tracking-widest ml-1">Saldo</label>
                       <input
                         type="text"
                         inputMode="numeric"
                         placeholder="0"
-                        className="w-full pl-4 pr-3 py-3 text-xs bg-asphalt-800 border border-asphalt-700 rounded-xl focus:ring-1 focus:ring-brand-500 outline-none text-white font-bold"
+                        className="w-full pl-4 pr-3 py-3 text-xs glass-input font-bold"
                         value={formatNumberInput(newBankBalance)}
                         onChange={(e) => handleNumericInput(e, setNewBankBalance)}
                         required
@@ -627,7 +632,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                   <button 
                     type="submit" 
                     disabled={isAddingBank}
-                    className="w-full bg-brand-500 hover:bg-brand-600 font-black text-[10px] py-3.5 rounded-xl transition-all shadow-lg active:scale-95 disabled:opacity-50 uppercase tracking-widest"
+                    className="w-full bg-brand-500 hover:bg-brand-600 font-black text-[10px] py-3.5 rounded-xl text-white transition-all shadow-lg active:scale-95 disabled:opacity-50 uppercase tracking-widest"
                   >
                     {isAddingBank ? 'Sabar...' : 'Tambah Rekening'}
                   </button>
@@ -635,29 +640,29 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               </div>
             )}
 
-            <div className="divide-y divide-asphalt-700/50">
+            <div className="divide-y divide-white/10">
               {store.bankBalances.length === 0 ? (
-                <div className="py-12 flex flex-col items-center justify-center text-asphalt-text-400">
+                <div className="py-12 flex flex-col items-center justify-center text-white/40">
                   <Landmark className="w-10 h-10 mb-3 opacity-20" />
                   <p className="text-[10px] font-black uppercase tracking-widest">Belum ada rekening</p>
                 </div>
               ) : (
                 store.bankBalances.map((bank) => (
-                  <div key={bank.id} className="p-3.5 flex items-center justify-between group hover:bg-asphalt-700/20 transition-all">
+                  <div key={bank.id} className="p-3.5 flex items-center justify-between group hover:bg-white/5 transition-all">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md p-1.5 shrink-0">
-                        <span className="text-[8px] font-black text-brand-900 line-clamp-1 text-center leading-none uppercase tracking-tighter">
+                      <div className="w-10 h-10 bg-white/10 border border-white/20 rounded-xl flex items-center justify-center shadow-md p-1.5 shrink-0">
+                        <span className="text-[8px] font-black text-white line-clamp-1 text-center leading-none uppercase tracking-tighter">
                           {bank.bankName}
                         </span>
                       </div>
                       {editingBankId === bank.id ? (
                         <div className="flex items-center gap-2">
                           <div className="relative flex-1">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-[10px] font-bold">Rp</span>
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 text-[10px] font-bold">Rp</span>
                             <input
                               type="text"
                               inputMode="numeric"
-                              className="w-full pl-8 pr-3 py-2.5 bg-asphalt-900 border border-brand-500 rounded-xl text-xs text-white outline-none focus:ring-1 focus:ring-brand-500"
+                              className="w-full pl-8 pr-3 py-2.5 glass-input text-xs"
                               value={formatNumberInput(bankInput)}
                               onChange={(e) => handleNumericInput(e, setBankInput)}
                               onKeyDown={(e) => e.key === 'Enter' && handleSaveBankBalance(bank.id)}
@@ -674,7 +679,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                             </button>
                             <button
                               onClick={() => setEditingBankId(null)}
-                              className="p-2.5 bg-asphalt-700 text-asphalt-text-400 rounded-lg hover:text-white transition-all"
+                              className="p-2.5 bg-white/10 text-white/60 rounded-lg hover:text-white transition-all"
                               title="Batal"
                             >
                               <X className="w-3.5 h-3.5 stroke-[3px]" />
@@ -683,7 +688,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                         </div>
                       ) : (
                         <div className="min-w-0">
-                          <p className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest truncate max-w-[80px]">{bank.bankName}</p>
+                          <p className="text-[9px] font-black text-white/60 uppercase tracking-widest truncate max-w-[80px]">{bank.bankName}</p>
                           <p className="text-[13px] font-black text-white">{formatRupiah(bank.balance)}</p>
                         </div>
                       )}
@@ -694,7 +699,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                         {role !== 'bos' && (
                           <button
                             onClick={() => { setBankInput(bank.balance.toString()); setEditingBankId(bank.id); }}
-                            className="p-2 text-brand-500 bg-brand-500/10 border border-brand-500/20 rounded-lg transition-all active:scale-90"
+                            className="p-2 text-brand-500 glass-sm hover:bg-brand-500/20 transition-all active:scale-90"
                             title="Edit Saldo"
                           >
                             <Edit3 className="w-3 h-3" />
@@ -703,7 +708,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
                         {role !== 'bos' && (
                           <button
                             onClick={() => setDeleteConfirm({ isOpen: true, id: bank.id, name: bank.bankName })}
-                            className="p-2 text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg transition-all active:scale-90"
+                            className="p-2 text-rose-500 glass-sm hover:bg-rose-500/20 transition-all active:scale-90"
                             title="Hapus Rekening"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -721,11 +726,11 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
 
       {role !== 'bos' && (
         <div className="pt-4 pb-12">
-          <div className="bg-asphalt-800 rounded-3xl border border-asphalt-700/50 p-6 flex items-center justify-between shadow-2xl relative overflow-hidden group">
+          <div className="glass-card p-6 flex items-center justify-between relative overflow-hidden group hover:border-emerald-500/30">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
             <div className="relative z-10">
               <h3 className="text-sm font-black text-white mb-1 uppercase tracking-tight">Sudah Melakukan Setoran?</h3>
-              <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-wider">Laporkan setoran laci ke Mandor/Bos</p>
+              <p className="text-[10px] text-white/60 font-bold uppercase tracking-wider">Laporkan setoran laci ke Mandor/Bos</p>
             </div>
             <button
               onClick={() => onNavigate?.('deposits')}

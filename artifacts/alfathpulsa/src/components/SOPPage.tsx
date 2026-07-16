@@ -3,8 +3,8 @@ import { BookOpen, AlertCircle, CheckCircle, Shield, Clock } from 'lucide-react'
 
 export const SOPPage: React.FC = () => {
   return (
-    <div className="p-5 pb-32 space-y-7 bg-asphalt-900 min-h-screen">
-      <div className="bg-asphalt-800 p-5 rounded-2xl shadow-2xl border border-asphalt-700 relative overflow-hidden group">
+    <div className="p-5 pb-32 space-y-7 bg-transparent min-h-screen">
+      <div className="glass-card p-5 rounded-2xl shadow-2xl border border-white/10 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-brand-500/20 transition-all duration-1000"></div>
         <div className="relative z-10">
           <h1 className="text-2xl font-black flex items-center gap-4 text-white uppercase tracking-tight">
@@ -13,19 +13,19 @@ export const SOPPage: React.FC = () => {
             </div>
             Panduan SOP
           </h1>
-          <p className="text-asphalt-text-400 mt-4 text-[10px] font-black uppercase tracking-[0.2em] px-1">AlfathPulsa - Melayani 24 Jam</p>
+          <p className="text-white/60 mt-4 text-[10px] font-black uppercase tracking-[0.2em] px-1">AlfathPulsa - Melayani 24 Jam</p>
         </div>
       </div>
 
       <div className="space-y-6">
-        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="glass-card p-4 rounded-2xl border border-white/10 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
               <CheckCircle className="w-4 h-4" />
             </div>
             1. Standar Layanan
           </h2>
-          <ul className="text-[11px] text-asphalt-text-100 space-y-3 list-none font-medium leading-relaxed">
+          <ul className="text-[11px] text-white/90 space-y-3 list-none font-medium leading-relaxed">
             <li className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div>
               <span>Selalu awali dengan <span className="text-emerald-400 font-bold">Senyum, Sapa, dan Salam.</span></span>
@@ -41,14 +41,14 @@ export const SOPPage: React.FC = () => {
           </ul>
         </section>
 
-        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="glass-card p-4 rounded-2xl border border-white/10 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
               <Clock className="w-4 h-4" />
             </div>
             2. Prosedur & Kehadiran
           </h2>
-          <ul className="text-[11px] text-asphalt-text-100 space-y-3 list-none font-medium leading-relaxed">
+          <ul className="text-[11px] text-white/90 space-y-3 list-none font-medium leading-relaxed">
             <li className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></div>
               <span>Berikan nota kepada setiap nasabah.</span>
@@ -64,7 +64,7 @@ export const SOPPage: React.FC = () => {
           </ul>
         </section>
 
-        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="glass-card p-4 rounded-2xl border border-white/10 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-500">
               <AlertCircle className="w-4 h-4" />
@@ -72,7 +72,7 @@ export const SOPPage: React.FC = () => {
             3. Penanganan Kas & Uang Besar
           </h2>
           <div className="space-y-4">
-            <ul className="text-[11px] text-asphalt-text-100 space-y-3 list-none font-medium leading-relaxed">
+            <ul className="text-[11px] text-white/90 space-y-3 list-none font-medium leading-relaxed">
               <li className="flex items-start gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
                 <span>Prinsip: Perputaran kas tunai. <span className="text-rose-500 font-bold">Dilarang BON</span> tanpa izin Bos.</span>
@@ -83,11 +83,11 @@ export const SOPPage: React.FC = () => {
               </li>
             </ul>
             
-            <div className="bg-asphalt-900/50 p-5 rounded-2xl border border-rose-500/20 space-y-4">
+            <div className="bg-white/5 p-5 rounded-2xl border border-rose-500/20 space-y-4">
               <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest leading-tight">
                 Peringatan Menghitung Uang Nominal Besar:
               </p>
-              <ul className="text-[11px] text-asphalt-text-400 space-y-3 list-none font-medium">
+              <ul className="text-[11px] text-white/60 space-y-3 list-none font-medium">
                 <li className="flex items-start gap-3">
                   <span className="w-4 h-4 rounded-full bg-rose-500/10 flex items-center justify-center text-[8px] font-black text-rose-500 shrink-0">1</span>
                   <span>Lakukan di area tertutup dari pandangan umum.</span>
@@ -109,14 +109,14 @@ export const SOPPage: React.FC = () => {
           </div>
         </section>
 
-        <section className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 shadow-xl group hover:border-brand-500/30 transition-all">
+        <section className="glass-card p-4 rounded-2xl border border-white/10 shadow-xl group hover:border-brand-500/30 transition-all">
           <h2 className="text-sm font-black text-white mb-5 flex items-center gap-3 uppercase tracking-tight">
             <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center text-brand-500">
               <Shield className="w-4 h-4" />
             </div>
             4. Keamanan & Tim
           </h2>
-          <ul className="text-[11px] text-asphalt-text-100 space-y-3 list-none font-medium leading-relaxed">
+          <ul className="text-[11px] text-white/90 space-y-3 list-none font-medium leading-relaxed">
             <li className="flex items-start gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 shrink-0"></div>
               <span>Jaga area kasir rapi & uang di tempat aman.</span>
@@ -130,7 +130,7 @@ export const SOPPage: React.FC = () => {
       </div>
 
       <div className="text-center py-8">
-        <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-[0.3em] italic">
+        <p className="text-[9px] text-white/60 font-black uppercase tracking-[0.3em] italic">
           AlfathPulsa - Melayani dengan Jujur
         </p>
       </div>

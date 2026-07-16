@@ -139,13 +139,13 @@ export function Absensi() {
           <AlertCircle className="w-8 h-8" />
         </div>
         <p className="text-sm font-black text-white uppercase">Akses Terbatas</p>
-        <p className="text-xs text-asphalt-text-400">Hanya Bos dan Mandor yang bisa mengelola absensi.</p>
+        <p className="text-xs text-white/60">Hanya Bos dan Mandor yang bisa mengelola absensi.</p>
       </div>
     );
   }
 
   return (
-    <div className="p-5 space-y-5 bg-asphalt-900 min-h-screen pb-40">
+    <div className="p-5 space-y-5 bg-transparent min-h-screen pb-40">
       <SuccessToast show={showSuccess} message={successMsg} onClose={() => setShowSuccess(false)} />
 
       {/* Header */}
@@ -155,15 +155,15 @@ export function Absensi() {
         </div>
         <div>
           <h3 className="text-xs font-black text-white uppercase tracking-tight">Absensi Karyawan</h3>
-          <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest">Catat Hari Libur & Izin</p>
+          <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">Catat Hari Libur & Izin</p>
         </div>
       </div>
 
       {/* Pilih Karyawan */}
-      <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/40 shadow-xl space-y-3">
-        <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Pilih Karyawan</label>
+      <div className="glass-card rounded-2xl p-4 border border-white/10 shadow-xl space-y-3">
+        <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Pilih Karyawan</label>
         {users.length === 0 ? (
-          <p className="text-xs text-asphalt-text-400 px-1">Belum ada karyawan terdaftar.</p>
+          <p className="text-xs text-white/60 px-1">Belum ada karyawan terdaftar.</p>
         ) : (
           <div className="grid grid-cols-1 gap-2">
             {users.map(u => (
@@ -173,11 +173,11 @@ export function Absensi() {
                 className={`flex items-center gap-3 px-4 py-3 rounded-2xl border-2 text-left transition-all ${
                   selectedUserId === u.uid
                     ? 'border-brand-500 bg-brand-500/10 text-brand-500'
-                    : 'border-asphalt-700 bg-asphalt-900/50 text-asphalt-text-400 hover:border-asphalt-600'
+                    : 'border-white/10 bg-white/5 text-white/60 hover:border-white/10'
                 }`}
               >
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-black shrink-0 ${
-                  selectedUserId === u.uid ? 'bg-brand-500 text-white' : 'bg-asphalt-700 text-asphalt-text-400'
+                  selectedUserId === u.uid ? 'bg-brand-500 text-white' : 'bg-white/10 text-white/60'
                 }`}>
                   {(u.name || 'K')[0].toUpperCase()}
                 </div>
@@ -197,11 +197,11 @@ export function Absensi() {
       {selectedUserId && (
         <>
           {/* Bulan Navigator */}
-          <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/40 shadow-xl space-y-4">
+          <div className="glass-card rounded-2xl p-4 border border-white/10 shadow-xl space-y-4">
             <div className="flex items-center justify-between">
               <button
                 onClick={prevMonth}
-                className="w-9 h-9 rounded-xl bg-asphalt-900 border border-asphalt-700 flex items-center justify-center text-asphalt-text-400 hover:text-white hover:bg-asphalt-700 active:scale-90 transition-all"
+                className="w-9 h-9 rounded-xl bg-transparent border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 active:scale-90 transition-all"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -217,7 +217,7 @@ export function Absensi() {
               </div>
               <button
                 onClick={nextMonth}
-                className="w-9 h-9 rounded-xl bg-asphalt-900 border border-asphalt-700 flex items-center justify-center text-asphalt-text-400 hover:text-white hover:bg-asphalt-700 active:scale-90 transition-all"
+                className="w-9 h-9 rounded-xl bg-transparent border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 active:scale-90 transition-all"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -234,8 +234,8 @@ export function Absensi() {
                 <span className="text-[9px] font-black text-amber-500 uppercase tracking-widest">Izin</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-asphalt-600 border border-asphalt-500"></div>
-                <span className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest">Masuk</span>
+                <div className="w-3 h-3 rounded-full bg-white/5 border border-white/10"></div>
+                <span className="text-[9px] font-black text-white/60 uppercase tracking-widest">Masuk</span>
               </div>
             </div>
 
@@ -249,7 +249,7 @@ export function Absensi() {
                 {/* Day headers */}
                 <div className="grid grid-cols-7 gap-1">
                   {DAY_NAMES.map(d => (
-                    <div key={d} className="text-center text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest py-1">
+                    <div key={d} className="text-center text-[9px] font-black text-white/60 uppercase tracking-widest py-1">
                       {d}
                     </div>
                   ))}
@@ -285,8 +285,8 @@ export function Absensi() {
                               : isToday
                               ? 'bg-brand-500/10 border-brand-500/40 text-brand-500'
                               : isSunday
-                              ? 'bg-asphalt-900/50 border-asphalt-700/30 text-asphalt-text-400/50'
-                              : 'bg-asphalt-900/50 border-asphalt-700/30 text-asphalt-text-100 hover:border-asphalt-600'
+                              ? 'bg-white/5 border-white/10 text-white/60/50'
+                              : 'bg-white/5 border-white/10 text-white/90 hover:border-white/10'
                           } ${isToggling ? 'opacity-50' : ''}`}
                           onClick={() => !isToggling && handleToggle(dateStr, 'libur')}
                           onContextMenu={(e) => { e.preventDefault(); !isToggling && handleToggle(dateStr, 'izin'); }}
@@ -305,20 +305,20 @@ export function Absensi() {
             )}
 
             {/* Panduan singkat */}
-            <div className="bg-asphalt-900/50 rounded-2xl p-3 border border-asphalt-700/30">
-              <p className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest leading-relaxed">
+            <div className="bg-white/5 rounded-2xl p-3 border border-white/10">
+              <p className="text-[9px] font-black text-white/60 uppercase tracking-widest leading-relaxed">
                 💡 Ketuk = Libur (merah) · Tahan/Klik Kanan = Izin (kuning) · Ketuk lagi = Batalkan
               </p>
             </div>
           </div>
 
           {/* Ringkasan bulan ini */}
-          <div className="bg-asphalt-800 rounded-2xl p-4 border border-asphalt-700/40 shadow-xl">
-            <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mb-4 px-1">
+          <div className="glass-card rounded-2xl p-4 border border-white/10 shadow-xl">
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-4 px-1">
               Ringkasan {MONTH_NAMES[month - 1]} {year}
             </p>
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-asphalt-900/60 rounded-2xl p-3 text-center border border-asphalt-700/30 shadow-inner">
+              <div className="bg-white/5 rounded-2xl p-3 text-center border border-white/10 shadow-inner">
                 <p className="text-lg font-black text-white">{dim - totalOff}</p>
                 <p className="text-[8px] font-black text-brand-500 uppercase tracking-widest mt-1">Hari Masuk</p>
               </div>

@@ -122,15 +122,15 @@ export function DepositAnalytics() {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-asphalt-800 p-4 border border-asphalt-700 shadow-2xl rounded-2xl text-[10px] backdrop-blur-md">
+        <div className="glass-card p-4 border border-white/10 shadow-2xl rounded-2xl text-[10px] backdrop-blur-md">
           <p className="font-black text-white mb-2 uppercase tracking-tight">{payload[0].payload.fullDate}</p>
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between gap-4 border-b border-asphalt-700 pb-1.5">
-              <span className="text-asphalt-text-400 font-black uppercase">Total Setor</span>
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-1.5">
+              <span className="text-white/60 font-black uppercase">Total Setor</span>
               <span className="text-brand-400 font-bold">{formatRupiah(payload[0].value)}</span>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <span className="text-asphalt-text-400 font-black uppercase">Masuk Bank</span>
+              <span className="text-white/60 font-black uppercase">Masuk Bank</span>
               <span className="text-emerald-400 font-bold">{formatRupiah(payload[1].value)}</span>
             </div>
           </div>
@@ -141,19 +141,19 @@ export function DepositAnalytics() {
   };
 
   return (
-    <div className="bg-asphalt-800 rounded-[2.5rem] p-7 border border-asphalt-700/50 shadow-2xl space-y-8">
+    <div className="glass-card rounded-[2.5rem] p-7 border border-white/10 shadow-2xl space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-asphalt-900 text-brand-500 rounded-2xl flex items-center justify-center shadow-lg border border-asphalt-700">
+          <div className="w-12 h-12 bg-transparent text-brand-500 rounded-2xl flex items-center justify-center shadow-lg border border-white/10">
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
             <h3 className="text-sm font-black text-white tracking-tight uppercase">Analisa Setoran</h3>
-            <p className="text-[10px] text-asphalt-text-400 font-black uppercase tracking-[0.2em] leading-none mt-1">Perputaran Dana Cabang</p>
+            <p className="text-[10px] text-white/60 font-black uppercase tracking-[0.2em] leading-none mt-1">Perputaran Dana Cabang</p>
           </div>
         </div>
-        <div className="flex bg-asphalt-900 p-1.5 rounded-2xl border border-asphalt-700 shadow-inner">
+        <div className="flex bg-transparent p-1.5 rounded-2xl border border-white/10 shadow-inner">
           {(['daily', 'weekly', 'monthly'] as const).map((range) => (
             <button
               key={range}
@@ -161,7 +161,7 @@ export function DepositAnalytics() {
               className={`px-4 py-2 text-[9px] font-black rounded-xl transition-all uppercase tracking-widest ${
                 timeRange === range 
                   ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' 
-                  : 'text-asphalt-text-400 hover:text-white'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               {range === 'daily' ? 'Hari' : range === 'weekly' ? 'Mgg' : 'Bln'}
@@ -173,15 +173,15 @@ export function DepositAnalytics() {
       {/* Branch Comparison - Main Focus */}
       <div className="space-y-5">
         <div className="flex items-center justify-between px-1">
-          <h4 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Omset Setoran Cabang</h4>
+          <h4 className="text-[10px] font-black text-white/60 uppercase tracking-widest">Omset Setoran Cabang</h4>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(0,132,255,0.4)]"></div>
-              <span className="text-[9px] font-black text-asphalt-text-400 uppercase">Total</span>
+              <span className="text-[9px] font-black text-white/60 uppercase">Total</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(77,159,255,0.4)]"></div>
-              <span className="text-[9px] font-black text-asphalt-text-400 uppercase">Bank</span>
+              <span className="text-[9px] font-black text-white/60 uppercase">Bank</span>
             </div>
           </div>
         </div>
@@ -208,8 +208,8 @@ export function DepositAnalytics() {
       </div>
 
       {/* Trend Area Chart - Secondary Focus */}
-      <div className="pt-8 border-t border-asphalt-700/50 space-y-5">
-        <h4 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest px-1">Trend Perputaran Dana</h4>
+      <div className="pt-8 border-t border-white/10 space-y-5">
+        <h4 className="text-[10px] font-black text-white/60 uppercase tracking-widest px-1">Trend Perputaran Dana</h4>
         <div className="h-[180px] w-full min-h-[180px]">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>

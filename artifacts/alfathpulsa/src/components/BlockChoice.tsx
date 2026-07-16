@@ -90,7 +90,7 @@ export function BlockChoice({
             className={`rounded-2xl font-black uppercase tracking-widest text-center border transition-all active:scale-95 ${sizeClass} ${
               selected
                 ? 'bg-brand-500 text-white border-transparent shadow-lg shadow-brand-500/20'
-                : 'bg-asphalt-900 text-asphalt-text-400 border-asphalt-700 hover:border-asphalt-600'
+                : 'bg-transparent text-white/60 border-white/10 hover:border-white/10'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {opt.label}

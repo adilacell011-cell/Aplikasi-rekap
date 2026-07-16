@@ -138,17 +138,17 @@ export function Savings() {
     const totalSavings = store.getPersonTotalSavings(selectedPerson);
     
     return (
-      <div className="flex flex-col min-h-full bg-asphalt-900 pb-40">
-        <header className="bg-asphalt-800 px-4 py-4 flex items-center gap-4 shadow-xl border-b border-asphalt-700/50 sticky top-0 z-20">
+      <div className="flex flex-col min-h-full bg-transparent pb-40">
+        <header className="glass-card px-4 py-4 flex items-center gap-4 shadow-xl border-b border-white/10 sticky top-0 z-20">
           <button 
             onClick={() => setSelectedPersonId(null)}
-            className="p-2 -ml-1 bg-asphalt-700/50 hover:bg-asphalt-700 rounded-2xl transition-all text-asphalt-text-100"
+            className="p-2 -ml-1 bg-white/10 hover:bg-white/10 rounded-2xl transition-all text-white/90"
           >
             <ArrowLeft className="w-5 h-5 stroke-[2.5px]" />
           </button>
           <div className="flex-1">
             <h2 className="text-sm font-black text-white uppercase tracking-tight">{selectedPerson.personName}</h2>
-            <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest leading-none mt-0.5">{selectedPerson.phone || 'GOPAY USER'}</p>
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest leading-none mt-0.5">{selectedPerson.phone || 'GOPAY USER'}</p>
           </div>
         </header>
 
@@ -164,8 +164,8 @@ export function Savings() {
           </div>
 
           {canEdit && (
-            <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
-              <div className="p-4 bg-asphalt-900/40 h-full flex flex-col justify-center">
+            <div className="glass-card rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+              <div className="p-4 bg-white/5 h-full flex flex-col justify-center">
                 <h3 className="text-sm font-black text-white uppercase tracking-tight mb-4">Transaksi Baru</h3>
                 <form onSubmit={handleAddTransaction} className="space-y-4">
                   <BlockChoice
@@ -178,12 +178,12 @@ export function Savings() {
                     ]}
                   />
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 text-xs font-black">Rp</span>
                     <input
                       type="text"
                       placeholder="0"
                       inputMode="numeric"
-                      className="w-full pl-10 pr-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black"
+                      className="w-full pl-10 pr-4 py-3.5 text-sm glass-card border border-white/10 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black"
                       value={formatNumberInput(amountInput)}
                       onChange={(e) => handleNumericInput(e, setAmountInput)}
                       required
@@ -193,7 +193,7 @@ export function Savings() {
                     <input
                       type="text"
                       placeholder="Keterangan transaksi..."
-                      className="flex-1 px-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium"
+                      className="flex-1 px-4 py-3.5 text-sm glass-card border border-white/10 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium"
                       value={descInput}
                       onChange={(e) => setDescInput(e.target.value)}
                       required
@@ -217,17 +217,17 @@ export function Savings() {
         </div>
 
         <div className="p-4 space-y-6">
-          <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
+          <div className="glass-card rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
             <div className="overflow-x-auto">
               {selectedPerson.transactions.length === 0 ? (
                 <div className="py-16 flex flex-col items-center justify-center opacity-20">
-                  <PiggyBank className="w-12 h-12 text-asphalt-text-400 mb-2" />
-                  <p className="text-[10px] font-black uppercase tracking-widest text-asphalt-text-400">Belum ada transaksi</p>
+                  <PiggyBank className="w-12 h-12 text-white/60 mb-2" />
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Belum ada transaksi</p>
                 </div>
               ) : (
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-asphalt-900/40 border-b border-asphalt-700/50 text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">
+                    <tr className="bg-white/5 border-b border-white/10 text-[8px] font-black text-white/60 uppercase tracking-widest">
                       <th className="px-2 py-2 whitespace-nowrap">Tanggal</th>
                       <th className="px-2 py-2">Keterangan</th>
                       <th className="px-2 py-2 text-right">In/Out</th>
@@ -245,10 +245,10 @@ export function Savings() {
                       });
                       
                       return txsWithBalance.reverse().map((transaction) => (
-                        <tr key={transaction.id} className="hover:bg-asphalt-700/20 transition-all group">
+                        <tr key={transaction.id} className="hover:bg-white/10 transition-all group">
                           <td className="px-2 py-2 whitespace-nowrap">
                             <p className="text-white font-bold text-[10px]">{formatDate(transaction.date).split(' ')[0]}</p>
-                            <p className="text-[7px] text-asphalt-text-400">{formatDate(transaction.date).split(' ')[1]}</p>
+                            <p className="text-[7px] text-white/60">{formatDate(transaction.date).split(' ')[1]}</p>
                           </td>
                           <td className="px-2 py-2">
                             <p className="font-black text-white uppercase tracking-tight leading-tight text-[10px] line-clamp-1">{transaction.description}</p>
@@ -266,7 +266,7 @@ export function Savings() {
                             {canDelete && (
                               <button
                                 onClick={() => setDeleteConfirm({ isOpen: true, type: 'transaction', personId: selectedPerson.id, transactionId: transaction.id, name: transaction.description })}
-                                className="p-1 text-asphalt-text-400 hover:text-rose-500 transition-all"
+                                className="p-1 text-white/60 hover:text-rose-500 transition-all"
                               >
                                 <Trash2 className="w-3 h-3" />
                               </button>
@@ -307,9 +307,9 @@ export function Savings() {
   }
 
   return (
-    <div className="p-4 space-y-7 bg-asphalt-900 min-h-full pb-40">
+    <div className="p-4 space-y-7 bg-transparent min-h-full pb-40">
       {/* Summary Header */}
-      <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700/50 shadow-2xl relative overflow-hidden group">
+      <div className="glass-card rounded-2xl p-5 border border-white/10 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-[100px] group-hover:bg-emerald-500/20 transition-all duration-1000"></div>
         
         <div className="relative z-10 space-y-6">
@@ -318,7 +318,7 @@ export function Savings() {
               <PiggyBank className="w-6 h-6" />
             </div>
             <div className="text-right">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-asphalt-text-400">Total Tabungan</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">Total Tabungan</p>
               <div className="bg-emerald-500/10 text-emerald-500 text-[10px] font-black px-2 py-0.5 rounded-lg border border-emerald-500/20 inline-block uppercase tracking-tighter mt-1">
                 Asset: Aktif
               </div>
@@ -326,7 +326,7 @@ export function Savings() {
           </div>
           
           <div className="space-y-1">
-            <h3 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.25em]">
+            <h3 className="text-[10px] font-black text-white/60 uppercase tracking-[0.25em]">
               Tabungan Terkumpul {selectedBranchFilter !== 'all' ? `(${store.branches.find(b => b.id === selectedBranchFilter)?.name})` : '(Global)'}
             </h3>
             <div className="flex items-baseline gap-2">
@@ -337,16 +337,16 @@ export function Savings() {
             </div>
           </div>
           
-          <div className="pt-6 border-t border-asphalt-700 flex items-center justify-between">
+          <div className="pt-6 border-t border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex -space-x-3">
                 {[...Array(Math.min(3, branchSpecificData.count))].map((_, i) => (
-                  <div key={i} className="w-8 h-8 rounded-xl border-2 border-asphalt-800 bg-asphalt-700 flex items-center justify-center overflow-hidden">
+                  <div key={i} className="w-8 h-8 rounded-xl border-2 border-white/10 bg-white/10 flex items-center justify-center overflow-hidden">
                     <div className="w-full h-full bg-gradient-to-br from-emerald-500 to-emerald-700"></div>
                   </div>
                 ))}
               </div>
-              <p className="text-[10px] text-asphalt-text-100 font-black uppercase tracking-tight">
+              <p className="text-[10px] text-white/90 font-black uppercase tracking-tight">
                 {branchSpecificData.count} Nasabah
               </p>
             </div>
@@ -360,16 +360,16 @@ export function Savings() {
       <div className="space-y-6">
         {/* Navigation Tabs */}
         <div className="flex flex-col gap-5 px-1">
-          <div className="flex p-1.5 bg-asphalt-800 rounded-2xl border border-asphalt-700/50 shadow-xl">
+          <div className="flex p-1.5 glass-card rounded-2xl border border-white/10 shadow-xl">
             <button
               onClick={() => setActiveMainTab('savers')}
-              className={`flex-1 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeMainTab === 'savers' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 'text-asphalt-text-400 hover:text-white'}`}
+              className={`flex-1 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeMainTab === 'savers' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 'text-white/60 hover:text-white'}`}
             >
               NASABAH
             </button>
             <button
               onClick={() => setActiveMainTab('history')}
-              className={`flex-1 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeMainTab === 'history' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 'text-asphalt-text-400 hover:text-white'}`}
+              className={`flex-1 py-2.5 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${activeMainTab === 'history' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 'text-white/60 hover:text-white'}`}
             >
               RIWAYAT
             </button>
@@ -382,7 +382,7 @@ export function Savings() {
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                 <button
                   onClick={() => setSelectedBranchFilter('all')}
-                  className={`px-4 py-2 rounded-xl text-[9px] font-black transition-all uppercase tracking-wider border whitespace-nowrap ${selectedBranchFilter === 'all' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20 border-brand-500' : 'bg-asphalt-800 border-asphalt-700 text-asphalt-text-400 hover:border-asphalt-600'}`}
+                  className={`px-4 py-2 rounded-xl text-[9px] font-black transition-all uppercase tracking-wider border whitespace-nowrap ${selectedBranchFilter === 'all' ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20 border-brand-500' : 'glass-card border-white/10 text-white/60 hover:border-white/10'}`}
                 >
                   Global
                 </button>
@@ -390,7 +390,7 @@ export function Savings() {
                   <button
                     key={b.id}
                     onClick={() => setSelectedBranchFilter(b.id)}
-                    className={`px-4 py-2 rounded-xl text-[9px] font-black transition-all uppercase tracking-wider border whitespace-nowrap ${selectedBranchFilter === b.id ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20 border-brand-500' : 'bg-asphalt-800 border-asphalt-700 text-asphalt-text-400 hover:border-asphalt-600'}`}
+                    className={`px-4 py-2 rounded-xl text-[9px] font-black transition-all uppercase tracking-wider border whitespace-nowrap ${selectedBranchFilter === b.id ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20 border-brand-500' : 'glass-card border-white/10 text-white/60 hover:border-white/10'}`}
                   >
                     {b.name}
                   </button>
@@ -401,7 +401,7 @@ export function Savings() {
           
           {/* Sorting / Meta Row */}
           <div className="flex items-center justify-between px-1">
-            <div className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-widest">
+            <div className="text-[9px] font-black text-white/60 uppercase tracking-widest">
               {activeMainTab === 'savers' ? `${filteredSavings.length} Penabung Ditemukan` : 'Riwayat Terakhir'}
             </div>
             
@@ -420,19 +420,19 @@ export function Savings() {
           </div>
         </div>
 
-        <div className="bg-asphalt-800 rounded-2xl shadow-2xl border border-asphalt-700/50 overflow-hidden">
+        <div className="glass-card rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
           {activeMainTab === 'savers' ? (
             <>
               {canEdit && (
-                <div className="p-5 bg-asphalt-900/40 border-b border-asphalt-700/50 space-y-5">
+                <div className="p-5 bg-white/5 border-b border-white/10 space-y-5">
                   <form onSubmit={handleAddPerson} className="space-y-4">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="relative">
-                        <PiggyBank className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-asphalt-text-400" />
+                        <PiggyBank className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/60" />
                         <input
                           type="text"
                           placeholder="Nama Nasabah"
-                          className="w-full pl-9 pr-3 py-3.5 text-xs bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black placeholder:text-asphalt-text-400/30"
+                          className="w-full pl-9 pr-3 py-3.5 text-xs glass-card border border-white/10 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black placeholder:text-white/60/30"
                           value={newPersonName}
                           onChange={(e) => setNewPersonName(e.target.value)}
                           required
@@ -443,7 +443,7 @@ export function Savings() {
                           type="tel"
                           placeholder="No. Telepon"
                           inputMode="numeric"
-                          className="w-full px-3 py-3.5 text-xs bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black placeholder:text-asphalt-text-400/30"
+                          className="w-full px-3 py-3.5 text-xs glass-card border border-white/10 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-black placeholder:text-white/60/30"
                           value={newPersonPhone}
                           onChange={(e) => setNewPersonPhone(e.target.value)}
                         />
@@ -466,11 +466,11 @@ export function Savings() {
                   </form>
 
                   <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-asphalt-text-400" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
                     <input
                       type="text"
                       placeholder="Cari nama nasabah..."
-                      className="w-full pl-11 pr-4 py-3.5 text-sm bg-asphalt-800 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium"
+                      className="w-full pl-11 pr-4 py-3.5 text-sm glass-card border border-white/10 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-white font-medium"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -480,11 +480,11 @@ export function Savings() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 divide-asphalt-700/50">
                 {filteredSavings.length === 0 ? (
-                  <div className="col-span-full text-center py-16 bg-asphalt-800/50">
-                    <div className="w-20 h-20 bg-asphalt-900 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-asphalt-700/50">
+                  <div className="col-span-full text-center py-16 glass-card/50">
+                    <div className="w-20 h-20 bg-transparent rounded-2xl flex items-center justify-center mx-auto mb-5 border border-white/10">
                       <PiggyBank className="w-10 h-10 text-asphalt-700" />
                     </div>
-                    <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Tidak ada data nasabah</p>
+                    <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Tidak ada data nasabah</p>
                   </div>
                 ) : (
                   filteredSavings.map((person) => {
@@ -495,7 +495,7 @@ export function Savings() {
                     const avatarColor = colors[colorIndex];
 
                     return (
-                      <div key={person.id} className="flex items-center p-3 hover:bg-asphalt-700/20 transition-all group active:bg-asphalt-700/40">
+                      <div key={person.id} className="flex items-center p-3 hover:bg-white/10 transition-all group active:bg-white/10">
                         <div className="flex-1 flex items-center gap-3 cursor-pointer min-w-0" onClick={() => setSelectedPersonId(person.id)}>
                           <div className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${avatarColor} flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg border border-white/10 group-hover:scale-110 transition-all duration-300`}>
                             {initials}
@@ -510,9 +510,9 @@ export function Savings() {
                               )}
                             </div>
                             <div className="flex items-center gap-2">
-                              {person.phone && <p className="text-[8px] text-asphalt-text-400 font-black tracking-widest">{person.phone}</p>}
-                              {person.phone && <span className="w-1 h-1 bg-asphalt-700 rounded-full"></span>}
-                              <p className="text-[8px] text-asphalt-text-400 font-black tracking-widest uppercase">{person.transactions.length} Aktivitas</p>
+                              {person.phone && <p className="text-[8px] text-white/60 font-black tracking-widest">{person.phone}</p>}
+                              {person.phone && <span className="w-1 h-1 bg-white/10 rounded-full"></span>}
+                              <p className="text-[8px] text-white/60 font-black tracking-widest uppercase">{person.transactions.length} Aktivitas</p>
                             </div>
                           </div>
                         </div>
@@ -523,7 +523,7 @@ export function Savings() {
                             </p>
                           </div>
                           {canDelete && (
-                            <button onClick={() => setDeleteConfirm({ isOpen: true, type: 'person', personId: person.id, name: person.personName })} className="p-1.5 text-asphalt-text-400 hover:text-rose-500 bg-asphalt-700/30 rounded-lg transition-all">
+                            <button onClick={() => setDeleteConfirm({ isOpen: true, type: 'person', personId: person.id, name: person.personName })} className="p-1.5 text-white/60 hover:text-rose-500 bg-white/10 rounded-lg transition-all">
                               <Trash2 className="w-3 h-3" />
                             </button>
                           )}
@@ -538,11 +538,11 @@ export function Savings() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 divide-asphalt-700/50">
               {globalTransactionHistory.length === 0 ? (
                 <div className="col-span-full text-center py-20">
-                  <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Belum ada riwayat transaksi</p>
+                  <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Belum ada riwayat transaksi</p>
                 </div>
               ) : (
                 globalTransactionHistory.map((tx) => (
-                  <div key={tx.id} className="p-3.5 flex items-center justify-between hover:bg-asphalt-700/20 transition-all group">
+                  <div key={tx.id} className="p-3.5 flex items-center justify-between hover:bg-white/10 transition-all group">
                     <div className="flex items-center gap-3">
                       <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border transition-colors ${tx.type === 'deposit' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-rose-500/10 border-rose-500/20 text-rose-500'}`}>
                         {tx.type === 'deposit' ? <ArrowDownToLine className="w-4 h-4" /> : <ArrowUpFromLine className="w-4 h-4" />}
@@ -554,7 +554,7 @@ export function Savings() {
                             {tx.type === 'deposit' ? 'IN' : 'OUT'}
                           </span>
                         </div>
-                        <p className="text-[9px] text-asphalt-text-400 font-medium truncate max-w-[120px]">{tx.description}</p>
+                        <p className="text-[9px] text-white/60 font-medium truncate max-w-[120px]">{tx.description}</p>
                         <p className="text-[7px] text-brand-500 font-black uppercase tracking-widest mt-0.5">
                           {formatDate(tx.date)}
                         </p>
@@ -565,7 +565,7 @@ export function Savings() {
                         {tx.type === 'deposit' ? '+' : '-'}{formatRupiah(tx.amount)}
                       </p>
                       {(role === 'bos' || role === 'mandor') && tx.branchId && (
-                        <p className="text-[7px] font-black text-asphalt-text-400 uppercase tracking-tighter mt-0.5">
+                        <p className="text-[7px] font-black text-white/60 uppercase tracking-tighter mt-0.5">
                           {store.branches.find(b => b.id === tx.branchId)?.name || 'Pusat'}
                         </p>
                       )}

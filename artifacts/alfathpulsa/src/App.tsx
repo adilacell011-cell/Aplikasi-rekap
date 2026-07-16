@@ -13,10 +13,9 @@ import { VoucherRecaps } from './components/VoucherRecaps';
 import { Login } from './components/Login';
 import { Team } from './components/Team';
 import { SOPPage } from './components/SOPPage';
-import { SalarySlips } from './components/SalarySlips';
+import { SalaryAbsensi } from './components/SalaryAbsensi';
 import { EmployeeFinance } from './components/EmployeeFinance';
 import { EmployeeSelf } from './components/EmployeeSelf';
-import { Absensi } from './components/Absensi';
 import { NotificationManager } from './components/NotificationManager';
 import { PageTransition } from './components/PageTransition';
 import { useAuthStore } from './store/authStore';
@@ -131,10 +130,10 @@ export default function App() {
         {activeTab === 'vouchers' && <VoucherRecaps />}
         {activeTab === 'team' && isBos && <Team />}
         {activeTab === 'sop' && <SOPPage />}
-        {activeTab === 'salary-slips' && <SalarySlips />}
+        {activeTab === 'salary-slips' && <SalaryAbsensi defaultTab="slips" />}
         {activeTab === 'employee-finance' && isBos && <EmployeeFinance />}
         {activeTab === 'my-finance' && (role === 'karyawan' || role === 'mandor') && <EmployeeSelf />}
-        {activeTab === 'absensi' && isBos && <Absensi />}
+        {activeTab === 'absensi' && isBos && <SalaryAbsensi defaultTab="absensi" />}
       </PageTransition>
     </Layout>
     </>

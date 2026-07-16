@@ -319,21 +319,21 @@ export function VoucherRecaps() {
     const topBranches = [...branchStats].sort((a, b) => b.batchTotal - a.batchTotal);
 
     return (
-      <div className="p-4 space-y-7 pb-24 bg-asphalt-900 min-h-screen">
+      <div className="p-4 space-y-7 pb-24 bg-transparent min-h-screen">
         {/* Executive Header */}
         <div className="flex items-center justify-between px-1">
           <div className="space-y-1">
             <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Pantauan Utama</h2>
-            <p className="text-[10px] text-asphalt-text-400 font-black uppercase tracking-[0.2em] leading-none">Statistik Global • Semua Cabang</p>
+            <p className="text-[10px] text-white/60 font-black uppercase tracking-[0.2em] leading-none">Statistik Global • Semua Cabang</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-asphalt-800 border border-asphalt-700 flex items-center justify-center text-brand-500 shadow-xl shadow-brand-500/10">
+          <div className="w-12 h-12 rounded-xl glass-card border border-white/10 flex items-center justify-center text-brand-500 shadow-xl shadow-brand-500/10">
             <TrendingUp className="w-6 h-6 stroke-[2.5px]" />
           </div>
         </div>
 
         {/* Global Summary & Filter */}
         <div className="space-y-6">
-          <div className="bg-asphalt-800 rounded-2xl p-5 text-white shadow-2xl border border-asphalt-700 relative overflow-hidden group">
+          <div className="glass-card rounded-2xl p-5 text-white shadow-2xl border border-white/10 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/5 rounded-full -mr-48 -mt-48 blur-[120px] group-hover:bg-brand-500/10 transition-all duration-1000"></div>
             <div className="relative z-10 space-y-6">
               <div className="flex items-center justify-between">
@@ -349,13 +349,13 @@ export function VoucherRecaps() {
 
               {/* Stats Grid - Vertical Focus */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-asphalt-900/40 p-5 rounded-2xl border border-asphalt-700/30">
+                <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
                   <p className="text-[9px] text-brand-400 font-black uppercase tracking-widest mb-1 leading-none">Admin (Net)</p>
                   <p className="text-2xl font-black text-white tracking-tight">
                     {formatRupiah(globalTotalAdm - globalTotalExp)}
                   </p>
                 </div>
-                <div className="bg-asphalt-900/40 p-5 rounded-2xl border border-asphalt-700/30">
+                <div className="bg-white/5 p-5 rounded-2xl border border-white/10">
                   <p className="text-[9px] text-emerald-400 font-black uppercase tracking-widest mb-1 leading-none">Voucher</p>
                   <p className="text-2xl font-black text-emerald-500 tracking-tight">
                     {formatRupiah(globalTotalVou)}
@@ -369,7 +369,7 @@ export function VoucherRecaps() {
                   <h3 className="text-2xl font-black tracking-tighter text-white">
                     {formatRupiah(globalNetProfit)}
                   </h3>
-                  <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-[0.2em] mt-2">Total Bersih Semua Cabang</p>
+                  <p className="text-[9px] text-white/60 font-black uppercase tracking-[0.2em] mt-2">Total Bersih Semua Cabang</p>
                 </div>
 
                 {/* Filter Controls for Global View */}
@@ -392,10 +392,10 @@ export function VoucherRecaps() {
 
         {/* Monthly Performance Overview */}
         <div className="space-y-4">
-           <h3 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.2em] px-2">Kinerja Bulanan</h3>
+           <h3 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] px-2">Kinerja Bulanan</h3>
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {monthlyData.slice(0, 5).map(([key, data]) => (
-                <div key={key} className="bg-asphalt-800 p-4 rounded-2xl border border-asphalt-700/50 flex items-center justify-between">
+                <div key={key} className="glass-card p-4 rounded-2xl border border-white/10 flex items-center justify-between">
                   <div>
                     <p className="text-[10px] font-black text-white uppercase tracking-tight">{data.label}</p>
                     <p className="text-[8px] text-asphalt-text-500 font-black uppercase tracking-widest mt-1">Admin + Voucher</p>
@@ -412,7 +412,7 @@ export function VoucherRecaps() {
         {/* Performance Ranking Section */}
         <div className="space-y-4">
           <div className="flex items-center justify-between px-2">
-            <h3 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.2em]">Peringkat Performa (Setoran Terakhir)</h3>
+            <h3 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em]">Peringkat Performa (Setoran Terakhir)</h3>
             <span className="text-[9px] font-black text-brand-500 bg-brand-500/10 border border-brand-500/20 px-3 py-1 rounded-xl uppercase tracking-widest">Status Aktif</span>
           </div>
           
@@ -422,7 +422,7 @@ export function VoucherRecaps() {
                 <button
                   key={branch.id}
                   onClick={() => setSelectedBranchId(branch.id)}
-                  className="group relative bg-asphalt-800 rounded-2xl p-5 flex items-center justify-between shadow-2xl border border-asphalt-700/50 hover:bg-asphalt-900/40 hover:border-brand-500/40 transition-all duration-300 active:scale-[0.98] overflow-hidden"
+                  className="group relative glass-card rounded-2xl p-5 flex items-center justify-between shadow-2xl border border-white/10 hover:bg-white/5 hover:border-brand-500/40 transition-all duration-300 active:scale-[0.98] overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="absolute -right-4 -bottom-4 text-asphalt-900 font-black text-6xl group-hover:text-asphalt-700/20 transition-colors pointer-events-none italic opacity-20">
@@ -430,17 +430,17 @@ export function VoucherRecaps() {
                   </div>
                   
                   <div className="flex items-center gap-5 relative z-10">
-                    <div className={`w-14 h-14 rounded-2xl bg-asphalt-900 border border-asphalt-700 flex items-center justify-center text-brand-500 shadow-inner group-hover:scale-110 group-hover:text-white group-hover:bg-brand-500 transition-all duration-500`}>
+                    <div className={`w-14 h-14 rounded-2xl bg-transparent border border-white/10 flex items-center justify-center text-brand-500 shadow-inner group-hover:scale-110 group-hover:text-white group-hover:bg-brand-500 transition-all duration-500`}>
                       {index === 0 ? <TrendingUp className="w-7 h-7 stroke-[2.5px]" /> : <Calculator className="w-7 h-7" />}
                     </div>
                     <div className="text-left space-y-1">
                       <div className="flex items-center gap-2">
                         <h4 className="text-base font-black text-white tracking-tight uppercase leading-none">{branch.name}</h4>
                         {branch.isRecentlyActive && (
-                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse border-2 border-asphalt-800"></span>
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse border-2 border-white/10"></span>
                         )}
                       </div>
-                      <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-widest leading-none">
+                      <p className="text-[9px] text-white/60 font-black uppercase tracking-widest leading-none">
                         {branch.lastReportDate ? `Tgl: ${new Date(branch.lastReportDate.replace(/ /g, 'T')).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })}` : 'Belum Ada Laporan'}
                       </p>
                     </div>
@@ -457,24 +457,24 @@ export function VoucherRecaps() {
         </div>
 
         {/* Reporting Status / Quick Insights */}
-        <div className="bg-asphalt-800 rounded-2xl p-5 border border-asphalt-700 shadow-2xl relative overflow-hidden">
+        <div className="glass-card rounded-2xl p-5 border border-white/10 shadow-2xl relative overflow-hidden">
           <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 via-emerald-500 to-rose-500"></div>
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-2xl bg-asphalt-900 flex items-center justify-center text-asphalt-text-400 border border-asphalt-700 shadow-inner">
+            <div className="w-10 h-10 rounded-2xl bg-transparent flex items-center justify-center text-white/60 border border-white/10 shadow-inner">
               <AlertCircle className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-[0.2em] leading-none">Ringkasan Cepat</h3>
+              <h3 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] leading-none">Ringkasan Cepat</h3>
               <p className="text-sm font-black text-white mt-1 uppercase tracking-tight leading-none">Arus Pelaporan</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-5">
-            <div className="bg-asphalt-900/50 p-5 rounded-2xl border border-asphalt-700 shadow-inner group">
-              <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest mb-2 leading-none">Cabang Aktif</p>
-              <p className="text-2xl font-black text-emerald-500 tracking-tighter leading-none">{branchStats.filter(b => b.isRecentlyActive).length} <span className="text-asphalt-text-400 text-xs">/ {branches.length}</span></p>
+            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 shadow-inner group">
+              <p className="text-[8px] font-black text-white/60 uppercase tracking-widest mb-2 leading-none">Cabang Aktif</p>
+              <p className="text-2xl font-black text-emerald-500 tracking-tighter leading-none">{branchStats.filter(b => b.isRecentlyActive).length} <span className="text-white/60 text-xs">/ {branches.length}</span></p>
             </div>
-            <div className="bg-asphalt-900/50 p-5 rounded-2xl border border-asphalt-700 shadow-inner group">
-              <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest mb-2 leading-none">Total Laporan</p>
+            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 shadow-inner group">
+              <p className="text-[8px] font-black text-white/60 uppercase tracking-widest mb-2 leading-none">Total Laporan</p>
               <p className="text-2xl font-black text-brand-500 tracking-tighter leading-none">{reportedRecaps.length}</p>
             </div>
           </div>
@@ -486,9 +486,9 @@ export function VoucherRecaps() {
   const selectedBranch = branches.find(b => b.id === selectedBranchId);
 
   return (
-    <div className="p-3.5 space-y-6 bg-asphalt-900 min-h-screen pb-32">
+    <div className="p-3.5 space-y-6 bg-transparent min-h-screen pb-32">
       {/* Header */}
-      <div className="bg-asphalt-800 rounded-2xl p-5 text-white shadow-2xl relative overflow-hidden border border-asphalt-700 group">
+      <div className="glass-card rounded-2xl p-5 text-white shadow-2xl relative overflow-hidden border border-white/10 group">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full -mr-24 -mt-24 blur-[100px] group-hover:bg-brand-500/20 transition-all duration-1000"></div>
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-8">
@@ -496,7 +496,7 @@ export function VoucherRecaps() {
               {role === 'bos' && (
                 <button 
                   onClick={() => setSelectedBranchId(null)}
-                  className="w-11 h-11 flex items-center justify-center bg-asphalt-900 border border-asphalt-700 rounded-2xl hover:bg-asphalt-700 text-brand-500 transition-all active:scale-95 shadow-lg shadow-black/20"
+                  className="w-11 h-11 flex items-center justify-center bg-transparent border border-white/10 rounded-2xl hover:bg-white/10 text-brand-500 transition-all active:scale-95 shadow-lg shadow-black/20"
                 >
                   <ArrowLeft className="w-5 h-5 stroke-[2.5px]" />
                 </button>
@@ -505,7 +505,7 @@ export function VoucherRecaps() {
                 <TrendingUp className="w-6 h-6 stroke-[2.5px]" />
               </div>
               <div>
-                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-asphalt-text-400 leading-none">Financial</h3>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 leading-none">Financial</h3>
                 <p className="text-sm font-black text-white mt-1 uppercase tracking-tight leading-none">
                   {role === 'bos' ? `${selectedBranch?.name}` : 'Pelaporan'}
                 </p>
@@ -546,7 +546,7 @@ export function VoucherRecaps() {
 
               <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                 <div>
-                  <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-[0.2em] leading-none mb-1">Total Bersih</p>
+                  <p className="text-[9px] text-white/60 font-black uppercase tracking-[0.2em] leading-none mb-1">Total Bersih</p>
                   <p className="text-3xl font-black text-white tracking-tighter">
                     {formatRupiah(role === 'bos' && !selectedBranchId 
                       ? (globalTotalAdm - globalTotalExp) + globalTotalVou 
@@ -581,15 +581,15 @@ export function VoucherRecaps() {
 
       {/* Input Form */}
       {isFormOpen && (
-        <div className="bg-asphalt-800 rounded-2xl shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-asphalt-700 overflow-hidden animate-in fade-in slide-in-from-top-6 duration-500">
-          <div className="p-4 border-b border-asphalt-700 flex items-center justify-between bg-asphalt-900/40">
+        <div className="glass-card rounded-2xl shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden animate-in fade-in slide-in-from-top-6 duration-500">
+          <div className="p-4 border-b border-white/10 flex items-center justify-between bg-white/5">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-asphalt-900 border border-asphalt-700 flex items-center justify-center text-brand-500 shadow-inner">
+              <div className="w-12 h-12 rounded-2xl bg-transparent border border-white/10 flex items-center justify-center text-brand-500 shadow-inner">
                 <Calculator className="w-6 h-6 stroke-[1.5px]" />
               </div>
               <div>
                 <h3 className="text-sm font-black text-white uppercase tracking-tight leading-none">{editingId ? 'Koreksi Data' : 'Tambah Baru'}</h3>
-                <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest mt-1 leading-none">Voucher Reporting</p>
+                <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mt-1 leading-none">Voucher Reporting</p>
               </div>
             </div>
             {editingId && (
@@ -609,12 +609,12 @@ export function VoucherRecaps() {
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-7">
               <div className="space-y-2.5">
-                <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Periode Tanggal</label>
+                <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Periode Tanggal</label>
                 <div className="relative group">
                   <Calendar className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-500 transition-transform group-focus-within:scale-110" />
                   <input
                     type="date"
-                    className="w-full pl-14 pr-5 py-4.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner appearance-none"
+                    className="w-full pl-14 pr-5 py-4.5 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner appearance-none"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     required
@@ -624,24 +624,24 @@ export function VoucherRecaps() {
 
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2.5">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Admin Siang</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Admin Siang</label>
                   <input
                     type="text"
                     placeholder="Rp 0"
                     inputMode="numeric"
-                    className="w-full px-5 py-4.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner placeholder:text-asphalt-text-400/30"
+                    className="w-full px-5 py-4.5 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner placeholder:text-white/60/30"
                     value={formatNumberInput(adminSiang)}
                     onChange={(e) => handleNumericInput(e, setAdminSiang)}
                     required
                   />
                 </div>
                 <div className="space-y-2.5">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Admin Malam</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Admin Malam</label>
                   <input
                     type="text"
                     placeholder="Rp 0"
                     inputMode="numeric"
-                    className="w-full px-5 py-4.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner placeholder:text-asphalt-text-400/30"
+                    className="w-full px-5 py-4.5 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner placeholder:text-white/60/30"
                     value={formatNumberInput(adminMalam)}
                     onChange={(e) => handleNumericInput(e, setAdminMalam)}
                     required
@@ -651,24 +651,24 @@ export function VoucherRecaps() {
 
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2.5">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Voucher Siang</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Voucher Siang</label>
                   <input
                     type="text"
                     placeholder="Rp 0"
                     inputMode="numeric"
-                    className="w-full px-5 py-4.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-500 font-black shadow-inner placeholder:text-emerald-500/20"
+                    className="w-full px-5 py-4.5 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-500 font-black shadow-inner placeholder:text-emerald-500/20"
                     value={formatNumberInput(voucherSiang)}
                     onChange={(e) => handleNumericInput(e, setVoucherSiang)}
                     required
                   />
                 </div>
                 <div className="space-y-2.5">
-                  <label className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest ml-1">Voucher Malam</label>
+                  <label className="text-[10px] font-black text-white/60 uppercase tracking-widest ml-1">Voucher Malam</label>
                   <input
                     type="text"
                     placeholder="Rp 0"
                     inputMode="numeric"
-                    className="w-full px-5 py-4.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-500 font-black shadow-inner placeholder:text-emerald-500/20"
+                    className="w-full px-5 py-4.5 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-500 font-black shadow-inner placeholder:text-emerald-500/20"
                     value={formatNumberInput(voucherMalam)}
                     onChange={(e) => handleNumericInput(e, setVoucherMalam)}
                     required
@@ -683,7 +683,7 @@ export function VoucherRecaps() {
                     <input
                       type="text"
                       placeholder="Ex: Token Listrik"
-                      className="w-full px-5 py-4.5 text-sm bg-asphalt-900 border border-asphalt-700 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner"
+                      className="w-full px-5 py-4.5 text-sm glass-input border  rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none text-white font-black shadow-inner"
                       value={expenseDescription}
                       onChange={(e) => setExpenseDescription(e.target.value)}
                     />
@@ -694,7 +694,7 @@ export function VoucherRecaps() {
                       type="text"
                       placeholder="0"
                       inputMode="numeric"
-                      className="w-full px-5 py-4.5 text-sm bg-asphalt-900 border border-rose-500/30 rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none text-rose-500 font-black shadow-inner"
+                      className="w-full px-5 py-4.5 text-sm bg-transparent border border-rose-500/30 rounded-2xl focus:ring-2 focus:ring-rose-500 outline-none text-rose-500 font-black shadow-inner"
                       value={formatNumberInput(expenseAmount)}
                       onChange={(e) => handleNumericInput(e, setExpenseAmount)}
                     />
@@ -718,9 +718,9 @@ export function VoucherRecaps() {
       {/* Cycles Grouping */}
       <div className="space-y-8">
         {groupedRecaps.length === 0 ? (
-          <div className="bg-asphalt-800 rounded-[2.5rem] p-16 text-center border border-asphalt-700/50">
+          <div className="glass-card rounded-[2.5rem] p-16 text-center border border-white/10">
             <FileText className="w-12 h-12 text-asphalt-900 mx-auto mb-4" />
-            <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Belum ada rekapan di bulan ini</p>
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Belum ada rekapan di bulan ini</p>
           </div>
         ) : (
           groupedRecaps.map((cycle, index) => (
@@ -733,7 +733,7 @@ export function VoucherRecaps() {
                   <div className={`w-2 h-8 rounded-full ${cycle.isReported ? 'bg-emerald-500' : 'bg-brand-500 animate-pulse'}`}></div>
                   <div>
                     <h3 className="text-sm font-black text-white uppercase tracking-tight">{cycle.label}</h3>
-                    <p className="text-[9px] font-black text-asphalt-text-400 uppercase tracking-[0.15em] mt-0.5">
+                    <p className="text-[9px] font-black text-white/60 uppercase tracking-[0.15em] mt-0.5">
                       {cycle.isReported ? 'Setoran Selesai' : 'Sedang Berjalan / Draf'}
                     </p>
                   </div>
@@ -753,16 +753,16 @@ export function VoucherRecaps() {
               </div>
 
               {/* Cycle Detail Card */}
-              <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
+              <div className="glass-card rounded-[2.5rem] shadow-2xl border border-white/10 overflow-hidden">
                 <div className="overflow-x-auto no-scrollbar">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-asphalt-900/50 text-[8px] uppercase font-black text-asphalt-text-400 tracking-[0.1em] border-b border-asphalt-700/50">
-                        <th className="pl-6 pr-2 py-3.5 font-black border-r border-asphalt-700/50">Tgl</th>
-                        <th className="px-2 py-3.5 font-black border-r border-asphalt-700/50 text-center">Adm Siang</th>
-                        <th className="px-2 py-3.5 font-black border-r border-asphalt-700/50 text-center">Adm Malam</th>
-                        <th className="px-2 py-3.5 font-black border-r border-asphalt-700/50 text-center">Vou Siang</th>
-                        <th className="px-2 py-3.5 font-black border-r border-asphalt-700/50 text-center">Vou Malam</th>
+                      <tr className="bg-white/5 text-[8px] uppercase font-black text-white/60 tracking-[0.1em] border-b border-white/10">
+                        <th className="pl-6 pr-2 py-3.5 font-black border-r border-white/10">Tgl</th>
+                        <th className="px-2 py-3.5 font-black border-r border-white/10 text-center">Adm Siang</th>
+                        <th className="px-2 py-3.5 font-black border-r border-white/10 text-center">Adm Malam</th>
+                        <th className="px-2 py-3.5 font-black border-r border-white/10 text-center">Vou Siang</th>
+                        <th className="px-2 py-3.5 font-black border-r border-white/10 text-center">Vou Malam</th>
                         {(role !== 'bos' || cycle.items.some(r => r.status === 'reported')) && (
                           <th className="px-3 py-3.5 text-center">Aksi</th>
                         )}
@@ -770,31 +770,31 @@ export function VoucherRecaps() {
                     </thead>
                     <tbody className="divide-y divide-asphalt-700/30">
                       {cycle.items.map((recap) => (
-                        <tr key={recap.id} className={`hover:bg-asphalt-900/10 transition-colors group ${recap.status === 'draft' ? 'bg-brand-500/[0.03]' : ''}`}>
-                          <td className="pl-6 pr-2 py-4 border-r border-asphalt-700/30">
+                        <tr key={recap.id} className={`hover:bg-white/5 transition-colors group ${recap.status === 'draft' ? 'bg-brand-500/[0.03]' : ''}`}>
+                          <td className="pl-6 pr-2 py-4 border-r border-white/10">
                             <div className="flex flex-col">
                               <span className="text-[11px] font-black text-white">{new Date(recap.date.replace(/ /g, 'T')).getDate()}</span>
                               <span className="text-[7px] text-asphalt-text-500 font-black uppercase tracking-widest">{months[new Date(recap.date.replace(/ /g, 'T')).getMonth()].slice(0, 3)}</span>
                             </div>
                           </td>
-                          <td className="px-2 py-4 text-[10px] font-black text-white/70 border-r border-asphalt-700/30 text-center">
+                          <td className="px-2 py-4 text-[10px] font-black text-white/70 border-r border-white/10 text-center">
                             {recap.adminSiang.toLocaleString('id-ID')}
                           </td>
-                          <td className="px-2 py-4 text-[10px] font-black text-white/70 border-r border-asphalt-700/30 text-center">
+                          <td className="px-2 py-4 text-[10px] font-black text-white/70 border-r border-white/10 text-center">
                             {recap.adminMalam.toLocaleString('id-ID')}
                           </td>
-                          <td className="px-2 py-4 text-[10px] font-black text-emerald-500/80 border-r border-asphalt-700/30 text-center">
+                          <td className="px-2 py-4 text-[10px] font-black text-emerald-500/80 border-r border-white/10 text-center">
                             {recap.voucherSiang.toLocaleString('id-ID')}
                           </td>
-                          <td className="px-2 py-4 text-[10px] font-black text-emerald-500/80 border-r border-asphalt-700/30 text-center">
+                          <td className="px-2 py-4 text-[10px] font-black text-emerald-500/80 border-r border-white/10 text-center">
                             {recap.voucherMalam.toLocaleString('id-ID')}
                           </td>
                           <td className="px-3 py-4 text-center">
                             <div className="flex items-center justify-center gap-1">
                               {recap.status === 'draft' && role === 'karyawan' && (
                                 <>
-                                  <button onClick={() => handleEdit(recap)} className="p-1.5 text-asphalt-text-400 hover:text-brand-500"><Edit2 className="w-3.5 h-3.5" /></button>
-                                  <button onClick={() => setDeleteConfirm({ isOpen: true, id: recap.id, date: recap.date })} className="p-1.5 text-asphalt-text-400 hover:text-rose-500"><Trash2 className="w-3.5 h-3.5" /></button>
+                                  <button onClick={() => handleEdit(recap)} className="p-1.5 text-white/60 hover:text-brand-500"><Edit2 className="w-3.5 h-3.5" /></button>
+                                  <button onClick={() => setDeleteConfirm({ isOpen: true, id: recap.id, date: recap.date })} className="p-1.5 text-white/60 hover:text-rose-500"><Trash2 className="w-3.5 h-3.5" /></button>
                                 </>
                               )}
                               {recap.status === 'reported' && (
@@ -806,22 +806,22 @@ export function VoucherRecaps() {
                       ))}
                     </tbody>
                     <tfoot>
-                      <tr className="bg-asphalt-900 border-t border-asphalt-700/50">
-                        <td className="pl-6 py-4 text-[9px] font-black text-white uppercase border-r border-asphalt-700/30">Total</td>
-                        <td colSpan={2} className="px-2 py-4 text-center text-[10px] font-black text-white border-r border-asphalt-700/30">
+                      <tr className="bg-transparent border-t border-white/10">
+                        <td className="pl-6 py-4 text-[9px] font-black text-white uppercase border-r border-white/10">Total</td>
+                        <td colSpan={2} className="px-2 py-4 text-center text-[10px] font-black text-white border-r border-white/10">
                           {formatRupiah(cycle.totalAdm)}
                         </td>
-                        <td colSpan={2} className="px-2 py-4 text-center text-[10px] font-black text-emerald-500 border-r border-asphalt-700/30">
+                        <td colSpan={2} className="px-2 py-4 text-center text-[10px] font-black text-emerald-500 border-r border-white/10">
                           {formatRupiah(cycle.totalVou)}
                         </td>
-                        <td className="px-2 py-4 text-center font-black text-asphalt-text-400 text-[8px]">
+                        <td className="px-2 py-4 text-center font-black text-white/60 text-[8px]">
                            {cycle.totalExp > 0 && <span className="text-rose-500">Ex: -{formatRupiah(cycle.totalExp)}</span>}
                         </td>
                       </tr>
-                      <tr className="bg-asphalt-900/40">
+                      <tr className="bg-white/5">
                          <td colSpan={6} className="px-6 py-3">
                             <div className="flex items-center justify-between">
-                              <span className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest leading-none">Admin Bersih Siklus</span>
+                              <span className="text-[8px] font-black text-white/60 uppercase tracking-widest leading-none">Admin Bersih Siklus</span>
                               <span className="text-[12px] font-black text-brand-500 leading-none">{formatRupiah(cycle.totalAdm + cycle.totalVou - cycle.totalExp)}</span>
                             </div>
                          </td>
@@ -836,8 +836,8 @@ export function VoucherRecaps() {
       </div>
 
       {/* Detail Pengeluaran Section */}
-      <div className="bg-asphalt-800 rounded-[2.5rem] shadow-2xl border border-asphalt-700/50 overflow-hidden">
-        <div className="p-5 border-b border-asphalt-700/50 bg-rose-500/[0.03]">
+      <div className="glass-card rounded-[2.5rem] shadow-2xl border border-white/10 overflow-hidden">
+        <div className="p-5 border-b border-white/10 bg-rose-500/[0.03]">
           <h3 className="text-[10px] uppercase font-black tracking-[0.2em] text-rose-500 leading-none">
             Rincian Pengeluaran Bulan Ini
           </h3>
@@ -846,12 +846,12 @@ export function VoucherRecaps() {
           {groupedRecaps.every(c => c.items.every(r => r.expenseAmount === 0)) ? (
             <div className="p-10 text-center">
               <TrendingDown className="w-8 h-8 text-asphalt-900 mx-auto mb-4" />
-              <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Tidak ada pengeluaran tercatat</p>
+              <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Tidak ada pengeluaran tercatat</p>
             </div>
           ) : (
             groupedRecaps.map(cycle => 
               cycle.items.filter(r => r.expenseAmount > 0).map(recap => (
-                <div key={`exp-${recap.id}`} className="p-5 flex items-center justify-between hover:bg-asphalt-900/20 transition-all group">
+                <div key={`exp-${recap.id}`} className="p-5 flex items-center justify-between hover:bg-white/5 transition-all group">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shadow-inner group-hover:scale-110 transition-transform">
                       <ArrowDownCircle className="w-5 h-5 stroke-[1.5px]" />
@@ -859,10 +859,10 @@ export function VoucherRecaps() {
                     <div>
                       <p className="text-[11px] font-black text-white uppercase tracking-tight leading-tight">{recap.expenseDescription || 'PENGELUARAN UMUM'}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-widest">
+                        <p className="text-[8px] font-black text-white/60 uppercase tracking-widest">
                           Tgl {new Date(recap.date.replace(/ /g, 'T')).getDate()} {months[new Date(recap.date.replace(/ /g, 'T')).getMonth()]}
                         </p>
-                        <span className="w-1 h-1 rounded-full bg-asphalt-700"></span>
+                        <span className="w-1 h-1 rounded-full bg-white/10"></span>
                         <p className="text-[8px] font-black text-brand-500 uppercase tracking-widest">{recap.createdByName.split(' ')[0]}</p>
                       </div>
                     </div>
@@ -885,7 +885,7 @@ export function VoucherRecaps() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 gap-4">
         <div 
-          className="bg-asphalt-800 rounded-[2.5rem] p-5 text-white shadow-2xl border border-asphalt-700 relative overflow-hidden group"
+          className="glass-card rounded-[2.5rem] p-5 text-white shadow-2xl border border-white/10 relative overflow-hidden group"
         >
           <div className="absolute top-0 right-0 w-24 h-24 bg-brand-500/5 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-brand-500/10 transition-all duration-700"></div>
           <div className="flex items-center justify-between mb-3">
@@ -897,10 +897,10 @@ export function VoucherRecaps() {
             {trend.admin === 'down' && <TrendingDown className="w-4 h-4 text-rose-500 stroke-[2.5px]" />}
           </div>
           <p className="text-lg font-black text-white tracking-tighter">{formatRupiah(labaBersihAdm)}</p>
-          <p className="text-[8px] text-asphalt-text-400 font-black uppercase tracking-widest mt-1.5 leading-tight">After Deductions</p>
+          <p className="text-[8px] text-white/60 font-black uppercase tracking-widest mt-1.5 leading-tight">After Deductions</p>
         </div>
         <div 
-          className="bg-asphalt-800 rounded-[2.5rem] p-5 text-white shadow-2xl border border-asphalt-700 relative overflow-hidden group"
+          className="glass-card rounded-[2.5rem] p-5 text-white shadow-2xl border border-white/10 relative overflow-hidden group"
         >
           <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-emerald-500/10 transition-all duration-700"></div>
           <div className="flex items-center justify-between mb-3">
@@ -912,14 +912,14 @@ export function VoucherRecaps() {
             {trend.voucher === 'down' && <TrendingDown className="w-4 h-4 text-rose-500 stroke-[2.5px]" />}
           </div>
           <p className="text-lg font-black text-emerald-500 tracking-tighter">{formatRupiah(totalVoucher)}</p>
-          <p className="text-[8px] text-asphalt-text-400 font-black uppercase tracking-widest mt-1.5 leading-tight">In Circulation</p>
+          <p className="text-[8px] text-white/60 font-black uppercase tracking-widest mt-1.5 leading-tight">In Circulation</p>
         </div>
       </div>
 
       {/* Fixed Bottom Action Button */}
       {role === 'karyawan' && hasDrafts ? (
         <div className="mt-12 pb-20">
-          <div className="bg-asphalt-800 rounded-[2.8rem] p-1.5 shadow-2xl shadow-brand-500/20 border border-brand-500/20 group">
+          <div className="glass-card rounded-[2.8rem] p-1.5 shadow-2xl shadow-brand-500/20 border border-brand-500/20 group">
             <button
               onClick={() => setIsConfirmingReport(true)}
               disabled={isSubmitting}
@@ -930,8 +930,8 @@ export function VoucherRecaps() {
             </button>
           </div>
           <div className="mt-6 flex items-start gap-3 px-8">
-            <AlertCircle className="w-4 h-4 text-asphalt-text-400 shrink-0 mt-0.5" />
-            <p className="text-[9px] text-asphalt-text-400 font-bold uppercase tracking-[0.1em] leading-relaxed">
+            <AlertCircle className="w-4 h-4 text-white/60 shrink-0 mt-0.5" />
+            <p className="text-[9px] text-white/60 font-bold uppercase tracking-[0.1em] leading-relaxed">
               Pesan Penting: Laporan yang dikirim tidak dapat ditarik kembali. Pastikan akurasi data sebelum setor.
             </p>
           </div>

@@ -61,7 +61,7 @@ export function EmployeeSelf() {
   }, [debtRecord, saveRecord]);
 
   return (
-    <div className="p-5 space-y-6 bg-asphalt-900 min-h-screen pb-40">
+    <div className="p-5 space-y-6 bg-transparent min-h-screen pb-40">
 
       {/* Header */}
       <div className="flex items-center gap-3 px-1">
@@ -70,7 +70,7 @@ export function EmployeeSelf() {
         </div>
         <div>
           <h3 className="text-xs font-black text-white uppercase tracking-tight">Keuangan Saya</h3>
-          <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest">
+          <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">
             {user?.name || 'Karyawan'}
           </p>
         </div>
@@ -78,7 +78,7 @@ export function EmployeeSelf() {
 
       {/* Balance Cards */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-asphalt-800 p-5 rounded-[1.75rem] border border-rose-500/20 shadow-xl flex flex-col gap-2">
+        <div className="glass-card p-5 rounded-[1.75rem] border border-rose-500/20 shadow-xl flex flex-col gap-2">
           <div className="flex items-center gap-2 text-rose-500">
             <div className="p-1.5 bg-rose-500/10 rounded-lg">
               <Receipt className="w-4 h-4" />
@@ -107,14 +107,14 @@ export function EmployeeSelf() {
         </div>
 
         {history.length === 0 ? (
-          <div className="bg-asphalt-800 rounded-[2rem] p-10 text-center border border-asphalt-700/50">
+          <div className="glass-card rounded-[2rem] p-10 text-center border border-white/10">
             <Clock className="w-10 h-10 text-asphalt-700 mx-auto mb-3" />
-            <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">
+            <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">
               Belum ada transaksi tercatat.
             </p>
           </div>
         ) : (
-          <div className="bg-asphalt-800 rounded-[1.75rem] border border-asphalt-700/50 shadow-xl overflow-hidden divide-y divide-asphalt-700/40">
+          <div className="glass-card rounded-[1.75rem] border border-white/10 shadow-xl overflow-hidden divide-y divide-asphalt-700/40">
             {history.map((item) => {
               const isBon = item.kind === 'bon';
               const isPositive = item.isCredit;
@@ -140,14 +140,14 @@ export function EmployeeSelf() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-black text-white truncate">{item.label}</p>
-                    <p className="text-[9px] font-bold text-asphalt-text-400 truncate mt-0.5">{item.description}</p>
-                    <p className="text-[8px] font-bold text-asphalt-text-400/60 mt-0.5">{formatTanggal(item.date)}</p>
+                    <p className="text-[9px] font-bold text-white/60 truncate mt-0.5">{item.description}</p>
+                    <p className="text-[8px] font-bold text-white/60/60 mt-0.5">{formatTanggal(item.date)}</p>
                   </div>
                   <div className="text-right shrink-0">
                     <p className={`text-[13px] font-black ${amountColor}`}>
                       {amountSign} {formatRupiah(item.amount)}
                     </p>
-                    <p className="text-[8px] font-bold text-asphalt-text-400/60 uppercase tracking-wider mt-0.5">
+                    <p className="text-[8px] font-bold text-white/60/60 uppercase tracking-wider mt-0.5">
                       {isBon ? 'Kasbon' : 'Tabungan'}
                     </p>
                   </div>

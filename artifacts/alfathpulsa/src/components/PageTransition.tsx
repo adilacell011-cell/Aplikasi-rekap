@@ -70,7 +70,7 @@ export function PageTransition({ activeTab, children }: PageTransitionProps) {
         >
           {children}
           <div className="px-5 py-6 text-center">
-            <p className="text-[9px] text-asphalt-text-400 font-black uppercase tracking-[0.4em] opacity-30">
+            <p className="text-[9px] text-white/60 font-black uppercase tracking-[0.4em] opacity-30">
               AlfathPulsa v2.0
             </p>
           </div>

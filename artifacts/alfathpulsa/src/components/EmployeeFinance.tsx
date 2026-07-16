@@ -149,14 +149,14 @@ export function EmployeeFinance() {
 
   if (!canManage) {
     return (
-      <div className="p-8 text-center text-asphalt-text-400 text-xs font-bold uppercase tracking-widest">
+      <div className="p-8 text-center text-white/60 text-xs font-bold uppercase tracking-widest">
         Halaman ini hanya untuk Bos & Mandor.
       </div>
     );
   }
 
   return (
-    <div className="p-5 space-y-6 bg-asphalt-900 min-h-screen pb-40">
+    <div className="p-5 space-y-6 bg-transparent min-h-screen pb-40">
       {/* Header */}
       <div className="flex items-center gap-3 px-1">
         <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center border border-brand-500/20 text-brand-500">
@@ -164,18 +164,18 @@ export function EmployeeFinance() {
         </div>
         <div>
           <h3 className="text-xs font-black text-white uppercase tracking-tight">Kasbon &amp; Tabungan Karyawan</h3>
-          <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest">{users.length} Karyawan</p>
+          <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">{users.length} Karyawan</p>
         </div>
       </div>
 
-      <p className="text-[11px] text-asphalt-text-400 font-medium px-1 leading-relaxed">
+      <p className="text-[11px] text-white/60 font-medium px-1 leading-relaxed">
         Catatan kasbon (hutang) dan tabungan untuk karyawan, terpisah dari nasabah. Saldo di sini otomatis ikut terpotong saat membuat slip gaji.
       </p>
 
       {users.length === 0 ? (
-        <div className="bg-asphalt-800 rounded-2xl py-10 px-4 text-center border border-asphalt-700/50">
+        <div className="glass-card rounded-2xl py-10 px-4 text-center border border-white/10">
           <Users className="w-12 h-12 text-asphalt-900 mx-auto mb-4" />
-          <p className="text-[10px] font-black text-asphalt-text-400 uppercase tracking-widest">Belum ada karyawan.</p>
+          <p className="text-[10px] font-black text-white/60 uppercase tracking-widest">Belum ada karyawan.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -202,7 +202,7 @@ export function EmployeeFinance() {
             ].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
 
             return (
-              <div key={u.uid} className="bg-asphalt-800 rounded-2xl border border-asphalt-700/50 shadow-xl overflow-hidden">
+              <div key={u.uid} className="glass-card rounded-2xl border border-white/10 shadow-xl overflow-hidden">
                 <button
                   onClick={() => setExpandedId(expanded ? null : u.uid)}
                   className="w-full p-5 flex items-center gap-3 text-left active:scale-[0.99] transition-all"
@@ -212,7 +212,7 @@ export function EmployeeFinance() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h4 className="text-xs font-black text-white uppercase tracking-tight truncate">{u.name || 'Tanpa Nama'}</h4>
-                    <p className="text-[9px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">{(u.role || 'role').toUpperCase()}</p>
+                    <p className="text-[9px] text-white/60 font-bold uppercase tracking-widest mt-0.5">{(u.role || 'role').toUpperCase()}</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <div className="text-right">
@@ -223,7 +223,7 @@ export function EmployeeFinance() {
                       <p className="text-[7px] font-black text-brand-500 uppercase tracking-widest opacity-70">Tabungan</p>
                       <p className="text-[11px] font-black text-brand-500">{formatRupiah(save)}</p>
                     </div>
-                    <ChevronDown className={`w-4 h-4 text-asphalt-text-400 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-4 h-4 text-white/60 transition-transform ${expanded ? 'rotate-180' : ''}`} />
                   </div>
                 </button>
 
@@ -239,23 +239,23 @@ export function EmployeeFinance() {
 
                     {/* Inline action form */}
                     {action && action.userId === u.uid && (
-                      <form onSubmit={handleSubmit} className="bg-asphalt-900/50 border border-asphalt-700 rounded-2xl p-4 space-y-3 shadow-inner">
+                      <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3 shadow-inner">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] font-black text-white uppercase tracking-widest">{ACTION_LABEL[action.kind]}</span>
-                          <button type="button" onClick={() => setAction(null)} className="text-asphalt-text-400 p-1"><ArrowLeft className="w-4 h-4" /></button>
+                          <button type="button" onClick={() => setAction(null)} className="text-white/60 p-1"><ArrowLeft className="w-4 h-4" /></button>
                         </div>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-asphalt-text-400 text-xs font-black">Rp</span>
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 text-xs font-black">Rp</span>
                           <input
                             type="text" inputMode="numeric" autoFocus placeholder="0"
-                            className="w-full pl-11 pr-4 py-3 bg-asphalt-900 border border-asphalt-700 rounded-xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                            className="w-full pl-11 pr-4 py-3 glass-input border  rounded-xl text-sm text-white font-black outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                             value={formatNumberInput(amount)}
                             onChange={handleNumericInput}
                           />
                         </div>
                         <input
                           type="text" placeholder="Keterangan (opsional)"
-                          className="w-full px-4 py-3 bg-asphalt-900 border border-asphalt-700 rounded-xl text-xs text-white font-bold outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
+                          className="w-full px-4 py-3 glass-input border  rounded-xl text-xs text-white font-bold outline-none focus:ring-2 focus:ring-brand-500 shadow-inner"
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
                         />
@@ -270,20 +270,20 @@ export function EmployeeFinance() {
 
                     {/* History */}
                     <div className="space-y-2">
-                      <p className="text-[8px] font-black text-asphalt-text-400 uppercase tracking-[0.2em] px-1">Riwayat</p>
+                      <p className="text-[8px] font-black text-white/60 uppercase tracking-[0.2em] px-1">Riwayat</p>
                       {history.length === 0 ? (
-                        <p className="text-[10px] text-asphalt-text-400 font-bold px-1 py-2">Belum ada catatan.</p>
+                        <p className="text-[10px] text-white/60 font-bold px-1 py-2">Belum ada catatan.</p>
                       ) : (
                         history.map((h) => (
-                          <div key={`${h.kind}-${h.id}`} className="flex items-center gap-3 bg-asphalt-900/40 border border-asphalt-700/60 rounded-xl px-3 py-2.5">
+                          <div key={`${h.kind}-${h.id}`} className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5">
                             <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${h.kind === 'bon' ? 'bg-rose-500/10 text-rose-500' : 'bg-brand-500/10 text-brand-500'}`}>
                               {h.kind === 'bon' ? <Receipt className="w-3.5 h-3.5" /> : <PiggyBank className="w-3.5 h-3.5" />}
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-[10px] font-black text-white truncate">{h.description || h.label}</p>
-                              <p className="text-[8px] text-asphalt-text-400 font-bold uppercase tracking-widest">{h.label}</p>
+                              <p className="text-[8px] text-white/60 font-bold uppercase tracking-widest">{h.label}</p>
                             </div>
-                            <span className={`text-[11px] font-black shrink-0 ${h.isPositive ? (h.kind === 'bon' ? 'text-rose-500' : 'text-brand-500') : 'text-asphalt-text-400'}`}>
+                            <span className={`text-[11px] font-black shrink-0 ${h.isPositive ? (h.kind === 'bon' ? 'text-rose-500' : 'text-brand-500') : 'text-white/60'}`}>
                               {h.isPositive ? '+' : '-'} {formatRupiah(h.amount)}
                             </span>
                             <button onClick={() => handleDeleteEntry(h.kind, h.personId, h.id)} className="text-rose-500 p-1 shrink-0">

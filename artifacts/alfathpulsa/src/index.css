@@ -124,18 +124,37 @@
   --brand-50: #e0f2fe;
   --brand-100: #bae6fd;
   --brand-200: #7dd3fc;
-  --brand-500: #0084FF; /* GoPay Blue */
-  --brand-600: #0076E5;
-  --brand-700: #0068CC;
-  --brand-800: #0059B2;
-  --brand-900: #004B99;
+  /* ===== GLASSMORPHISM TWILIGHT THEME ===== */
+  /* Override brand color untuk tema twilight */
+  --brand-500: #7C8CFF;
+  --brand-600: #6070F0;
+  --brand-700: #4A5FD9;
+  --brand-800: #3A4FC0;
+  --brand-900: #2A3FAB;
 
-  /* Asphalt Colors — deeper "pekat" dark canvas so cards clearly stand out */
-  --bg-asphalt-900: #080C15;
-  --bg-asphalt-800: #1A2233;
-  --bg-asphalt-700: #2A3343;
-  --text-asphalt-100: #E8EEF6;
-  --text-asphalt-400: #9FACC1;
+  /* Twilight palette */
+  --tw-bg-from: #4A5FD9;
+  --tw-bg-via1: #5B3FA8;
+  --tw-bg-via2: #3A2C6B;
+  --tw-bg-to: #1C1B33;
+  
+  /* Glass token */
+  --glass-bg: rgba(255,255,255,0.13);
+  --glass-bg-strong: rgba(255,255,255,0.20);
+  --glass-border: rgba(255,255,255,0.22);
+  --glass-border-strong: rgba(255,255,255,0.30);
+  --glass-shadow: 0 8px 32px rgba(10,8,30,0.35);
+  --glass-blur: blur(18px) saturate(160%);
+
+  /* Override asphalt tokens menjadi transparan untuk twilight */
+  --bg-asphalt-900: transparent;
+  --bg-asphalt-800: rgba(255,255,255,0.10);
+  --bg-asphalt-700: rgba(255,255,255,0.15);
+  --text-asphalt-100: #FFFFFF;
+  --text-asphalt-400: rgba(255,255,255,0.62);
+
+  --color-success: #4ADE9A;
+  --color-warning: #FFB020;
 }
 
 /* Light Mode Variables — "Neumorphism Tajam + Lampu": soft cool-gray surface, raised/inset shadows, glowing accent */
@@ -536,6 +555,94 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Glass card utama */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--glass-shadow);
+  }
+  /* Glass card lebih kuat (nav, header) */
+  .glass-card-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border-strong);
+    border-radius: 24px;
+    box-shadow: var(--glass-shadow);
+  }
+  /* Glass untuk elemen kecil (badge, chip) */
+  .glass-sm {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+  }
+  /* Input field glass */
+  .glass-input {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 14px;
+    color: white;
+  }
+  .glass-input:focus {
+    outline: none;
+    border-color: #7C8CFF;
+    box-shadow: 0 0 0 2px rgba(124,140,255,0.3);
+  }
+  .glass-input::placeholder { color: rgba(255,255,255,0.40); }
+
+  /* Input field read-only (potongan otomatis) */
+  .glass-input-readonly {
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,255,255,0.25);
+    border-radius: 14px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* Menu tile twilight — priority */
+  .menu-tile {
+    background: rgba(124,140,255,0.18);
+    border: 1px solid rgba(124,140,255,0.35);
+    box-shadow: 0 4px 16px rgba(124,140,255,0.20);
+  }
+  .menu-tile-icon { color: #7C8CFF; filter: drop-shadow(0 0 6px rgba(124,140,255,0.55)); }
+
+  /* Menu tile — secondary (lebih redup) */
+  .menu-tile-secondary {
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 2px 8px rgba(10,8,30,0.20);
+  }
+  .menu-tile-secondary .menu-tile-icon { color: rgba(255,255,255,0.75); filter: none; }
+
+  /* Bottom nav glass */
+  .glass-nav {
+    background: rgba(20,18,40,0.55);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  /* Sidebar glass */
+  .glass-sidebar {
+    background: rgba(20,18,40,0.40);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-right: 1px solid rgba(255,255,255,0.10);
+  }
+  /* Header glass */
+  .glass-header {
+    background: rgba(20,18,40,0.45);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
 }
 
 /* Fluid base type — scales sensibly across phone/tablet & portrait/landscape
@@ -553,7 +660,9 @@ html {
 
 body {
   -webkit-tap-highlight-color: transparent;
-  background-color: var(--bg-asphalt-900);
+  background: radial-gradient(ellipse 120% 80% at 0% 0%, #4A5FD9 0%, #5B3FA8 30%, #3A2C6B 65%, #1C1B33 100%) fixed;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 /* Sembunyikan indikator loading sisa jika ada */
@@ -669,21 +778,38 @@ button:not(:disabled):active { transform: scale(0.96); }
   transform: scale(0.96);
 }
 
-/* Dark mode keeps a calm ambient blue tint (no heavy glass) */
+/* Dark mode removed for Twilight */
 :root:not([data-mode='light']) body {
-  background-color: #03050A;
-  background-image:
-    radial-gradient(56rem 56rem at 12% -12%, rgba(0, 132, 255, 0.07), transparent 60%),
-    radial-gradient(46rem 46rem at 105% 2%, rgba(0, 132, 255, 0.05), transparent 55%);
+  background: radial-gradient(ellipse 120% 80% at 0% 0%, #4A5FD9 0%, #5B3FA8 30%, #3A2C6B 65%, #1C1B33 100%) fixed;
   background-attachment: fixed;
 }
 
-/* Dark mode: cards clearly "timbul" (raised) on the pekat canvas */
-[data-mode='dark'] .bg-asphalt-800 {
-  box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.78),
-              0 3px 10px -2px rgba(0, 0, 0, 0.55),
-              inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
+/* Twilight dark: all bg-asphalt-800 cards get real glass blur */
+:root:not([data-mode='light']) .bg-asphalt-800 {
+  backdrop-filter: blur(18px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  box-shadow: 0 8px 32px rgba(10,8,30,0.35) !important;
+}
+/* Inner panels */
+:root:not([data-mode='light']) .bg-asphalt-900\/40,
+:root:not([data-mode='light']) .bg-asphalt-900\/50,
+:root:not([data-mode='light']) .bg-asphalt-900\/60 {
+  background: rgba(20,18,40,0.35) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+/* Input fields get glass look */
+:root:not([data-mode='light']) input.bg-asphalt-900,
+:root:not([data-mode='light']) input[class*="bg-asphalt"] {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.22) !important;
+  color: white !important;
+}
+:root:not([data-mode='light']) input.bg-asphalt-900:focus,
+:root:not([data-mode='light']) input[class*="bg-asphalt"]:focus {
+  border-color: #7C8CFF !important;
+  box-shadow: 0 0 0 2px rgba(124,140,255,0.3) !important;
+  outline: none !important;
 }
 
 /* Dark mode: solid action buttons follow the chosen accent color.
