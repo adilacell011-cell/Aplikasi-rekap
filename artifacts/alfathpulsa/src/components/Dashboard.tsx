@@ -457,14 +457,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             label="Info SOP" 
             onClick={() => onNavigate?.('sop')}
           />
-          {role !== 'karyawan' && (
-            <ServiceIcon 
-              emoji="🔍"
-              label="Log Aktivitas" 
-              onClick={() => {}} 
-            />
-          )}
-          {role !== 'karyawan' && (
+          {isBos && (
             <ServiceIcon 
               emoji="👥"
               label="Kelola Tim" 
@@ -476,14 +469,14 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             label="Slip Gaji" 
             onClick={() => onNavigate?.('salary-slips')}
           />
-          {role !== 'karyawan' && (
+          {isBos && (
             <ServiceIcon 
               emoji="👛"
               label="Kasbon Karyawan" 
               onClick={() => onNavigate?.('employee-finance')}
             />
           )}
-          {role !== 'karyawan' && (
+          {isBos && (
             <ServiceIcon 
               emoji="📅"
               label="Absensi" 

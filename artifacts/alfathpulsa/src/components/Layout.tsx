@@ -277,7 +277,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               [
                 { tab: 'dashboard', icon: <LayoutDashboard className={`w-5 h-5 shrink-0 ${activeTab === 'dashboard' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Beranda', show: true },
                 { tab: 'deposits',  icon: <Download       className={`w-5 h-5 shrink-0 ${activeTab === 'deposits'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Setoran',  show: true },
-                { tab: checkIsMandor(role) ? 'debts' : 'savings', icon: <PiggyBank className={`w-5 h-5 shrink-0 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: checkIsMandor(role) ? 'Bon Cabang' : 'Tabungan', show: true },
+                { tab: 'savings', icon: <PiggyBank className={`w-5 h-5 shrink-0 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Tabungan', show: true },
                 { tab: 'vouchers',  icon: <Ticket         className={`w-5 h-5 shrink-0 ${activeTab === 'vouchers'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Rekapan',  show: true },
                 { tab: 'salary-slips', icon: <FileText    className={`w-5 h-5 shrink-0 ${activeTab === 'salary-slips' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Slip Gaji', show: !checkIsBos(user, role) },
                 { tab: 'my-finance',   icon: <Wallet      className={`w-5 h-5 shrink-0 ${activeTab === 'my-finance'   ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Keuangan',  show: role === 'karyawan' || role === 'mandor' },
@@ -328,15 +328,15 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <span className="text-[9px] font-black tracking-widest uppercase">Beranda</span>
             </button>
 
-            {/* Tabungan (karyawan/bos) / Bon Cabang (mandor) */}
+            {/* Tabungan */}
             <button
-              onClick={() => setActiveTab(checkIsMandor(role) ? 'debts' : 'savings')}
+              onClick={() => setActiveTab('savings')}
               className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                (checkIsMandor(role) ? activeTab === 'debts' : (activeTab === 'savings' || activeTab === 'debts')) ? 'text-brand-500' : 'text-white/50'
+                activeTab === 'savings' || activeTab === 'debts' ? 'text-brand-500' : 'text-white/50'
               }`}
             >
-              <PiggyBank className={`w-5.5 h-5.5 transition-colors duration-300 ${(checkIsMandor(role) ? activeTab === 'debts' : (activeTab === 'savings' || activeTab === 'debts')) ? 'stroke-[2.5px]' : 'stroke-2'}`} />
-              <span className="text-[9px] font-black tracking-widest uppercase">{checkIsMandor(role) ? 'Bon' : 'Tabungan'}</span>
+              <PiggyBank className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+              <span className="text-[9px] font-black tracking-widest uppercase">Tabungan</span>
             </button>
 
             {/* Rekapan */}
