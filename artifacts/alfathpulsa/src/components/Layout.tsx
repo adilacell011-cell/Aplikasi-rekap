@@ -231,6 +231,28 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               </div>
 
               <div className="space-y-2 max-h-72 overflow-y-auto">
+
+                {/* Opsi kembali ke mode mandor tanpa cabang (hanya tampil jika ada cabang aktif) */}
+                {branchId && (
+                  <button
+                    onClick={() => {
+                      useAuthStore.getState().setBranchId(null);
+                      initFinanceStoreListeners();
+                      setShowBranchPicker(false);
+                      toast.success('Mode Mandor Aktif', { description: 'Sinkronisasi cabang dihentikan.' });
+                    }}
+                    className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-rose-500/40 bg-rose-500/5 text-rose-400 hover:border-rose-500/70 transition-all active:scale-[0.98]"
+                  >
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-rose-500/10">
+                      <X className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="text-sm font-black uppercase tracking-tight">Lepas Cabang</p>
+                      <p className="text-[9px] font-bold uppercase tracking-widest mt-0.5 opacity-60">Kembali ke mode mandor</p>
+                    </div>
+                  </button>
+                )}
+
                 {branches.map((branch) => {
                   const isSelected = branchId === branch.id;
                   return (
@@ -238,7 +260,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                       key={branch.id}
                       onClick={() => {
                         useAuthStore.getState().setBranchId(branch.id);
-                        initFinanceStoreListeners();   // mulai/restart polling setelah cabang dipilih
+                        initFinanceStoreListeners();
                         setShowBranchPicker(false);
                         toast.success(`Beralih ke ${branch.name}`, { description: 'Data cabang sedang dimuat...' });
                       }}
