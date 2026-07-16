@@ -279,7 +279,7 @@ function SlipDocument({ slip, isBos, onClose, onPay, onDelete }: {
           <button
             onClick={async () => { setProcessing(true); try { await onPay(); } finally { setProcessing(false); } }}
             disabled={processing}
-            className="px-4 py-3 rounded-2xl bg-[#4ADE9A] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all shadow-lg shadow-[#4ADE9A]/20 disabled:opacity-50"
+            className="px-4 py-3 rounded-2xl bg-[#7C8CFF] text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all shadow-lg shadow-[#7C8CFF]/20 disabled:opacity-50"
           >
             <Check className="w-4 h-4 stroke-[3px]" /> {processing ? 'Memproses…' : 'Bayar'}
           </button>
@@ -838,7 +838,7 @@ function AbsensiTab() {
 
       {/* Header */}
       <div className="flex items-center gap-3 px-1">
-        <div className="w-10 h-10 rounded-xl bg-[#4ADE9A]/10 flex items-center justify-center border border-[#4ADE9A]/20 text-[#4ADE9A]">
+        <div className="w-10 h-10 rounded-xl bg-[#7C8CFF]/10 flex items-center justify-center border border-[#7C8CFF]/20 text-[#7C8CFF]">
           <CalendarDays className="w-5 h-5" />
         </div>
         <div>
@@ -890,8 +890,8 @@ function AbsensiTab() {
                 <span className="text-[9px] font-black text-[#FFB020] uppercase tracking-widest">Izin</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-[#4ADE9A]/40 border border-[#4ADE9A]/60"></div>
-                <span className="text-[9px] font-black text-[#4ADE9A] uppercase tracking-widest">Masuk</span>
+                <div className="w-3 h-3 rounded-full bg-white/20 border border-white/30"></div>
+                <span className="text-[9px] font-black text-white/60 uppercase tracking-widest">Masuk</span>
               </div>
             </div>
 
@@ -929,14 +929,14 @@ function AbsensiTab() {
                             : isIzin ? 'border-[#FFB020]/50 text-[#FFB020]'
                             : isToday ? 'border-[#7C8CFF]/50 text-[#7C8CFF]'
                             : isSunday ? 'border-white/10 text-white/30'
-                            : 'border-[#4ADE9A]/25 text-white hover:border-[#4ADE9A]/50'
+                            : 'border-white/10 text-white/80 hover:border-white/25'
                           } ${isToggling ? 'opacity-50' : ''}`}
                           style={{
                             background: isLibur ? 'rgba(239,68,68,0.15)'
                               : isIzin ? 'rgba(255,176,32,0.15)'
                               : isToday ? 'rgba(124,140,255,0.15)'
                               : isSunday ? 'rgba(255,255,255,0.04)'
-                              : isHadir && !isSunday ? 'rgba(74,222,154,0.10)' : 'rgba(255,255,255,0.04)',
+                              : 'rgba(255,255,255,0.04)',
                           }}
                           onClick={() => !isToggling && handleToggle(dateStr, 'libur')}
                           onContextMenu={(e) => { e.preventDefault(); !isToggling && handleToggle(dateStr, 'izin'); }}
@@ -965,9 +965,9 @@ function AbsensiTab() {
               Ringkasan {MONTH_NAMES[month - 1]} {year}
             </p>
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-[#4ADE9A]/10 rounded-2xl p-3 text-center border border-[#4ADE9A]/25">
-                <p className="text-lg font-black text-[#4ADE9A]">{dim - totalOff}</p>
-                <p className="text-[8px] font-black text-[#4ADE9A] uppercase tracking-widest mt-1">Hari Masuk</p>
+              <div className="bg-[#7C8CFF]/10 rounded-2xl p-3 text-center border border-[#7C8CFF]/25">
+                <p className="text-lg font-black text-[#7C8CFF]">{dim - totalOff}</p>
+                <p className="text-[8px] font-black text-[#7C8CFF] uppercase tracking-widest mt-1">Hari Masuk</p>
               </div>
               <div className="bg-rose-500/8 rounded-2xl p-3 text-center border border-rose-500/20">
                 <p className="text-lg font-black text-rose-400">{totalLibur}</p>
@@ -1020,7 +1020,7 @@ export function SalaryAbsensi({ defaultTab }: { defaultTab?: 'slips' | 'absensi'
               onClick={() => setActiveInnerTab('absensi')}
               className={`flex-1 py-2.5 px-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
                 activeInnerTab === 'absensi'
-                  ? 'bg-[#4ADE9A] text-white shadow-lg shadow-[#4ADE9A]/30'
+                  ? 'bg-[#7C8CFF] text-white shadow-lg shadow-[#7C8CFF]/30'
                   : 'glass-sm text-white/60 hover:text-white'
               }`}
             >
