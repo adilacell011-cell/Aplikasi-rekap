@@ -423,22 +423,18 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
           <span className="text-[11px] font-black text-brand-500 tracking-wider uppercase">Menu Layanan Utama</span>
         </div>
         <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-x-3 gap-y-5">
-          {role !== 'mandor' && (
-            <>
-              <ServiceIcon 
-                emoji="💳"
-                label="Hutang / Bon" 
-                onClick={() => onNavigate?.('debts')}
-                priority={true}
-              />
-              <ServiceIcon 
-                emoji="🐷"
-                label="Tabungan" 
-                onClick={() => onNavigate?.('savings')}
-                priority={true}
-              />
-            </>
-          )}
+          <ServiceIcon 
+            emoji="💳"
+            label="Hutang / Bon" 
+            onClick={() => onNavigate?.('debts')}
+            priority={true}
+          />
+          <ServiceIcon 
+            emoji="🐷"
+            label="Tabungan" 
+            onClick={() => onNavigate?.('savings')}
+            priority={true}
+          />
           <ServiceIcon 
             emoji="🏪"
             label="Setoran" 
@@ -467,7 +463,7 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             label="Slip Gaji" 
             onClick={() => onNavigate?.('salary-slips')}
           />
-          {(isBos || role === 'mandor') && (
+          {isBos && (
             <ServiceIcon 
               emoji="👛"
               label="Kasbon Karyawan" 
