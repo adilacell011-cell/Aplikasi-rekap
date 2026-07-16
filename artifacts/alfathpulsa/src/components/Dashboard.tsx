@@ -3,12 +3,12 @@ import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { checkIsBos } from '../utils/authUtils';
 import { formatRupiah, formatNumberInput, formatDate } from '../utils/formatters';
-import { Building2, Plus, Trash2, Landmark, Receipt, Coins, Edit3, Check, Send, PiggyBank, Users, Ticket, Store, BookOpen, MoreHorizontal, History as HistoryIcon, UserCog, X, FileText, ArrowLeftRight, Wallet, CalendarDays } from 'lucide-react';
+import { Building2, Plus, Trash2, Landmark, Receipt, Coins, Edit3, Check, Send, PiggyBank, X, ArrowLeftRight } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 
 interface ServiceIconProps {
-  icon: React.ReactNode;
+  emoji: string;
   label: string;
   onClick: () => void;
   badge?: string;
@@ -16,18 +16,18 @@ interface ServiceIconProps {
   priority?: boolean;
 }
 
-function ServiceIcon({ icon, label, onClick, badge, priority }: ServiceIconProps) {
+function ServiceIcon({ emoji, label, onClick, badge, priority }: ServiceIconProps) {
   return (
     <button 
       onClick={onClick}
-      className="menu-tile-btn flex flex-col items-center gap-2.5 group relative transition-transform duration-150"
+      className="flex flex-col items-center gap-2.5 group relative transition-transform duration-150 active:scale-95"
     >
-      <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-200 relative overflow-hidden group-hover:-translate-y-0.5 ${priority ? 'menu-tile' : 'menu-tile-secondary'}`}>
-        <div className="menu-tile-icon relative transition-transform duration-200 group-hover:scale-110">
-          {React.cloneElement(icon as React.ReactElement<{ className?: string }>, { className: 'w-6 h-6 md:w-7 md:h-7' })}
-        </div>
+      <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-200 relative group-hover:-translate-y-1 ${priority ? 'menu-tile' : 'menu-tile-secondary'}`}>
+        <span className="text-2xl md:text-3xl leading-none select-none transition-transform duration-200 group-hover:scale-110">
+          {emoji}
+        </span>
       </div>
-      <span className="text-[11px] md:text-xs font-bold text-white text-center leading-tight tracking-tight">
+      <span className="text-[11px] md:text-xs font-bold text-white/90 text-center leading-tight tracking-tight">
         {label}
       </span>
       {badge && (
@@ -428,15 +428,13 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
           {role !== 'mandor' && (
             <>
               <ServiceIcon 
-                index={0}
-                icon={<Users />} 
+                emoji="💳"
                 label="Hutang / Bon" 
                 onClick={() => onNavigate?.('debts')}
                 priority={true}
               />
               <ServiceIcon 
-                index={1}
-                icon={<PiggyBank />} 
+                emoji="🐷"
                 label="Tabungan" 
                 onClick={() => onNavigate?.('savings')}
                 priority={true}
@@ -444,58 +442,50 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
             </>
           )}
           <ServiceIcon 
-            index={2}
-            icon={<Store />} 
+            emoji="🏪"
             label="Setoran" 
             onClick={() => onNavigate?.('deposits')}
             priority={true}
           />
           <ServiceIcon 
-            index={3}
-            icon={<Ticket />} 
+            emoji="📊"
             label="Rekap Data" 
             onClick={() => onNavigate?.('vouchers')}
           />
           <ServiceIcon 
-            index={4}
-            icon={<BookOpen />} 
+            emoji="📖"
             label="Info SOP" 
             onClick={() => onNavigate?.('sop')}
           />
           {role !== 'karyawan' && (
             <ServiceIcon 
-              index={5}
-              icon={<HistoryIcon />} 
+              emoji="🔍"
               label="Log Aktivitas" 
               onClick={() => {}} 
             />
           )}
           {role !== 'karyawan' && (
             <ServiceIcon 
-              index={6}
-              icon={<UserCog />} 
+              emoji="👥"
               label="Kelola Tim" 
               onClick={() => onNavigate?.('team')}
             />
           )}
           <ServiceIcon 
-            index={7}
-            icon={<FileText />} 
+            emoji="🧾"
             label="Slip Gaji" 
             onClick={() => onNavigate?.('salary-slips')}
           />
           {role !== 'karyawan' && (
             <ServiceIcon 
-              index={8}
-              icon={<Wallet />} 
+              emoji="👛"
               label="Kasbon Karyawan" 
               onClick={() => onNavigate?.('employee-finance')}
             />
           )}
           {role !== 'karyawan' && (
             <ServiceIcon 
-              index={9}
-              icon={<CalendarDays />} 
+              emoji="📅"
               label="Absensi" 
               onClick={() => onNavigate?.('absensi')}
               priority={true}

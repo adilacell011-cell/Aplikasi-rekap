@@ -606,21 +606,21 @@
     color: rgba(255,255,255,0.7);
   }
 
-  /* Menu tile twilight — priority */
+  /* Menu tile twilight — priority (accent vivid) */
   .menu-tile {
-    background: rgba(124,140,255,0.18);
-    border: 1px solid rgba(124,140,255,0.35);
-    box-shadow: 0 4px 16px rgba(124,140,255,0.20);
+    background: linear-gradient(145deg, rgba(124,140,255,0.30) 0%, rgba(100,115,240,0.18) 100%);
+    border: 1.5px solid rgba(160,175,255,0.45);
+    box-shadow: 0 4px 20px rgba(100,120,255,0.30), inset 0 1px 0 rgba(255,255,255,0.25);
   }
-  .menu-tile-icon { color: #7C8CFF; filter: drop-shadow(0 0 6px rgba(124,140,255,0.55)); }
+  .menu-tile-icon { color: #fff; filter: drop-shadow(0 0 6px rgba(160,175,255,0.70)); }
 
-  /* Menu tile — secondary (lebih redup) */
+  /* Menu tile — secondary (bersih putih glass) */
   .menu-tile-secondary {
-    background: rgba(255,255,255,0.09);
-    border: 1px solid rgba(255,255,255,0.14);
-    box-shadow: 0 2px 8px rgba(10,8,30,0.20);
+    background: linear-gradient(145deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.07) 100%);
+    border: 1.5px solid rgba(255,255,255,0.20);
+    box-shadow: 0 3px 12px rgba(10,8,30,0.25), inset 0 1px 0 rgba(255,255,255,0.18);
   }
-  .menu-tile-secondary .menu-tile-icon { color: rgba(255,255,255,0.75); filter: none; }
+  .menu-tile-secondary .menu-tile-icon { color: rgba(255,255,255,0.90); filter: none; }
 
   /* Bottom nav glass */
   .glass-nav {
@@ -660,9 +660,23 @@ html {
 
 body {
   -webkit-tap-highlight-color: transparent;
-  background: radial-gradient(ellipse 120% 80% at 0% 0%, #4A5FD9 0%, #5B3FA8 30%, #3A2C6B 65%, #1C1B33 100%) fixed;
-  background-attachment: fixed;
+  background: transparent;
   min-height: 100vh;
+}
+
+/* Fixed twilight background — separate from scroll so it never ripples/flickers
+   on mobile browsers (background-attachment:fixed is broken on iOS/Android) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 110% 70% at 15% 0%,   #6B7FFF 0%,   transparent 55%),
+    radial-gradient(ellipse 90%  80% at 85% 10%,  #8B55D4 0%,   transparent 50%),
+    radial-gradient(ellipse 100% 60% at 5%  90%,  #3A58E8 0%,   transparent 45%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, #2E1F6B 0%,   #130F2A 100%);
+  will-change: transform;
 }
 
 /* Sembunyikan indikator loading sisa jika ada */
