@@ -9,7 +9,7 @@ import { api } from '../api';
 import { iosAlert } from '../store/dialogStore';
 import { toast } from 'sonner';
 
-import { useFinanceStore, reloadFinanceData } from '../hooks/useFinanceStore';
+import { useFinanceStore, reloadFinanceData, initFinanceStoreListeners } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { checkIsBos, checkIsMandor } from '../utils/authUtils';
 
@@ -222,7 +222,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                   </div>
                   <div>
                     <h3 className="text-lg font-black uppercase tracking-tight">Pilih Cabang</h3>
-                    <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Data akan otomatis sinkron</p>
+                    <p className="text-[10px] text-asphalt-text-400 font-bold uppercase tracking-widest mt-0.5">Pilih cabang untuk memulai sinkronisasi</p>
                   </div>
                 </div>
                 <button onClick={() => setShowBranchPicker(false)} className="p-3 bg-asphalt-900 rounded-2xl border border-asphalt-700 hover:bg-asphalt-700 transition-all">
@@ -238,7 +238,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                       key={branch.id}
                       onClick={() => {
                         useAuthStore.getState().setBranchId(branch.id);
-                        reloadFinanceData();
+                        initFinanceStoreListeners();   // mulai/restart polling setelah cabang dipilih
                         setShowBranchPicker(false);
                         toast.success(`Beralih ke ${branch.name}`, { description: 'Data cabang sedang dimuat...' });
                       }}
@@ -277,7 +277,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               [
                 { tab: 'dashboard', icon: <LayoutDashboard className={`w-5 h-5 shrink-0 ${activeTab === 'dashboard' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Beranda', show: true },
                 { tab: 'deposits',  icon: <Download       className={`w-5 h-5 shrink-0 ${activeTab === 'deposits'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Setoran',  show: true },
-                { tab: 'savings',   icon: <PiggyBank      className={`w-5 h-5 shrink-0 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Tabungan', show: true },
+                { tab: checkIsMandor(role) ? 'debts' : 'savings', icon: <PiggyBank className={`w-5 h-5 shrink-0 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: checkIsMandor(role) ? 'Bon Cabang' : 'Tabungan', show: true },
                 { tab: 'vouchers',  icon: <Ticket         className={`w-5 h-5 shrink-0 ${activeTab === 'vouchers'  ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Rekapan',  show: true },
                 { tab: 'salary-slips', icon: <FileText    className={`w-5 h-5 shrink-0 ${activeTab === 'salary-slips' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Slip Gaji', show: !checkIsBos(user, role) },
                 { tab: 'my-finance',   icon: <Wallet      className={`w-5 h-5 shrink-0 ${activeTab === 'my-finance'   ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Keuangan',  show: role === 'karyawan' || role === 'mandor' },
@@ -328,15 +328,15 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
               <span className="text-[9px] font-black tracking-widest uppercase">Beranda</span>
             </button>
 
-            {/* Tabungan */}
+            {/* Tabungan (karyawan/bos) / Bon Cabang (mandor) */}
             <button
-              onClick={() => setActiveTab('savings')}
+              onClick={() => setActiveTab(checkIsMandor(role) ? 'debts' : 'savings')}
               className={`flex flex-col items-center justify-center flex-1 h-full space-y-1.5 transition-all group active:scale-90 ${
-                activeTab === 'savings' || activeTab === 'debts' ? 'text-brand-500' : 'text-white/50'
+                (checkIsMandor(role) ? activeTab === 'debts' : (activeTab === 'savings' || activeTab === 'debts')) ? 'text-brand-500' : 'text-white/50'
               }`}
             >
-              <PiggyBank className={`w-5.5 h-5.5 transition-colors duration-300 ${activeTab === 'savings' || activeTab === 'debts' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
-              <span className="text-[9px] font-black tracking-widest uppercase">Tabungan</span>
+              <PiggyBank className={`w-5.5 h-5.5 transition-colors duration-300 ${(checkIsMandor(role) ? activeTab === 'debts' : (activeTab === 'savings' || activeTab === 'debts')) ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+              <span className="text-[9px] font-black tracking-widest uppercase">{checkIsMandor(role) ? 'Bon' : 'Tabungan'}</span>
             </button>
 
             {/* Rekapan */}

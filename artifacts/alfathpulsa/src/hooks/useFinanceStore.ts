@@ -671,6 +671,30 @@ async function loadAll() {
   const branchId = authState.branchId;
   const isGlobalBos = !branchId && role === 'bos';
 
+  // Mandor tanpa cabang terpilih: cukup ambil daftar cabang untuk picker,
+  // jangan sinkron data nasabah/bon/rekapan supaya tidak boros bandwidth.
+  if (role === 'mandor' && !branchId) {
+    try {
+      const branches = await api.get('/branches');
+      const branchList: Branch[] = [...branches].sort((a: Branch, b: Branch) =>
+        a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+      useFinanceStore.setState({
+        isLoaded: true,
+        branches: branchList,
+        debts: [],
+        savings: [],
+        bankBalances: [],
+        voucherRecaps: [],
+        employeeDebts: [],
+        employeeSavings: [],
+        error: null,
+      });
+    } catch {
+      useFinanceStore.setState({ isLoaded: true });
+    }
+    return;
+  }
+
   try {
     const [settings, banks, debts, savings, branches, vouchers] = await Promise.all([
       api.get('/settings'),
@@ -755,10 +779,13 @@ async function loadAll() {
 export const reloadFinanceData = () => loadAll();
 
 export const initFinanceStoreListeners = () => {
-  if (!useAuthStore.getState().user) return;
+  const { user, role, branchId } = useAuthStore.getState();
+  if (!user) return;
   useFinanceStore.setState({ error: null });
-  if (pollInterval) clearInterval(pollInterval);
+  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
   loadAll();
+  // Mandor tanpa cabang: tidak mulai polling — tunggu sampai cabang dipilih
+  if (role === 'mandor' && !branchId) return;
   pollInterval = setInterval(loadAll, 5000);
 };
 
