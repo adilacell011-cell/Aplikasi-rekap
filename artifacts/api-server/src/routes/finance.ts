@@ -241,9 +241,17 @@ router.delete("/banks/:id", async (req, res) => {
 // --------------------------------------------------------------------------
 // Debts (customers + transactions => details[])
 // --------------------------------------------------------------------------
-router.get("/debts", async (_req, res) => {
+router.get("/debts", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
   const allCustomers = await db.select().from(customers);
   const allTx = await db.select().from(customerTransactions);
+
+  // Karyawan tidak boleh melihat bon karyawan lain (ownerType='karyawan').
+  // Hanya bos dan mandor yang berhak mengakses data keuangan karyawan.
+  const visibleCustomers = authUser?.role === "karyawan"
+    ? allCustomers.filter((c) => (c.ownerType ?? "nasabah") === "nasabah")
+    : allCustomers;
+
   const byCustomer = new Map<string, any[]>();
   for (const t of allTx) {
     const arr = byCustomer.get(t.customerId) ?? [];
@@ -256,7 +264,7 @@ router.get("/debts", async (_req, res) => {
     });
     byCustomer.set(t.customerId, arr);
   }
-  const result = allCustomers.map((c) => ({
+  const result = visibleCustomers.map((c) => ({
     id: c.id,
     personName: c.personName,
     branchId: c.branchId,
@@ -328,9 +336,17 @@ router.delete("/debts/:id/details/:detailId", async (req, res) => {
 // --------------------------------------------------------------------------
 // Savings (+ nested transactions)
 // --------------------------------------------------------------------------
-router.get("/savings", async (_req, res) => {
+router.get("/savings", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
   const allSavings = await db.select().from(savings);
   const allTx = await db.select().from(savingTransactions);
+
+  // Karyawan tidak boleh melihat tabungan karyawan lain (ownerType='karyawan').
+  // Hanya bos dan mandor yang berhak mengakses data keuangan karyawan.
+  const visibleSavings = authUser?.role === "karyawan"
+    ? allSavings.filter((s) => (s.ownerType ?? "nasabah") === "nasabah")
+    : allSavings;
+
   const bySaving = new Map<string, any[]>();
   for (const t of allTx) {
     const arr = bySaving.get(t.savingId) ?? [];
@@ -345,7 +361,7 @@ router.get("/savings", async (_req, res) => {
     });
     bySaving.set(t.savingId, arr);
   }
-  const result = allSavings.map((s) => ({
+  const result = visibleSavings.map((s) => ({
     id: s.id,
     personName: s.personName,
     phone: s.phone ?? undefined,
@@ -483,7 +499,19 @@ router.delete("/voucher-recaps/:id", requireBos, async (req, res) => {
 // --------------------------------------------------------------------------
 // Salary slips
 // --------------------------------------------------------------------------
-router.get("/salary-slips", async (_req, res) => {
+router.get("/salary-slips", async (req, res) => {
+  const authUser = (req as AuthedRequest).authUser;
+  // Karyawan hanya boleh melihat slip gaji milik sendiri — slip gaji bersifat
+  // sangat rahasia dan tidak boleh diakses oleh karyawan lain maupun mandor
+  // (mandor hanya bisa MEMBUAT slip, bukan membaca milik karyawan lain).
+  // Bos dan mandor mendapat semua data; frontend menangani filter per cabang.
+  if (authUser?.role === "karyawan") {
+    const slips = await db
+      .select()
+      .from(salarySlips)
+      .where(eq(salarySlips.userId, authUser.id));
+    return res.json(slips);
+  }
   return res.json(await db.select().from(salarySlips));
 });
 
@@ -558,7 +586,16 @@ router.delete("/salary-slips/:id", requireBos, async (req, res) => {
 // Attendance (absensi hari libur karyawan)
 // --------------------------------------------------------------------------
 router.get("/attendance", async (req, res) => {
-  const { userId, month, year } = req.query as Record<string, string>;
+  const authUser = (req as AuthedRequest).authUser;
+  const { month, year } = req.query as Record<string, string>;
+  let { userId } = req.query as Record<string, string>;
+
+  // Karyawan hanya boleh melihat absensi milik sendiri — paksa userId ke ID mereka
+  // sendiri agar tidak bisa mengintip absensi karyawan lain.
+  if (authUser?.role === "karyawan") {
+    userId = authUser.id;
+  }
+
   const conditions: ReturnType<typeof eq>[] = [];
   if (userId) conditions.push(eq(attendance.userId, userId));
   if (month && year) {
