@@ -478,6 +478,13 @@ export function Dashboard({ onNavigate }: { onNavigate?: (tab: string) => void }
               priority={true}
             />
           )}
+          {isBos && (
+            <ServiceIcon 
+              emoji="🗄️"
+              label="Backup DB" 
+              onClick={() => onNavigate?.('backup')}
+            />
+          )}
         </div>
       </div>
 
