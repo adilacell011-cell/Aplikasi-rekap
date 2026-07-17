@@ -341,25 +341,43 @@ function SalaryTab() {
   const loadData = async () => {
     if (!uid) { setIsLoading(false); return; }
     try {
-      const allSlips: SalarySlip[] = await api.get('/salary-slips');
-      let scoped = allSlips;
-      if (isBos) { if (!isGlobalBos) scoped = allSlips.filter(s => s.branchId === currentUserBranchId); }
-      else scoped = allSlips.filter(s => s.userId === uid);
+      // Fetch slips + users secara paralel agar lebih cepat
+      const [allSlips, allUsers] = await Promise.all([
+        api.get('/salary-slips') as Promise<SalarySlip[]>,
+        isBos ? (api.get('/users') as Promise<UserProfile[]>) : Promise.resolve([] as UserProfile[]),
+      ]);
 
-      let filtered = scoped;
-      if (!showAllHistory) filtered = scoped.filter(s => s.month === filterMonth && s.year === filterYear);
+      let scoped: SalarySlip[];
+      if (isBos) {
+        // Scope daftar karyawan berdasarkan cabang aktif mandor/bos
+        const usersInScope = isGlobalBos
+          ? allUsers.filter(u => u.role !== 'bos')
+          : allUsers.filter(u => u.branchId === currentUserBranchId && u.role !== 'bos');
+        setUsers(usersInScope);
+
+        if (isGlobalBos) {
+          scoped = allSlips;
+        } else {
+          // Filter slip by userId karyawan yang SAAT INI ada di cabang ini,
+          // bukan by branchId yang tersimpan di slip (menghindari data hilang
+          // saat mandor ganti cabang atau karyawan dipindah).
+          const branchUserIds = new Set(usersInScope.map(u => u.uid));
+          scoped = allSlips.filter(s => branchUserIds.has(s.userId));
+        }
+      } else {
+        // Karyawan/mandor melihat slip diri sendiri
+        scoped = allSlips.filter(s => s.userId === uid);
+      }
+
+      const filtered = showAllHistory
+        ? scoped
+        : scoped.filter(s => s.month === filterMonth && s.year === filterYear);
 
       const sortedData = [...filtered].sort((a, b) => {
         if (b.year !== a.year) return b.year - a.year;
         return b.month - a.month;
       });
       setSlips(sortedData);
-
-      if (isBos) {
-        const allUsers: UserProfile[] = await api.get('/users');
-        const scopedUsers = isGlobalBos ? allUsers : allUsers.filter(u => u.branchId === currentUserBranchId);
-        setUsers(scopedUsers.filter(u => u.role !== 'bos'));
-      }
     } catch (error) {
       console.error('Error loading salary slips:', error);
     } finally {
