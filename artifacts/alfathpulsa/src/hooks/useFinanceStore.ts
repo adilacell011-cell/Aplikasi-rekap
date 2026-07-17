@@ -724,12 +724,14 @@ async function loadAll() {
     }
     debtList = sortByCreatedAtDesc(debtList as any) as Debt[];
 
-    // Employee bon (kasbon karyawan): managed separately; loaded for managers in scope.
+    // Employee bon (kasbon karyawan): data mengikuti userId karyawan, BUKAN branchId
+    // yang sedang aktif di sesi mandor. Jangan filter dengan inScope agar data tidak
+    // hilang ketika mandor ganti cabang atau karyawan dipindah cabang.
     const employeeDebtList = sortByCreatedAtDesc(
-      debtsScoped.filter((d: any) => isKaryawanOwned(d)) as any,
+      (debts as any[]).filter((d: any) => isKaryawanOwned(d)) as any,
     ) as Debt[];
 
-    // Savings — same rule as debts. Mandor also accesses Tabungan for their selected branch.
+    // Savings — sama dengan debts: nasabah ikut inScope, karyawan tidak.
     const savingsScoped = (savings as any[]).filter(inScope);
     let savingList: SavingCustomer[] = [];
     if (role) {
@@ -737,9 +739,9 @@ async function loadAll() {
     }
     savingList = sortByCreatedAtDesc(savingList as any) as SavingCustomer[];
 
-    // Employee tabungan (tabungan karyawan): managed separately.
+    // Employee tabungan: sama seperti bon — ikut userId bukan branchId sesi mandor.
     const employeeSavingList = sortByCreatedAtDesc(
-      savingsScoped.filter((s: any) => isKaryawanOwned(s)) as any,
+      (savings as any[]).filter((s: any) => isKaryawanOwned(s)) as any,
     ) as SavingCustomer[];
 
     // Branches — always all, sorted by name numeric
