@@ -2,7 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X } from 'lucide-react';
-import { useBgThemeStore, BG_PRESETS, BgTheme } from '../store/bgThemeStore';
+import { useBgThemeStore, BG_PRESETS, BgTheme, LIGHT_MODE_THEMES } from '../store/bgThemeStore';
 
 interface Props {
   isOpen: boolean;
@@ -15,6 +15,8 @@ export function BgThemePicker({ isOpen, onClose }: Props) {
   const handleSelect = (id: BgTheme) => {
     setBg(id);
     document.body.setAttribute('data-bg', id);
+    const mode = LIGHT_MODE_THEMES.includes(id) ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-mode', mode);
   };
 
   return createPortal(

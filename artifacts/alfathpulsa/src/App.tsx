@@ -26,17 +26,18 @@ import { AlertCircle } from 'lucide-react';
 import { logout } from './store/authStore';
 import { AppLogoIcon, AppLogoWordmark } from './components/AppLogo';
 import { Toaster } from 'sonner';
-import { useBgThemeStore } from './store/bgThemeStore';
+import { useBgThemeStore, LIGHT_MODE_THEMES } from './store/bgThemeStore';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi' | 'backup'>('dashboard');
   const { bg } = useBgThemeStore();
 
-  // Lock Glassmorphism Twilight dark mode permanently
+  // Switch data-mode based on selected background theme
   useEffect(() => {
-    document.documentElement.setAttribute('data-mode', 'dark');
-  }, []);
+    const mode = LIGHT_MODE_THEMES.includes(bg) ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-mode', mode);
+  }, [bg]);
 
   // Apply background theme preset to <body>
   useEffect(() => {

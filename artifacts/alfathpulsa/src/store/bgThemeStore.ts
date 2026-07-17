@@ -8,7 +8,11 @@ export type BgTheme =
   | 'ventura'
   | 'aurora'
   | 'forest'
-  | 'galaxy';
+  | 'galaxy'
+  | 'white';
+
+/** Tema yang menggunakan light mode (font gelap) */
+export const LIGHT_MODE_THEMES: BgTheme[] = ['white'];
 
 export interface BgPreset {
   id: BgTheme;
@@ -26,6 +30,7 @@ export const BG_PRESETS: BgPreset[] = [
   { id: 'aurora',   label: 'Aurora',         emoji: '🌊', colors: ['#00E5FF', '#0288D1', '#000D14'] },
   { id: 'forest',   label: 'Forest',         emoji: '🌿', colors: ['#1DE9B6', '#00695C', '#00100D'] },
   { id: 'galaxy',   label: 'Galaxy',         emoji: '✨', colors: ['#7C4DFF', '#3D5AFE', '#000008'] },
+  { id: 'white',    label: 'Putih',          emoji: '☀️', colors: ['#FFFFFF', '#E8F0FE', '#C7D8F8'] },
 ];
 
 interface BgThemeState {

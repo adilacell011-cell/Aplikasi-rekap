@@ -738,6 +738,63 @@ body[data-bg="galaxy"]::before {
     radial-gradient(ellipse 120% 100% at 50% 50%, #0A0020 0%,   #000008 100%);
 }
 
+/* Putih — clean white/light blue, activates light mode */
+body[data-bg="white"]::before {
+  background:
+    radial-gradient(ellipse 130% 80% at 10% 0%,   #DDEEFF 0%,   transparent 55%),
+    radial-gradient(ellipse 100% 70% at 90% 5%,   #E8F4FF 0%,   transparent 50%),
+    radial-gradient(ellipse 90%  60% at 50% 90%,  #F0F6FF 0%,   transparent 50%),
+    #FFFFFF;
+}
+
+/* Light mode: glass cards tampil sebagai putih bersih, bukan semi-transparan gelap */
+[data-mode='light'] .glass-card,
+[data-mode='light'] .glass-card-strong {
+  background: rgba(255,255,255,0.75) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05) !important;
+}
+
+[data-mode='light'] .glass-input {
+  background: rgba(255,255,255,0.8) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1A2232 !important;
+}
+[data-mode='light'] .glass-input::placeholder {
+  color: rgba(0,0,0,0.3) !important;
+}
+
+[data-mode='light'] .glass-sidebar {
+  background: rgba(255,255,255,0.85) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+[data-mode='light'] .glass-nav {
+  background: rgba(255,255,255,0.90) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.08) !important;
+}
+
+[data-mode='light'] .glass-sm {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+[data-mode='light'] .divide-white\/10 > * + * {
+  border-color: rgba(0,0,0,0.07) !important;
+}
+
+[data-mode='light'] .border-white\/10,
+[data-mode='light'] .border-white\/15,
+[data-mode='light'] .border-white\/20 {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+[data-mode='light'] .bg-white\/5  { background: rgba(0,0,0,0.03) !important; }
+[data-mode='light'] .bg-white\/10 { background: rgba(0,0,0,0.05) !important; }
+[data-mode='light'] .bg-white\/15 { background: rgba(0,0,0,0.07) !important; }
+
 /* Sembunyikan indikator loading sisa jika ada */
 #nprogress .bar {
   background: var(--brand-500) !important;
