@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Layout } from './components/Layout';
 import { Dashboard } from './components/Dashboard';
 import { Debts } from './components/Debts';
@@ -28,9 +28,11 @@ import { AppLogoIcon, AppLogoWordmark } from './components/AppLogo';
 import { Toaster } from 'sonner';
 import { useBgThemeStore, LIGHT_MODE_THEMES } from './store/bgThemeStore';
 
+type TabType = 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi' | 'backup';
+
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi' | 'backup'>('dashboard');
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const { bg } = useBgThemeStore();
 
   // Switch data-mode based on selected background theme
@@ -52,6 +54,36 @@ export default function App() {
       import('./hooks/useFinanceStore').then(m => m.stopFinanceStoreListeners());
     }
   }, [user, role, isAuthLoaded]);
+
+  // ── Android back-button navigation via History API ──────────────────────
+  // Saat user login, pasang entry awal di history agar back dari dashboard
+  // langsung keluar (tidak ada entry lagi), bukan balik ke tab sebelumnya.
+  useEffect(() => {
+    if (user) {
+      window.history.replaceState({ tab: 'dashboard' }, '');
+    }
+  }, [user]);
+
+  // Dengarkan tombol Back (popstate) — restore tab dari history state
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      const tab = (e.state?.tab as TabType) ?? 'dashboard';
+      setActiveTab(tab);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Wrapper navigateTo — push history entry setiap pindah tab
+  const navigateTo = useCallback((tab: TabType) => {
+    setActiveTab(prev => {
+      if (prev === tab) return prev;
+      // Dari dashboard ke tab lain → push entry baru
+      // Dari tab ke tab lain → juga push (sehingga back selalu kembali satu langkah)
+      window.history.pushState({ tab }, '');
+      return tab;
+    });
+  }, []);
 
   if (!isAuthLoaded) {
     return (
@@ -122,12 +154,12 @@ export default function App() {
   return (
     <>
     <Toaster position="top-right" richColors closeButton duration={2000} />
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab} role={role}>
+    <Layout activeTab={activeTab} setActiveTab={navigateTo} role={role}>
       <NotificationManager />
       <PageTransition activeTab={activeTab}>
         {activeTab === 'dashboard' && (
           <Dashboard 
-            onNavigate={(tab) => setActiveTab(tab as any)} 
+            onNavigate={(tab) => navigateTo(tab as TabType)} 
           />
         )}
         {activeTab === 'debts' && <Debts />}
