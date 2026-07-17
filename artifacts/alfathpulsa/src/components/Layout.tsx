@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Check, BookOpen, FileText, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown, Palette } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Download, LogOut, UserCog, PiggyBank, Ticket, ShoppingBag, AlertCircle, X, Check, BookOpen, FileText, Wallet, CalendarDays, KeyRound, Eye, EyeOff, Building2, ChevronDown, Palette, Database } from 'lucide-react';
 import { AppLogoIcon } from './AppLogo';
 import { BgThemePicker } from './BgThemePicker';
 import { usePWAInstall } from '../hooks/usePWAInstall';
@@ -16,8 +16,8 @@ import { checkIsBos, checkIsMandor } from '../utils/authUtils';
 
 interface LayoutProps {
   children: React.ReactNode;
-  activeTab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi';
-  setActiveTab: (tab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi') => void;
+  activeTab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi' | 'backup';
+  setActiveTab: (tab: 'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi' | 'backup') => void;
   role?: 'bos' | 'mandor' | 'karyawan' | null;
 }
 
@@ -301,6 +301,7 @@ export function Layout({ children, activeTab, setActiveTab, role }: LayoutProps)
                 { tab: 'employee-finance', icon: <UserCog className={`w-5 h-5 shrink-0 ${activeTab === 'employee-finance' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Keu. Tim', show: checkIsBos(user, role) },
                 { tab: 'team',     icon: <Users           className={`w-5 h-5 shrink-0 ${activeTab === 'team' || activeTab === 'sop' ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Akun',     show: checkIsBos(user, role) },
                 { tab: 'sop',      icon: <BookOpen        className={`w-5 h-5 shrink-0 ${activeTab === 'sop'      ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'SOP',      show: checkIsBos(user, role) },
+                { tab: 'backup',   icon: <Database        className={`w-5 h-5 shrink-0 ${activeTab === 'backup'   ? 'stroke-[2.5px]' : 'stroke-[1.75px]'}`} />, label: 'Backup',   show: checkIsBos(user, role) },
               ] as { tab: Parameters<typeof setActiveTab>[0]; icon: React.ReactNode; label: string; show: boolean | null | undefined }[]
             ).filter(item => item.show).map(item => {
               const isActive = activeTab === item.tab || (item.tab === 'savings' && activeTab === 'debts') || (item.tab === 'team' && activeTab === 'sop');

@@ -16,6 +16,7 @@ import { SOPPage } from './components/SOPPage';
 import { SalaryAbsensi } from './components/SalaryAbsensi';
 import { EmployeeFinance } from './components/EmployeeFinance';
 import { EmployeeSelf } from './components/EmployeeSelf';
+import { BackupManager } from './components/BackupManager';
 import { NotificationManager } from './components/NotificationManager';
 import { PageTransition } from './components/PageTransition';
 import { useAuthStore } from './store/authStore';
@@ -29,7 +30,7 @@ import { useBgThemeStore } from './store/bgThemeStore';
 
 export default function App() {
   const { user, isAuthLoaded, role, branchId } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'debts' | 'savings' | 'deposits' | 'team' | 'vouchers' | 'sop' | 'salary-slips' | 'employee-finance' | 'my-finance' | 'absensi' | 'backup'>('dashboard');
   const { bg } = useBgThemeStore();
 
   // Lock Glassmorphism Twilight dark mode permanently
@@ -138,6 +139,7 @@ export default function App() {
         {activeTab === 'employee-finance' && isBos && <EmployeeFinance />}
         {activeTab === 'my-finance' && (role === 'karyawan' || role === 'mandor') && <EmployeeSelf />}
         {activeTab === 'absensi' && isBos && <SalaryAbsensi defaultTab="absensi" />}
+        {activeTab === 'backup' && isBos && <BackupManager />}
       </PageTransition>
     </Layout>
     </>
