@@ -174,66 +174,79 @@
 
 /* Light Mode Styling Override Injectors */
 [data-mode='light'] .text-white {
-  color: #1A2232 !important;
+  color: #0F1929 !important;
 }
 [data-mode='light'] .text-white\/95 {
-  color: #1A2232 !important;
+  color: #0F1929 !important;
 }
 [data-mode='light'] .text-white\/90 {
-  color: #242E40 !important;
+  color: #1A2640 !important;
 }
 [data-mode='light'] .text-white\/80 {
-  color: #2D394D !important;
+  color: #1E2E48 !important;
 }
 [data-mode='light'] .text-white\/70 {
-  color: #334155 !important;
+  color: #243550 !important;
 }
 [data-mode='light'] .text-white\/60 {
-  color: #4B5A70 !important;
+  color: #2C3D58 !important;
+}
+/* text-white/55 — sidebar nav inactive icons */
+[data-mode='light'] .text-white\/55 {
+  color: #334560 !important;
 }
 [data-mode='light'] .text-white\/50 {
-  color: #556173 !important;
+  color: #3A4D6A !important;
 }
 [data-mode='light'] .text-white\/40 {
-  color: #64748B !important;
+  color: #4D607A !important;
 }
 [data-mode='light'] .text-white\/30 {
-  color: #8E9FBC !important;
+  color: #6B7D97 !important;
 }
 [data-mode='light'] .text-slate-300 {
-  color: #2B374A !important;
+  color: #1E2E48 !important;
 }
 [data-mode='light'] .text-slate-300\/90 {
-  color: #2B374A !important;
+  color: #1E2E48 !important;
 }
 [data-mode='light'] .text-asphalt-text-100 {
-  color: #1A2232 !important;
+  color: #0F1929 !important;
 }
 [data-mode='light'] .text-asphalt-text-400 {
-  color: #5E6A7D !important;
+  color: #3A4D6A !important;
 }
 [data-mode='light'] .text-asphalt-text-500 {
-  color: #4B5E78 !important;
+  color: #2C3D58 !important;
+}
+
+/* Hover states — putih jadi invisible di light mode, override ke dark */
+[data-mode='light'] .hover\:text-white:hover {
+  color: #0F1929 !important;
+}
+[data-mode='light'] .hover\:bg-white\/8:hover,
+[data-mode='light'] .hover\:bg-white\/10:hover {
+  background-color: rgba(0, 20, 60, 0.06) !important;
 }
 
 /* Ensure rich contrast for text with color names in Light Mode */
 [data-mode='light'] .text-brand-400 {
-  color: #0076E5 !important;
+  color: #0057CC !important;
 }
 [data-mode='light'] .text-emerald-400 {
-  color: #0068CC !important;
+  color: #005CAD !important;
 }
 [data-mode='light'] .text-emerald-500\/80 {
-  color: #0068CC !important;
+  color: #005CAD !important;
 }
 [data-mode='light'] .text-emerald-500\/30 {
-  color: #0084FF !important;
+  color: #0070D6 !important;
 }
 [data-mode='light'] .text-rose-400 {
-  color: #A93C44 !important;
+  color: #9B1C25 !important;
 }
 [data-mode='light'] .text-amber-400 {
-  color: #785826 !important;
+  color: #6B4A1A !important;
 }
 
 /* Solid Color High-Contrast Backgrounds - RESTORE pure white text */
