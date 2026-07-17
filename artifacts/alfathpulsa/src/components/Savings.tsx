@@ -1,11 +1,14 @@
 import React, { useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { useFinanceStore } from '../hooks/useFinanceStore';
 import { useAuthStore } from '../store/authStore';
 import { formatRupiah, formatDate, formatNumberInput } from '../utils/formatters';
-import { PiggyBank, Plus, Trash2, ArrowDownToLine, ArrowUpFromLine, ArrowLeft, Search, CheckCircle2 } from 'lucide-react';
+import { PiggyBank, Plus, Trash2, ArrowDownToLine, ArrowUpFromLine, ArrowLeft, Search, CheckCircle2, Eye, EyeOff, X } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 import { SuccessToast } from './SuccessToast';
 import { BlockChoice } from './BlockChoice';
+import { api } from '../api';
 
 export function Savings() {
   const store = useFinanceStore();
@@ -33,12 +36,46 @@ export function Savings() {
     });
   };
 
-  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; type: 'person' | 'transaction'; personId: string; transactionId?: string; name: string }>({
+  // ConfirmModal — hanya untuk hapus transaksi
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; type: 'transaction'; personId: string; transactionId?: string; name: string }>({
     isOpen: false,
-    type: 'person',
+    type: 'transaction',
     personId: '',
     name: ''
   });
+
+  // Password modal — khusus hapus penabung (nasabah)
+  const [deletePassModal, setDeletePassModal] = useState<{ personId: string; name: string } | null>(null);
+  const [deletePassVal, setDeletePassVal] = useState('');
+  const [deletePassError, setDeletePassError] = useState<string | null>(null);
+  const [deletePassLoading, setDeletePassLoading] = useState(false);
+  const [deletePassVisible, setDeletePassVisible] = useState(false);
+
+  const closeDeletePass = () => {
+    setDeletePassModal(null);
+    setDeletePassVal('');
+    setDeletePassError(null);
+    setDeletePassVisible(false);
+  };
+
+  const handleDeleteWithPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!deletePassModal || !deletePassVal.trim()) return;
+    setDeletePassLoading(true);
+    setDeletePassError(null);
+    try {
+      await api.post('/auth/verify-password', { password: deletePassVal });
+      store.deleteSavingCustomer(deletePassModal.personId);
+      if (selectedPersonId === deletePassModal.personId) setSelectedPersonId(null);
+      setSuccessMsg('Penabung berhasil dihapus');
+      setShowSuccess(true);
+      closeDeletePass();
+    } catch {
+      setDeletePassError('Password salah. Coba lagi.');
+    } finally {
+      setDeletePassLoading(false);
+    }
+  };
 
   const [activeMainTab, setActiveMainTab] = useState<'savers' | 'history'>('savers');
 
@@ -284,21 +321,17 @@ export function Savings() {
 
         <ConfirmModal
           isOpen={deleteConfirm.isOpen}
-          title={deleteConfirm.type === 'person' ? 'Hapus Penabung' : 'Hapus Transaksi'}
-          message={`Apakah Anda yakin ingin menghapus ${deleteConfirm.type === 'person' ? 'penabung' : 'transaksi'} ${deleteConfirm.name}? Data yang dihapus tidak dapat dikembalikan.`}
+          title="Hapus Transaksi"
+          message={`Hapus transaksi "${deleteConfirm.name}"? Data tidak dapat dikembalikan.`}
           onConfirm={() => {
-            if (deleteConfirm.type === 'person') {
-              store.deleteSavingCustomer(deleteConfirm.personId);
-              if (selectedPersonId === deleteConfirm.personId) setSelectedPersonId(null);
-              setSuccessMsg("Penabung berhasil dihapus");
-            } else if (deleteConfirm.transactionId) {
+            if (deleteConfirm.transactionId) {
               store.deleteSavingTransaction(deleteConfirm.personId, deleteConfirm.transactionId);
               setSuccessMsg("Transaksi berhasil dihapus");
             }
             setShowSuccess(true);
-            setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' });
+            setDeleteConfirm({ isOpen: false, type: 'transaction', personId: '', name: '' });
           }}
-          onCancel={() => setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' })}
+          onCancel={() => setDeleteConfirm({ isOpen: false, type: 'transaction', personId: '', name: '' })}
         />
 
         <SuccessToast 
@@ -527,7 +560,7 @@ export function Savings() {
                             </p>
                           </div>
                           {canDelete && (
-                            <button onClick={() => setDeleteConfirm({ isOpen: true, type: 'person', personId: person.id, name: person.personName })} className="p-1.5 text-white/60 hover:text-rose-500 bg-white/10 rounded-lg transition-all">
+                            <button onClick={() => setDeletePassModal({ personId: person.id, name: person.personName })} className="p-1.5 text-white/60 hover:text-rose-500 bg-white/10 rounded-lg transition-all">
                               <Trash2 className="w-3 h-3" />
                             </button>
                           )}
@@ -584,21 +617,17 @@ export function Savings() {
 
       <ConfirmModal
         isOpen={deleteConfirm.isOpen}
-        title={deleteConfirm.type === 'person' ? 'Hapus Penabung' : 'Hapus Transaksi'}
-        message={`Apakah Anda yakin ingin menghapus ${deleteConfirm.type === 'person' ? 'penabung' : 'transaksi'} ${deleteConfirm.name}? Data yang dihapus tidak dapat dikembalikan.`}
+        title="Hapus Transaksi"
+        message={`Hapus transaksi "${deleteConfirm.name}"? Data tidak dapat dikembalikan.`}
         onConfirm={() => {
-          if (deleteConfirm.type === 'person') {
-            store.deleteSavingCustomer(deleteConfirm.personId);
-            if (selectedPersonId === deleteConfirm.personId) setSelectedPersonId(null);
-            setSuccessMsg("Penabung berhasil dihapus");
-          } else if (deleteConfirm.transactionId) {
+          if (deleteConfirm.transactionId) {
             store.deleteSavingTransaction(deleteConfirm.personId, deleteConfirm.transactionId);
             setSuccessMsg("Transaksi berhasil dihapus");
           }
           setShowSuccess(true);
-          setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' });
+          setDeleteConfirm({ isOpen: false, type: 'transaction', personId: '', name: '' });
         }}
-        onCancel={() => setDeleteConfirm({ isOpen: false, type: 'person', personId: '', name: '' })}
+        onCancel={() => setDeleteConfirm({ isOpen: false, type: 'transaction', personId: '', name: '' })}
       />
 
       <SuccessToast 
@@ -606,6 +635,103 @@ export function Savings() {
         message={successMsg} 
         onClose={() => setShowSuccess(false)} 
       />
+
+      {/* ── Password Confirmation Modal — Hapus Penabung ── */}
+      {createPortal(
+        <AnimatePresence>
+          {deletePassModal && (
+            <motion.div
+              key="savings-delete-pass-backdrop"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="fixed inset-0 z-[500] flex items-end justify-center ios-backdrop ios-font pb-[env(safe-area-inset-bottom,0px)]"
+              style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+              onClick={() => !deletePassLoading && closeDeletePass()}
+            >
+              <motion.div
+                key="savings-delete-pass-panel"
+                initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.8 }}
+                className="w-full max-w-md glass-card-strong rounded-b-none rounded-t-[2rem] p-6 pb-8 space-y-5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center shrink-0">
+                      <Trash2 className="w-5 h-5 text-rose-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-white uppercase tracking-tight leading-none">Hapus Penabung</h3>
+                      <p className="text-[9px] text-rose-400 font-bold uppercase tracking-widest mt-0.5 truncate max-w-[200px]">
+                        {deletePassModal.name}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeDeletePass}
+                    disabled={deletePassLoading}
+                    className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white rounded-xl border border-white/10 transition-all"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Warning */}
+                <div className="bg-rose-500/10 border border-rose-500/25 rounded-2xl px-4 py-3 flex items-start gap-3">
+                  <span className="text-rose-400 text-base leading-none mt-0.5">⚠️</span>
+                  <p className="text-[11px] text-rose-300 font-semibold leading-relaxed">
+                    Tindakan ini <span className="font-black text-rose-400">tidak dapat dibatalkan</span>. Seluruh riwayat transaksi nasabah ini juga akan terhapus. Masukkan password Anda untuk konfirmasi.
+                  </p>
+                </div>
+
+                {/* Password form */}
+                <form onSubmit={handleDeleteWithPassword} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[9px] font-black text-white/60 uppercase tracking-widest ml-1">Password Anda</label>
+                    <div className="relative">
+                      <input
+                        type={deletePassVisible ? 'text' : 'password'}
+                        value={deletePassVal}
+                        onChange={(e) => { setDeletePassVal(e.target.value); setDeletePassError(null); }}
+                        placeholder="Masukkan password"
+                        autoFocus
+                        className="w-full px-4 py-3.5 pr-12 text-sm glass-input rounded-2xl outline-none focus:ring-2 focus:ring-rose-500/40 text-white font-semibold"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setDeletePassVisible(v => !v)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                      >
+                        {deletePassVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {deletePassError && (
+                    <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl px-4 py-3">
+                      <p className="text-[11px] text-rose-400 font-bold text-center">🔒 {deletePassError}</p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={deletePassLoading || !deletePassVal.trim()}
+                    className="w-full py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2"
+                  >
+                    {deletePassLoading ? (
+                      <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Memverifikasi...</>
+                    ) : (
+                      <><Trash2 className="w-4 h-4" /> Hapus Permanen</>
+                    )}
+                  </button>
+                </form>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
