@@ -26,6 +26,9 @@ RUN PORT=19878 BASE_PATH=/ pnpm --filter @workspace/alfathpulsa run build \
 # ═══════════════════════════════════════════════════════════════════════════════
 FROM node:24-bookworm-slim AS runner
 
+# postgresql-client menyediakan pg_dump untuk fitur backup database
+RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client && rm -rf /var/lib/apt/lists/*
+
 RUN corepack enable && corepack prepare pnpm@10.26.1 --activate
 
 WORKDIR /app
